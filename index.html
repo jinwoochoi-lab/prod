@@ -108,7 +108,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 .s-배정요청 { background:#fff3e0; color:#e65100; }
 .s-출고예정 { background:#e8f5e9; color:#2e7d32; }
 .s-출고 { background:#c8e6c9; color:#1b5e20; }
-.s-해약 { background:#fce4ec; color:#880e4f; }
+.s-취소 { background:#fce4ec; color:#880e4f; }
 .s-hot { background:#fde8e8; color:#c62828; }
 .s-warm { background:#fff3e0; color:#e65100; }
 .s-cold { background:#e3f2fd; color:#1565c0; }
@@ -224,7 +224,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
     <div class="kpi-card" style="--kpi-color:#a855f7"><div class="kpi-icon">🔐</div><div class="kpi-body"><div class="kpi-label">활성 사용자</div><div class="kpi-value">84</div><div class="kpi-sub">사용중 계정 기준</div><div class="kpi-trend up">▲ 2명 신규 등록</div></div></div>
   </div>
   <div class="dash-chart-row" style="grid-template-columns:1.4fr 1fr;">
-    <div class="chart-card"><h3>월별 품의서 계약 추이</h3><div class="chart-sub">최근 6개월 계약 / 출고 / 해약</div><canvas id="chartMonthly" height="200"></canvas></div>
+    <div class="chart-card"><h3>월별 품의서 계약 추이</h3><div class="chart-sub">최근 6개월 계약 / 출고 / 취소</div><canvas id="chartMonthly" height="200"></canvas></div>
     <div class="chart-card"><h3>품의서 상태 분포</h3><div class="chart-sub">현재 전체 품의서 기준</div><canvas id="chartStatus" height="200"></canvas></div>
   </div>
   <div class="dash-chart-row" style="grid-template-columns:1fr 1fr 1fr;">
@@ -239,7 +239,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
       <li><div class="act-dot" style="background:#4d9fff"></div><div class="act-body"><div class="act-title">신규 고객 등록 — 김고객 (가망고객)</div><div class="act-time">2026.05.11 · 박영업 · 성수전시장</div></div><span class="act-badge" style="background:#e8f3ff;color:#1565c0">등록</span></li>
       <li><div class="act-dot" style="background:#f7a35c"></div><div class="act-body"><div class="act-title">530i xDrive — PDI 완료</div><div class="act-time">2026.05.11 · PDC Manager</div></div><span class="act-badge" style="background:#fff3e0;color:#e65100">PDI</span></li>
       <li><div class="act-dot" style="background:#a855f7"></div><div class="act-body"><div class="act-title">신규 사용자 등록 — ldm085 (Sales Consultant)</div><div class="act-time">2026.05.10 · ADMIN</div></div><span class="act-badge" style="background:#f3e5f5;color:#6a1b9a">사용자</span></li>
-      <li><div class="act-dot" style="background:#e74c3c"></div><div class="act-body"><div class="act-title">품의서 DTBS411637 — 해약 처리</div><div class="act-time">2026.05.09 · 이영업 · 하남전시장</div></div><span class="act-badge" style="background:#fce4ec;color:#880e4f">해약</span></li>
+      <li><div class="act-dot" style="background:#e74c3c"></div><div class="act-body"><div class="act-title">품의서 DTBS411637 — 취소 처리</div><div class="act-time">2026.05.09 · 이영업 · 하남전시장</div></div><span class="act-badge" style="background:#fce4ec;color:#880e4f">취소</span></li>
       <li><div class="act-dot" style="background:#34c38f"></div><div class="act-body"><div class="act-title">i4 M50 — 재고 신규 매입</div><div class="act-time">2026.05.08 · 재고팀</div></div><span class="act-badge" style="background:#e6f4ea;color:#2e7d32">매입</span></li>
     </ul>
   </div>
@@ -339,7 +339,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
     <div class="card">
       <div class="filter-bar">
         <div class="search-box">🔍<input type="text" placeholder="계약서번호·계약자명 검색…" oninput="filterList('contract-table',this.value)"></div>
-        <select class="filter-select"><option>상태 전체</option><option>작성</option><option>계약</option><option>배정요청</option><option>출고예정</option><option>출고</option><option>해약</option></select>
+        <select class="filter-select"><option>상태 전체</option><option>작성</option><option>계약</option><option>배정요청</option><option>출고예정</option><option>출고</option><option>취소</option></select>
         <select class="filter-select"><option>구입조건 전체</option><option>현금</option><option>할부</option><option>운용리스</option><option>금융리스</option><option>렌트</option></select>
         <select class="filter-select"><option>전시장 전체</option><option>수원</option><option>성수</option><option>하남</option><option>분당</option></select>
         <div class="filter-right"><button class="btn btn-primary">+ 품의서 등록</button></div>
@@ -353,7 +353,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
             <th>대표차종</th><th>모델</th><th>상세모델(그룹명)</th><th>온/오프구분</th>
             <th>Advantage</th><th>판매가격</th><th>차대번호</th><th>계약일자</th>
             <th>출고요청일</th><th>등록(예정)일</th><th>매출확정일</th><th>등록일</th>
-            <th>해약일</th><th>배정일자</th><th>PDI완료일</th>
+            <th>취소일</th><th>배정일자</th><th>PDI완료일</th>
             <th>계약자 고객번호</th><th>등록자 고객번호</th>
           </tr></thead>
           <tbody>
@@ -363,7 +363,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
             <tr id="contract-row-4" onclick="showDetail('contract')"><td style="text-align:center" onclick="event.stopPropagation()"><button class="btn-inquiry" onclick="openContractInquiry(event,4)">조회</button></td><td class="col-no">4</td><td>DTBS411640</td><td><span class="s-badge s-출고예정">출고예정</span></td><td>개인</td><td><b class="c-masked-name" data-original="최유진">최**</b></td><td class="c-masked-phone" data-original="010-4567-8901">010-****-8901</td><td>경기도 성남시 분당구 판교로 20</td><td>최유진</td><td>분당</td><td>정영업</td><td>렌트</td><td>i4</td><td>i4 M50</td><td>i4 M50</td><td>온라인 계약</td><td>잔가(2)</td><td>89,000,000</td><td>WBY73AJ04PCM55312</td><td>2026-03-10</td><td>2026-03-12</td><td>2026-03-28</td><td>–</td><td>–</td><td>–</td><td>2026-03-01</td><td>–</td><td>DTC000002880</td><td>DTC000002880</td></tr>
             <tr id="contract-row-5" onclick="showDetail('contract')"><td style="text-align:center" onclick="event.stopPropagation()"><button class="btn-inquiry" onclick="openContractInquiry(event,5)">조회</button></td><td class="col-no">5</td><td>DTBS411641</td><td><span class="s-badge s-작성">작성</span></td><td>개인사업자</td><td><b class="c-masked-name" data-original="정도현">정**</b></td><td class="c-masked-phone" data-original="010-5678-9012">010-****-9012</td><td>경기도 수원시 영통구 광교로 5</td><td>정도현</td><td>수원</td><td>김영업</td><td>할부</td><td>X5</td><td>X5 xDrive40i M Sport</td><td>X5 xDrive 40i M Spt LCI</td><td>오프라인 계약</td><td>–</td><td>98,000,000</td><td>WBA53BJ07PCM72345</td><td>2026-03-12</td><td>2026-03-14</td><td>2026-03-30</td><td>–</td><td>–</td><td>–</td><td>2026-03-03</td><td>–</td><td>DTC000002879</td><td>DTC000002879</td></tr>
             <tr id="contract-row-6" onclick="showDetail('contract')"><td style="text-align:center" onclick="event.stopPropagation()"><button class="btn-inquiry" onclick="openContractInquiry(event,6)">조회</button></td><td class="col-no">6</td><td>DTBS411642</td><td><span class="s-badge s-출고">출고</span></td><td>개인</td><td><b class="c-masked-name" data-original="강서영">강**</b></td><td class="c-masked-phone" data-original="010-6789-0123">010-****-0123</td><td>서울특별시 마포구 합정동 200</td><td>강서영</td><td>성수</td><td>박영업</td><td>현금</td><td>M3</td><td>M3 Competition</td><td>M3 Competition</td><td>오프라인 계약</td><td>–</td><td>115,000,000</td><td>WBS41CJ03PCM73891</td><td>2026-03-15</td><td>2026-03-15</td><td>2026-04-01</td><td>2026-04-05</td><td>2026-04-05</td><td>–</td><td>2026-03-05</td><td>2026-03-25</td><td>DTC000002878</td><td>DTC000002878</td></tr>
-            <tr id="contract-row-7" onclick="showDetail('contract')"><td style="text-align:center" onclick="event.stopPropagation()"><button class="btn-inquiry" onclick="openContractInquiry(event,7)">조회</button></td><td class="col-no">7</td><td>DTBS411643</td><td><span class="s-badge s-해약">해약</span></td><td>법인</td><td><b class="c-masked-name" data-original="윤태양">윤**</b></td><td class="c-masked-phone" data-original="010-7890-1234">010-****-1234</td><td>경기도 하남시 신장동 50</td><td>윤태양</td><td>하남</td><td>이영업</td><td>운용리스</td><td>iX</td><td>iX xDrive50</td><td>iX xDrive50</td><td>오프라인 계약</td><td>잔가(2), Trade(5)</td><td>132,000,000</td><td>WBY53DJ05PCM61874</td><td>2026-03-18</td><td>2026-03-18</td><td>–</td><td>–</td><td>–</td><td>2026-04-10</td><td>–</td><td>–</td><td>DTC000002877</td><td>DTC000002877</td></tr>
+            <tr id="contract-row-7" onclick="showDetail('contract')"><td style="text-align:center" onclick="event.stopPropagation()"><button class="btn-inquiry" onclick="openContractInquiry(event,7)">조회</button></td><td class="col-no">7</td><td>DTBS411643</td><td><span class="s-badge s-취소">취소</span></td><td>법인</td><td><b class="c-masked-name" data-original="윤태양">윤**</b></td><td class="c-masked-phone" data-original="010-7890-1234">010-****-1234</td><td>경기도 하남시 신장동 50</td><td>윤태양</td><td>하남</td><td>이영업</td><td>운용리스</td><td>iX</td><td>iX xDrive50</td><td>iX xDrive50</td><td>오프라인 계약</td><td>잔가(2), Trade(5)</td><td>132,000,000</td><td>WBY53DJ05PCM61874</td><td>2026-03-18</td><td>2026-03-18</td><td>–</td><td>–</td><td>–</td><td>2026-04-10</td><td>–</td><td>–</td><td>DTC000002877</td><td>DTC000002877</td></tr>
             <tr id="contract-row-8" onclick="showDetail('contract')"><td style="text-align:center" onclick="event.stopPropagation()"><button class="btn-inquiry" onclick="openContractInquiry(event,8)">조회</button></td><td class="col-no">8</td><td>DTBS411644</td><td><span class="s-badge s-계약">계약</span></td><td>개인</td><td><b class="c-masked-name" data-original="임현아">임**</b></td><td class="c-masked-phone" data-original="010-8901-2345">010-****-2345</td><td>경기도 성남시 중원구 성남대로 100</td><td>임현아</td><td>분당</td><td>정영업</td><td>금융리스</td><td>X3</td><td>X3 xDrive20i</td><td>X3 xDrive 20i</td><td>오프라인 계약</td><td>–</td><td>67,000,000</td><td>WBA31AJ06PCM41287</td><td>2026-03-20</td><td>2026-03-22</td><td>2026-04-05</td><td>–</td><td>–</td><td>–</td><td>2026-03-10</td><td>–</td><td>DTC000002876</td><td>DTC000002876</td></tr>
             <tr id="contract-row-9" onclick="showDetail('contract')"><td style="text-align:center" onclick="event.stopPropagation()"><button class="btn-inquiry" onclick="openContractInquiry(event,9)">조회</button></td><td class="col-no">9</td><td>DTBS411645</td><td><span class="s-badge s-출고예정">출고예정</span></td><td>개인</td><td><b class="c-masked-name" data-original="한승민">한**</b></td><td class="c-masked-phone" data-original="010-9012-3456">010-****-3456</td><td>경기도 수원시 권선구 세화로 80</td><td>한승민</td><td>수원</td><td>김영업</td><td>현금</td><td>4 Series</td><td>430i Convertible</td><td>430i Convertible</td><td>오프라인 계약</td><td>–</td><td>72,000,000</td><td>WBA43AJ08PCM92011</td><td>2026-03-22</td><td>2026-03-24</td><td>2026-04-08</td><td>–</td><td>–</td><td>–</td><td>2026-03-12</td><td>–</td><td>DTC000002875</td><td>DTC000002875</td></tr>
             <tr id="contract-row-10" onclick="showDetail('contract')"><td style="text-align:center" onclick="event.stopPropagation()"><button class="btn-inquiry" onclick="openContractInquiry(event,10)">조회</button></td><td class="col-no">10</td><td>DTBS411646</td><td><span class="s-badge s-배정요청">배정요청</span></td><td>개인</td><td><b class="c-masked-name" data-original="오지은">오**</b></td><td class="c-masked-phone" data-original="010-0123-4567">010-****-4567</td><td>서울특별시 성동구 뚝섬로 300</td><td>오지은</td><td>성수</td><td>박영업</td><td>운용리스</td><td>7 Series</td><td>i7 xDrive60</td><td>i7 xDrive60</td><td>온라인 계약</td><td>잔가(2)</td><td>185,000,000</td><td>WBY83AJ01PCM64512</td><td>2026-03-25</td><td>2026-03-27</td><td>2026-04-10</td><td>–</td><td>–</td><td>–</td><td>2026-03-15</td><td>–</td><td>DTC000002874</td><td>DTC000002874</td></tr>
@@ -395,7 +395,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
           <thead><tr><th class="col-no">No.</th><th style="width:200px">컬럼명 (영문)</th><th style="width:130px">컬럼명 (한글)</th><th style="width:80px">타입</th><th style="width:200px">예시</th><th>참고사항</th></tr></thead>
           <tbody>
             <tr><td class="col-no">1</td><td><span class="col-code">CONTRACT_SEQ</span></td><td><span class="col-name">계약서번호</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">DTBS411637</td><td class="col-note">판매품의서 > 계약자정보의 계약서번호</td></tr>
-            <tr><td class="col-no">2</td><td><span class="col-code">STATUS</span></td><td><span class="col-name">상태</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">작성, 계약, 배정요청, 출고예정, 출고, 해약</td><td class="col-note">판매품의서 > 계약자정보의 상태</td></tr>
+            <tr><td class="col-no">2</td><td><span class="col-code">STATUS</span></td><td><span class="col-name">상태</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">작성, 계약, 배정요청, 출고예정, 출고, 취소</td><td class="col-note">판매품의서 > 계약자정보의 상태</td></tr>
             <tr><td class="col-no">3</td><td><span class="col-code">PERSON_GUBUN</span></td><td><span class="col-name">구분</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">1(개인), 2(법인), 3(개인사업자)</td><td class="col-note">–</td></tr>
             <tr><td class="col-no">4</td><td><span class="col-code">CUSTOMER_NAME</span></td><td><span class="col-name">계약자명</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">김고객</td><td class="col-note">–</td></tr>
             <tr><td class="col-no">5</td><td><span class="col-code">MOBILE_PHONE</span></td><td><span class="col-name">휴대전화번호</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">010-1234-5678</td><td class="col-note">–</td></tr>
@@ -422,7 +422,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
             <tr><td class="col-no">26</td><td><span class="col-code">DELIVERY_EXPRECTED_DATE</span></td><td><span class="col-name">등록(예정)일</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-03-01</td><td class="col-note">–</td></tr>
             <tr><td class="col-no">27</td><td><span class="col-code">SALE_FIXED_DATE</span></td><td><span class="col-name">매출확정일</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-03-01</td><td class="col-note">–</td></tr>
             <tr><td class="col-no">28</td><td><span class="col-code">DELIVERY_REG_DATE</span></td><td><span class="col-name">등록일</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-03-01</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">29</td><td><span class="col-code">CANCEL_DATE</span></td><td><span class="col-name">해약일</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-03-01</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">29</td><td><span class="col-code">CANCEL_DATE</span></td><td><span class="col-name">취소일</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-03-01</td><td class="col-note">–</td></tr>
             <tr><td class="col-no">30</td><td><span class="col-code">ASSIGN_DATE</span></td><td><span class="col-name">배정일자</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-03-01</td><td class="col-note">재고차량관리 > 조회Tab</td></tr>
             <tr><td class="col-no">31</td><td><span class="col-code">PDI_COMPLETE_DATE</span></td><td><span class="col-name">PDI완료일</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-03-01</td><td class="col-note">재고차량관리 > 조회Tab</td></tr>
             <tr><td class="col-no">32</td><td><span class="col-code">BPS_TRADE_IN</span></td><td><span class="col-name">BPS Trade-In</span></td><td><span class="badge-type bt-bool">BOOL</span></td><td class="col-example">Y / N</td><td class="col-note">–</td></tr>
@@ -767,14 +767,14 @@ window.addEventListener('DOMContentLoaded', () => {
       datasets:[
         {label:'계약', data:[210,195,230,265,310,348], backgroundColor:PALETTE.blue+'cc', borderRadius:5},
         {label:'출고', data:[180,170,195,240,280,310], backgroundColor:PALETTE.green+'cc', borderRadius:5},
-        {label:'해약', data:[12,18,10,15,8,11], backgroundColor:PALETTE.red+'cc', borderRadius:5}
+        {label:'취소', data:[12,18,10,15,8,11], backgroundColor:PALETTE.red+'cc', borderRadius:5}
       ]},
     options:{responsive:true, plugins:{legend:{position:'top'}}, scales:{x:{grid:{display:false}}, y:{grid:{color:'#f0f2f5'}, beginAtZero:true}}}
   });
 
   new Chart(document.getElementById('chartStatus'), {
     type:'doughnut',
-    data:{ labels:['출고','계약','배정요청','출고예정','작성','해약'],
+    data:{ labels:['출고','계약','배정요청','출고예정','작성','취소'],
       datasets:[{data:[148,92,54,28,15,11], backgroundColor:[PALETTE.green,PALETTE.blue,PALETTE.orange,PALETTE.teal,PALETTE.gray,PALETTE.red], borderWidth:2, borderColor:'#fff'}]},
     options:{responsive:true, cutout:'65%', plugins:{legend:{position:'right', labels:{boxWidth:12,padding:12,font:{size:11}}}}}
   });
