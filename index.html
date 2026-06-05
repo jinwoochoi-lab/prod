@@ -66,6 +66,12 @@ body { font-family: 'Segoe UI','Apple SD Gothic Neo',sans-serif; background:#f0f
 .btn-outline:hover { background:#e8f3ff; }
 .btn-detail { background:#f0f4ff; color:#4d9fff; border:1px solid #c8dcff; font-size:12px; padding:5px 12px; border-radius:6px; cursor:pointer; font-weight:600; white-space:nowrap; }
 .btn-detail:hover { background:#d8eaff; }
+.btn-edit-detail { background:#fff; color:#4d9fff; border:1px solid #4d9fff; padding:6px 16px; border-radius:7px; font-size:13px; font-weight:600; cursor:pointer; }
+.btn-edit-detail:hover { background:#e8f3ff; }
+.btn-save-detail { background:#4d9fff; color:#fff; border:none; padding:6px 16px; border-radius:7px; font-size:13px; font-weight:600; cursor:pointer; display:none; }
+.btn-save-detail:hover { background:#2e7de0; }
+.edit-input { width:100%; border:1px solid #c8dcff; border-radius:5px; padding:5px 8px; font-size:13px; font-family:inherit; background:#f7faff; outline:none; }
+.edit-input:focus { border-color:#4d9fff; }
 .btn-inquiry { background:#4d9fff; color:#fff; border:none; padding:4px 10px; border-radius:5px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap; }
 .btn-inquiry:hover { background:#2e7de0; }
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:500; align-items:center; justify-content:center; }
@@ -290,33 +296,33 @@ tbody td { padding:10px 14px; vertical-align:middle; }
     <div class="breadcrumb"><span onclick="showList('customer')">👤 고객 정보</span> › 고객 정보</div>
     <div class="page-header"><div class="page-title">👤 고객 정보</div><div class="page-desc">MYDMS 고객 데이터 전송 필드 목록</div></div>
     <div class="card">
-      <div class="card-header"><h2>고객 정보</h2></div>
+      <div class="card-header"><h2>고객 정보</h2><div style="margin-left:auto;display:flex;gap:8px"><button class="btn-edit-detail" id="btn-edit-customer" onclick="toggleCustomerEdit()">수정</button><button class="btn-save-detail" id="btn-save-customer" onclick="saveCustomerEdit()">저장</button></div></div>
       <div class="table-wrap">
         <table id="tbl-customer">
-          <thead><tr><th class="col-no">No.</th><th style="width:150px">컬럼명</th><th style="width:80px">타입</th><th style="width:220px">정보</th><th>참고사항</th></tr></thead>
+          <thead><tr><th class="col-no">No.</th><th style="width:150px">항목</th><th>정보</th><th>참고사항</th></tr></thead>
           <tbody>
-            <tr><td class="col-no">1</td><td><span class="col-name">고객번호</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">DTC000002883</td><td class="col-note">(MYDMS)고객번호, 수기 입력 고객은 없음</td></tr>
-            <tr><td class="col-no">2</td><td><span class="col-name">고객명</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">김고객</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">3</td><td><span class="col-name">고객구분</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">출고고객, BMW오너, 가망고객, 잠재고객</td><td class="col-note">품의서 매출 확정 시 가망/잠재 → 출고고객 자동 변경</td></tr>
-            <tr><td class="col-no">4</td><td><span class="col-name">고객유형</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">개인, 법인, 개인사업자</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">5</td><td><span class="col-name">전시장</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">수원</td><td class="col-note">전시장 변경 시 바뀌는 정보</td></tr>
-            <tr><td class="col-no">6</td><td><span class="col-name">팀</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">수원1팀</td><td class="col-note">팀 변경 시 바뀌는 정보</td></tr>
-            <tr><td class="col-no">7</td><td><span class="col-name">관리담당</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">김영업</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">8</td><td><span class="col-name">인지경로</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">전시장 내방, 인터넷 등</td><td class="col-note">고객의 소개 / 지인의 소개 / 인터넷 / 영업 활동중 / 전시장 내방 / 퇴직자고객인수 / 대표이사 고객 / 총괄임원 고객 / 마케팅팀 고객 / 서비스/부품팀 고객 / CS팀 고객 / 기타</td></tr>
-            <tr><td class="col-no">9</td><td><span class="col-name">이전담당자</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">박영업</td><td class="col-note">고객이관 시 이전 담당자명 표시</td></tr>
-            <tr><td class="col-no">10</td><td><span class="col-name">생년월일</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">1980-01-01</td><td class="col-note">거의 입력 안함</td></tr>
-            <tr><td class="col-no">11</td><td><span class="col-name">성별</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">남자, 여자</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">12</td><td><span class="col-name">직장주소</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">서울 강남구 강남대로 362</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">13</td><td><span class="col-name">자택주소</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">경기 화성시 장안면 …</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">14</td><td><span class="col-name">휴대전화</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">010-0000-1234</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">15</td><td><span class="col-name">E-Mail주소</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">sample@email.com</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">16</td><td><span class="col-name">관심차종</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">528i Sedan</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">17</td><td><span class="col-name">판매전만</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">Hot, Warm, Cold</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">18</td><td><span class="col-name">예상구입시기</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">2026년 08월</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">19</td><td><span class="col-name">직장명</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">오토브레인</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">20</td><td><span class="col-name">최초등록일</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-01-01</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">21</td><td><span class="col-name">법인대표자명</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">김대표</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">22</td><td><span class="col-name">사업자번호</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">129-81-51304</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">1</td><td><span class="col-name">고객번호</span></td><td class="col-example" data-value="DTC000002883">DTC000002883</td><td class="col-note" data-value="(MYDMS)고객번호, 수기 입력 고객은 없음">(MYDMS)고객번호, 수기 입력 고객은 없음</td></tr>
+            <tr><td class="col-no">2</td><td><span class="col-name">고객명</span></td><td class="col-example" data-value="김고객">김고객</td><td class="col-note" data-value="–">–</td></tr>
+            <tr><td class="col-no">3</td><td><span class="col-name">고객구분</span></td><td class="col-example" data-value="출고고객, BMW오너, 가망고객, 잠재고객">출고고객, BMW오너, 가망고객, 잠재고객</td><td class="col-note" data-value="품의서 매출 확정 시 가망/잠재 → 출고고객 자동 변경">품의서 매출 확정 시 가망/잠재 → 출고고객 자동 변경</td></tr>
+            <tr><td class="col-no">4</td><td><span class="col-name">고객유형</span></td><td class="col-example" data-value="개인, 법인, 개인사업자">개인, 법인, 개인사업자</td><td class="col-note" data-value="–">–</td></tr>
+            <tr><td class="col-no">5</td><td><span class="col-name">전시장</span></td><td class="col-example" data-value="수원">수원</td><td class="col-note" data-value="전시장 변경 시 바뀌는 정보">전시장 변경 시 바뀌는 정보</td></tr>
+            <tr><td class="col-no">6</td><td><span class="col-name">팀</span></td><td class="col-example" data-value="수원1팀">수원1팀</td><td class="col-note" data-value="팀 변경 시 바뀌는 정보">팀 변경 시 바뀌는 정보</td></tr>
+            <tr><td class="col-no">7</td><td><span class="col-name">관리담당</span></td><td class="col-example" data-value="김영업">김영업</td><td class="col-note" data-value="–">–</td></tr>
+            <tr><td class="col-no">8</td><td><span class="col-name">인지경로</span></td><td class="col-example" data-value="전시장 내방, 인터넷 등">전시장 내방, 인터넷 등</td><td class="col-note" data-value="고객의 소개 / 지인의 소개 / 인터넷 / 영업 활동중 / 전시장 내방 / 퇴직자고객인수 / 대표이사 고객 / 총괄임원 고객 / 마케팅팀 고객 / 서비스/부품팀 고객 / CS팀 고객 / 기타">고객의 소개 / 지인의 소개 / 인터넷 / 영업 활동중 / 전시장 내방 / 퇴직자고객인수 / 대표이사 고객 / 총괄임원 고객 / 마케팅팀 고객 / 서비스/부품팀 고객 / CS팀 고객 / 기타</td></tr>
+            <tr><td class="col-no">9</td><td><span class="col-name">이전담당자</span></td><td class="col-example" data-value="박영업">박영업</td><td class="col-note" data-value="고객이관 시 이전 담당자명 표시">고객이관 시 이전 담당자명 표시</td></tr>
+            <tr><td class="col-no">10</td><td><span class="col-name">생년월일</span></td><td class="col-example" data-value="1980-01-01">1980-01-01</td><td class="col-note" data-value="거의 입력 안함">거의 입력 안함</td></tr>
+            <tr><td class="col-no">11</td><td><span class="col-name">성별</span></td><td class="col-example" data-value="남자, 여자">남자, 여자</td><td class="col-note" data-value="–">–</td></tr>
+            <tr><td class="col-no">12</td><td><span class="col-name">직장주소</span></td><td class="col-example" data-value="서울 강남구 강남대로 362">서울 강남구 강남대로 362</td><td class="col-note" data-value="–">–</td></tr>
+            <tr><td class="col-no">13</td><td><span class="col-name">자택주소</span></td><td class="col-example" data-value="경기 화성시 장안면 …">경기 화성시 장안면 …</td><td class="col-note" data-value="–">–</td></tr>
+            <tr><td class="col-no">14</td><td><span class="col-name">휴대전화</span></td><td class="col-example" data-value="010-0000-1234">010-0000-1234</td><td class="col-note" data-value="–">–</td></tr>
+            <tr><td class="col-no">15</td><td><span class="col-name">E-Mail주소</span></td><td class="col-example" data-value="sample@email.com">sample@email.com</td><td class="col-note" data-value="–">–</td></tr>
+            <tr><td class="col-no">16</td><td><span class="col-name">관심차종</span></td><td class="col-example" data-value="528i Sedan">528i Sedan</td><td class="col-note" data-value="–">–</td></tr>
+            <tr><td class="col-no">17</td><td><span class="col-name">판매전만</span></td><td class="col-example" data-value="Hot, Warm, Cold">Hot, Warm, Cold</td><td class="col-note" data-value="–">–</td></tr>
+            <tr><td class="col-no">18</td><td><span class="col-name">예상구입시기</span></td><td class="col-example" data-value="2026년 08월">2026년 08월</td><td class="col-note" data-value="–">–</td></tr>
+            <tr><td class="col-no">19</td><td><span class="col-name">직장명</span></td><td class="col-example" data-value="오토브레인">오토브레인</td><td class="col-note" data-value="–">–</td></tr>
+            <tr><td class="col-no">20</td><td><span class="col-name">최초등록일</span></td><td class="col-example" data-value="2026-01-01">2026-01-01</td><td class="col-note" data-value="–">–</td></tr>
+            <tr><td class="col-no">21</td><td><span class="col-name">법인대표자명</span></td><td class="col-example" data-value="김대표">김대표</td><td class="col-note" data-value="–">–</td></tr>
+            <tr><td class="col-no">22</td><td><span class="col-name">사업자번호</span></td><td class="col-example" data-value="129-81-51304">129-81-51304</td><td class="col-note" data-value="–">–</td></tr>
           </tbody>
         </table>
       </div>
@@ -667,6 +673,32 @@ function unmaskRow(rowNo) {
 document.getElementById('inquiryModal').addEventListener('click', function(e) {
   if (e.target === this) closeInquiry();
 });
+
+let _customerEditing = false;
+function toggleCustomerEdit() {
+  _customerEditing = true;
+  document.getElementById('btn-edit-customer').style.display = 'none';
+  document.getElementById('btn-save-customer').style.display = 'inline-block';
+  // 정보·참고사항 셀을 인풋으로 전환
+  document.querySelectorAll('#tbl-customer .col-example, #tbl-customer .col-note').forEach(td => {
+    const val = td.dataset.value || td.textContent.trim();
+    td.innerHTML = '<input class="edit-input" value="' + val.replace(/"/g,'&quot;') + '">';
+  });
+}
+function saveCustomerEdit() {
+  // 인풋 값을 텍스트로 저장
+  document.querySelectorAll('#tbl-customer .col-example, #tbl-customer .col-note').forEach(td => {
+    const input = td.querySelector('input');
+    if (input) {
+      const newVal = input.value;
+      td.dataset.value = newVal;
+      td.textContent = newVal;
+    }
+  });
+  document.getElementById('btn-edit-customer').style.display = 'inline-block';
+  document.getElementById('btn-save-customer').style.display = 'none';
+  _customerEditing = false;
+}
 function filterList(tableId, query) {
   const q = query.toLowerCase();
   document.querySelectorAll('#' + tableId + ' tbody tr').forEach(row => {
