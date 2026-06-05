@@ -260,7 +260,6 @@ tbody td { padding:10px 14px; vertical-align:middle; }
   <!-- DETAIL VIEW -->
   <div id="customer-detail" class="sub-view">
     <div class="breadcrumb"><span onclick="showList('customer')">👤 고객 정보</span> › 필드 상세 정의</div>
-    <button class="btn-back" onclick="showList('customer')">← 목록으로</button>
     <div class="page-header"><div class="page-title">👤 고객 정보 – 필드 정의</div><div class="page-desc">MYDMS 고객 데이터 전송 필드 상세</div></div>
     <div class="stat-row">
       <div class="stat-card" style="--accent:#4d9fff"><div class="label">전체 필드</div><div class="value">22</div></div>
@@ -350,7 +349,6 @@ tbody td { padding:10px 14px; vertical-align:middle; }
   <!-- DETAIL VIEW -->
   <div id="contract-detail" class="sub-view">
     <div class="breadcrumb"><span onclick="showList('contract')">📋 품의서 정보</span> › 필드 상세 정의</div>
-    <button class="btn-back" onclick="showList('contract')">← 목록으로</button>
     <div class="page-header"><div class="page-title">📋 품의서 정보 – 필드 정의</div><div class="page-desc">판매품의서 전송 필드 상세 (판매조건·계약·출고 포함)</div></div>
     <div class="stat-row">
       <div class="stat-card" style="--accent:#4d9fff"><div class="label">전체 필드</div><div class="value">36</div></div>
@@ -455,7 +453,6 @@ tbody td { padding:10px 14px; vertical-align:middle; }
   <!-- DETAIL VIEW -->
   <div id="inventory-detail" class="sub-view">
     <div class="breadcrumb"><span onclick="showList('inventory')">🚗 재고 정보</span> › 필드 상세 정의</div>
-    <button class="btn-back" onclick="showList('inventory')">← 목록으로</button>
     <div class="page-header"><div class="page-title">🚗 재고 정보 – 필드 정의</div><div class="page-desc">재고차량 전송 필드 상세</div></div>
     <div class="stat-row">
       <div class="stat-card" style="--accent:#4d9fff"><div class="label">전체 필드</div><div class="value">29</div></div>
@@ -577,9 +574,11 @@ function switchPage(id, el) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   if (el) el.classList.add('active');
+  history.pushState({ page: id, view: 'list' }, '', '#' + id);
 }
 
 function showDetail(name) {
+  history.pushState({ page: name, view: 'detail' }, '', '#' + name + '-detail');
   document.getElementById(name + '-list').classList.remove('active');
   document.getElementById(name + '-detail').classList.add('active');
   window.scrollTo(0, 0);
@@ -591,6 +590,20 @@ function showList(name) {
   window.scrollTo(0, 0);
 }
 
+window.addEventListener('popstate', function(e) {
+  const state = e.state;
+  if (!state) return;
+  if (state.view === 'list') {
+    const detail = document.getElementById(state.page + '-detail');
+    const list   = document.getElementById(state.page + '-list');
+    if (detail) detail.classList.remove('active');
+    if (list)   list.classList.add('active');
+    window.scrollTo(0, 0);
+  } else if (state.view === 'detail') {
+    showDetail(state.page);
+  }
+});
+
 function filterList(tableId, query) {
   const q = query.toLowerCase();
   document.querySelectorAll('#' + tableId + ' tbody tr').forEach(row => {
@@ -599,6 +612,7 @@ function filterList(tableId, query) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+  history.replaceState({ page: 'dashboard', view: 'list' }, '', '#dashboard');
   Chart.defaults.font.family = "'Segoe UI','Apple SD Gothic Neo',sans-serif";
   Chart.defaults.color = '#667';
 
