@@ -76,6 +76,8 @@ table { width:100%; border-collapse:collapse; font-size:13px; white-space:nowrap
 thead th { background:#f7f9fc; padding:11px 14px; text-align:left; font-weight:600; color:#445; font-size:12px; border-bottom:2px solid #e8eaf0; }
 tbody tr { border-bottom:1px solid #f2f4f8; transition:background .1s; }
 tbody tr:hover { background:#f7f9ff; cursor:pointer; }
+.clickable-table tbody tr:hover { background:#eef4ff; }
+.clickable-table tbody tr { cursor:pointer; transition:background .1s; }
 tbody td { padding:10px 14px; vertical-align:middle; }
 .col-no { width:44px; color:#aaa; font-size:12px; text-align:center; }
 
@@ -225,24 +227,24 @@ tbody td { padding:10px 14px; vertical-align:middle; }
         <div class="filter-right"><button class="btn btn-primary">+ 고객 등록</button></div>
       </div>
       <div class="table-wrap">
-        <table id="customer-table">
+        <table id="customer-table" class="clickable-table">
           <thead><tr>
             <th class="col-no">No.</th>
             <th>고객번호</th><th>고객명</th><th>고객구분</th><th>고객유형</th>
             <th>전시장</th><th>관리담당</th><th>휴대전화</th><th>관심차종</th>
-            <th>판매전만</th><th>최초등록일</th><th style="width:80px">상세</th>
+            <th>판매전만</th><th>최초등록일</th>
           </tr></thead>
           <tbody>
-            <tr><td class="col-no">1</td><td>DTC000002883</td><td><b>김민준</b></td><td><span class="s-badge s-출고고객">출고고객</span></td><td>개인</td><td>수원</td><td>김영업</td><td>010-1234-5678</td><td>X6</td><td><span class="s-badge s-hot">Hot</span></td><td>2026-01-03</td><td><button class="btn-detail" onclick="showDetail('customer')">상세보기</button></td></tr>
-            <tr><td class="col-no">2</td><td>DTC000002882</td><td><b>이수연</b></td><td><span class="s-badge s-가망고객">가망고객</span></td><td>개인</td><td>성수</td><td>박영업</td><td>010-2345-6789</td><td>530i</td><td><span class="s-badge s-warm">Warm</span></td><td>2026-01-05</td><td><button class="btn-detail" onclick="showDetail('customer')">상세보기</button></td></tr>
-            <tr><td class="col-no">3</td><td>DTC000002881</td><td><b>박지훈</b></td><td><span class="s-badge s-출고고객">출고고객</span></td><td>법인</td><td>하남</td><td>이영업</td><td>010-3456-7890</td><td>7 Series</td><td><span class="s-badge s-hot">Hot</span></td><td>2026-01-07</td><td><button class="btn-detail" onclick="showDetail('customer')">상세보기</button></td></tr>
-            <tr><td class="col-no">4</td><td>DTC000002880</td><td><b>최유진</b></td><td><span class="s-badge s-잠재고객">잠재고객</span></td><td>개인</td><td>분당</td><td>정영업</td><td>010-4567-8901</td><td>i4</td><td><span class="s-badge s-cold">Cold</span></td><td>2026-01-10</td><td><button class="btn-detail" onclick="showDetail('customer')">상세보기</button></td></tr>
-            <tr><td class="col-no">5</td><td>DTC000002879</td><td><b>정도현</b></td><td><span class="s-badge s-가망고객">가망고객</span></td><td>개인사업자</td><td>수원</td><td>김영업</td><td>010-5678-9012</td><td>X5</td><td><span class="s-badge s-warm">Warm</span></td><td>2026-01-12</td><td><button class="btn-detail" onclick="showDetail('customer')">상세보기</button></td></tr>
-            <tr><td class="col-no">6</td><td>DTC000002878</td><td><b>강서영</b></td><td><span class="s-badge s-출고고객">출고고객</span></td><td>개인</td><td>성수</td><td>박영업</td><td>010-6789-0123</td><td>M3</td><td><span class="s-badge s-hot">Hot</span></td><td>2026-01-15</td><td><button class="btn-detail" onclick="showDetail('customer')">상세보기</button></td></tr>
-            <tr><td class="col-no">7</td><td>DTC000002877</td><td><b>윤태양</b></td><td><span class="s-badge s-잠재고객">잠재고객</span></td><td>법인</td><td>하남</td><td>이영업</td><td>010-7890-1234</td><td>iX</td><td><span class="s-badge s-cold">Cold</span></td><td>2026-01-18</td><td><button class="btn-detail" onclick="showDetail('customer')">상세보기</button></td></tr>
-            <tr><td class="col-no">8</td><td>DTC000002876</td><td><b>임현아</b></td><td><span class="s-badge s-가망고객">가망고객</span></td><td>개인</td><td>분당</td><td>정영업</td><td>010-8901-2345</td><td>X3</td><td><span class="s-badge s-warm">Warm</span></td><td>2026-01-20</td><td><button class="btn-detail" onclick="showDetail('customer')">상세보기</button></td></tr>
-            <tr><td class="col-no">9</td><td>DTC000002875</td><td><b>한승민</b></td><td><span class="s-badge s-출고고객">출고고객</span></td><td>개인</td><td>수원</td><td>김영업</td><td>010-9012-3456</td><td>4 Series</td><td><span class="s-badge s-hot">Hot</span></td><td>2026-01-22</td><td><button class="btn-detail" onclick="showDetail('customer')">상세보기</button></td></tr>
-            <tr><td class="col-no">10</td><td>DTC000002874</td><td><b>오지은</b></td><td><span class="s-badge s-잠재고객">잠재고객</span></td><td>개인</td><td>성수</td><td>박영업</td><td>010-0123-4567</td><td>i7</td><td><span class="s-badge s-cold">Cold</span></td><td>2026-01-25</td><td><button class="btn-detail" onclick="showDetail('customer')">상세보기</button></td></tr>
+            <tr onclick="showDetail('customer')"><td class="col-no">1</td><td>DTC000002883</td><td><b>김민준</b></td><td><span class="s-badge s-출고고객">출고고객</span></td><td>개인</td><td>수원</td><td>김영업</td><td>010-1234-5678</td><td>X6</td><td><span class="s-badge s-hot">Hot</span></td><td>2026-01-03</td></tr>
+            <tr onclick="showDetail('customer')"><td class="col-no">2</td><td>DTC000002882</td><td><b>이수연</b></td><td><span class="s-badge s-가망고객">가망고객</span></td><td>개인</td><td>성수</td><td>박영업</td><td>010-2345-6789</td><td>530i</td><td><span class="s-badge s-warm">Warm</span></td><td>2026-01-05</td></tr>
+            <tr onclick="showDetail('customer')"><td class="col-no">3</td><td>DTC000002881</td><td><b>박지훈</b></td><td><span class="s-badge s-출고고객">출고고객</span></td><td>법인</td><td>하남</td><td>이영업</td><td>010-3456-7890</td><td>7 Series</td><td><span class="s-badge s-hot">Hot</span></td><td>2026-01-07</td></tr>
+            <tr onclick="showDetail('customer')"><td class="col-no">4</td><td>DTC000002880</td><td><b>최유진</b></td><td><span class="s-badge s-잠재고객">잠재고객</span></td><td>개인</td><td>분당</td><td>정영업</td><td>010-4567-8901</td><td>i4</td><td><span class="s-badge s-cold">Cold</span></td><td>2026-01-10</td></tr>
+            <tr onclick="showDetail('customer')"><td class="col-no">5</td><td>DTC000002879</td><td><b>정도현</b></td><td><span class="s-badge s-가망고객">가망고객</span></td><td>개인사업자</td><td>수원</td><td>김영업</td><td>010-5678-9012</td><td>X5</td><td><span class="s-badge s-warm">Warm</span></td><td>2026-01-12</td></tr>
+            <tr onclick="showDetail('customer')"><td class="col-no">6</td><td>DTC000002878</td><td><b>강서영</b></td><td><span class="s-badge s-출고고객">출고고객</span></td><td>개인</td><td>성수</td><td>박영업</td><td>010-6789-0123</td><td>M3</td><td><span class="s-badge s-hot">Hot</span></td><td>2026-01-15</td></tr>
+            <tr onclick="showDetail('customer')"><td class="col-no">7</td><td>DTC000002877</td><td><b>윤태양</b></td><td><span class="s-badge s-잠재고객">잠재고객</span></td><td>법인</td><td>하남</td><td>이영업</td><td>010-7890-1234</td><td>iX</td><td><span class="s-badge s-cold">Cold</span></td><td>2026-01-18</td></tr>
+            <tr onclick="showDetail('customer')"><td class="col-no">8</td><td>DTC000002876</td><td><b>임현아</b></td><td><span class="s-badge s-가망고객">가망고객</span></td><td>개인</td><td>분당</td><td>정영업</td><td>010-8901-2345</td><td>X3</td><td><span class="s-badge s-warm">Warm</span></td><td>2026-01-20</td></tr>
+            <tr onclick="showDetail('customer')"><td class="col-no">9</td><td>DTC000002875</td><td><b>한승민</b></td><td><span class="s-badge s-출고고객">출고고객</span></td><td>개인</td><td>수원</td><td>김영업</td><td>010-9012-3456</td><td>4 Series</td><td><span class="s-badge s-hot">Hot</span></td><td>2026-01-22</td></tr>
+            <tr onclick="showDetail('customer')"><td class="col-no">10</td><td>DTC000002874</td><td><b>오지은</b></td><td><span class="s-badge s-잠재고객">잠재고객</span></td><td>개인</td><td>성수</td><td>박영업</td><td>010-0123-4567</td><td>i7</td><td><span class="s-badge s-cold">Cold</span></td><td>2026-01-25</td></tr>
           </tbody>
         </table>
       </div>
@@ -316,24 +318,23 @@ tbody td { padding:10px 14px; vertical-align:middle; }
         <div class="filter-right"><button class="btn btn-primary">+ 품의서 등록</button></div>
       </div>
       <div class="table-wrap">
-        <table id="contract-table">
+        <table id="contract-table" class="clickable-table">
           <thead><tr>
             <th class="col-no">No.</th>
             <th>계약서번호</th><th>상태</th><th>계약자명</th><th>대표차종</th><th>모델</th>
             <th>구입조건</th><th>판매가격</th><th>계약일자</th><th>담당영업</th><th>전시장</th>
-            <th style="width:80px">상세</th>
           </tr></thead>
           <tbody>
-            <tr><td class="col-no">1</td><td>DTBS411637</td><td><span class="s-badge s-출고">출고</span></td><td><b>김민준</b></td><td>X6</td><td>X6 xDrive40i M Sport</td><td>운용리스</td><td>106,000,000</td><td>2026-03-01</td><td>김영업</td><td>수원</td><td><button class="btn-detail" onclick="showDetail('contract')">상세보기</button></td></tr>
-            <tr><td class="col-no">2</td><td>DTBS411638</td><td><span class="s-badge s-계약">계약</span></td><td><b>이수연</b></td><td>5 Series</td><td>530i xDrive M Sport</td><td>현금</td><td>78,000,000</td><td>2026-03-05</td><td>박영업</td><td>성수</td><td><button class="btn-detail" onclick="showDetail('contract')">상세보기</button></td></tr>
-            <tr><td class="col-no">3</td><td>DTBS411639</td><td><span class="s-badge s-배정요청">배정요청</span></td><td><b>박지훈</b></td><td>7 Series</td><td>740i M Sport</td><td>금융리스</td><td>142,000,000</td><td>2026-03-08</td><td>이영업</td><td>하남</td><td><button class="btn-detail" onclick="showDetail('contract')">상세보기</button></td></tr>
-            <tr><td class="col-no">4</td><td>DTBS411640</td><td><span class="s-badge s-출고예정">출고예정</span></td><td><b>최유진</b></td><td>i4</td><td>i4 M50</td><td>렌트</td><td>89,000,000</td><td>2026-03-10</td><td>정영업</td><td>분당</td><td><button class="btn-detail" onclick="showDetail('contract')">상세보기</button></td></tr>
-            <tr><td class="col-no">5</td><td>DTBS411641</td><td><span class="s-badge s-작성">작성</span></td><td><b>정도현</b></td><td>X5</td><td>X5 xDrive40i M Sport</td><td>할부</td><td>98,000,000</td><td>2026-03-12</td><td>김영업</td><td>수원</td><td><button class="btn-detail" onclick="showDetail('contract')">상세보기</button></td></tr>
-            <tr><td class="col-no">6</td><td>DTBS411642</td><td><span class="s-badge s-출고">출고</span></td><td><b>강서영</b></td><td>M3</td><td>M3 Competition</td><td>현금</td><td>115,000,000</td><td>2026-03-15</td><td>박영업</td><td>성수</td><td><button class="btn-detail" onclick="showDetail('contract')">상세보기</button></td></tr>
-            <tr><td class="col-no">7</td><td>DTBS411643</td><td><span class="s-badge s-해약">해약</span></td><td><b>윤태양</b></td><td>iX</td><td>iX xDrive50</td><td>운용리스</td><td>132,000,000</td><td>2026-03-18</td><td>이영업</td><td>하남</td><td><button class="btn-detail" onclick="showDetail('contract')">상세보기</button></td></tr>
-            <tr><td class="col-no">8</td><td>DTBS411644</td><td><span class="s-badge s-계약">계약</span></td><td><b>임현아</b></td><td>X3</td><td>X3 xDrive20i</td><td>금융리스</td><td>67,000,000</td><td>2026-03-20</td><td>정영업</td><td>분당</td><td><button class="btn-detail" onclick="showDetail('contract')">상세보기</button></td></tr>
-            <tr><td class="col-no">9</td><td>DTBS411645</td><td><span class="s-badge s-출고예정">출고예정</span></td><td><b>한승민</b></td><td>4 Series</td><td>430i Convertible</td><td>현금</td><td>72,000,000</td><td>2026-03-22</td><td>김영업</td><td>수원</td><td><button class="btn-detail" onclick="showDetail('contract')">상세보기</button></td></tr>
-            <tr><td class="col-no">10</td><td>DTBS411646</td><td><span class="s-badge s-배정요청">배정요청</span></td><td><b>오지은</b></td><td>i7</td><td>i7 xDrive60</td><td>운용리스</td><td>185,000,000</td><td>2026-03-25</td><td>박영업</td><td>성수</td><td><button class="btn-detail" onclick="showDetail('contract')">상세보기</button></td></tr>
+            <tr onclick="showDetail('contract')"><td class="col-no">1</td><td>DTBS411637</td><td><span class="s-badge s-출고">출고</span></td><td><b>김민준</b></td><td>X6</td><td>X6 xDrive40i M Sport</td><td>운용리스</td><td>106,000,000</td><td>2026-03-01</td><td>김영업</td><td>수원</td></tr>
+            <tr onclick="showDetail('contract')"><td class="col-no">2</td><td>DTBS411638</td><td><span class="s-badge s-계약">계약</span></td><td><b>이수연</b></td><td>5 Series</td><td>530i xDrive M Sport</td><td>현금</td><td>78,000,000</td><td>2026-03-05</td><td>박영업</td><td>성수</td></tr>
+            <tr onclick="showDetail('contract')"><td class="col-no">3</td><td>DTBS411639</td><td><span class="s-badge s-배정요청">배정요청</span></td><td><b>박지훈</b></td><td>7 Series</td><td>740i M Sport</td><td>금융리스</td><td>142,000,000</td><td>2026-03-08</td><td>이영업</td><td>하남</td></tr>
+            <tr onclick="showDetail('contract')"><td class="col-no">4</td><td>DTBS411640</td><td><span class="s-badge s-출고예정">출고예정</span></td><td><b>최유진</b></td><td>i4</td><td>i4 M50</td><td>렌트</td><td>89,000,000</td><td>2026-03-10</td><td>정영업</td><td>분당</td></tr>
+            <tr onclick="showDetail('contract')"><td class="col-no">5</td><td>DTBS411641</td><td><span class="s-badge s-작성">작성</span></td><td><b>정도현</b></td><td>X5</td><td>X5 xDrive40i M Sport</td><td>할부</td><td>98,000,000</td><td>2026-03-12</td><td>김영업</td><td>수원</td></tr>
+            <tr onclick="showDetail('contract')"><td class="col-no">6</td><td>DTBS411642</td><td><span class="s-badge s-출고">출고</span></td><td><b>강서영</b></td><td>M3</td><td>M3 Competition</td><td>현금</td><td>115,000,000</td><td>2026-03-15</td><td>박영업</td><td>성수</td></tr>
+            <tr onclick="showDetail('contract')"><td class="col-no">7</td><td>DTBS411643</td><td><span class="s-badge s-해약">해약</span></td><td><b>윤태양</b></td><td>iX</td><td>iX xDrive50</td><td>운용리스</td><td>132,000,000</td><td>2026-03-18</td><td>이영업</td><td>하남</td></tr>
+            <tr onclick="showDetail('contract')"><td class="col-no">8</td><td>DTBS411644</td><td><span class="s-badge s-계약">계약</span></td><td><b>임현아</b></td><td>X3</td><td>X3 xDrive20i</td><td>금융리스</td><td>67,000,000</td><td>2026-03-20</td><td>정영업</td><td>분당</td></tr>
+            <tr onclick="showDetail('contract')"><td class="col-no">9</td><td>DTBS411645</td><td><span class="s-badge s-출고예정">출고예정</span></td><td><b>한승민</b></td><td>4 Series</td><td>430i Convertible</td><td>현금</td><td>72,000,000</td><td>2026-03-22</td><td>김영업</td><td>수원</td></tr>
+            <tr onclick="showDetail('contract')"><td class="col-no">10</td><td>DTBS411646</td><td><span class="s-badge s-배정요청">배정요청</span></td><td><b>오지은</b></td><td>i7</td><td>i7 xDrive60</td><td>운용리스</td><td>185,000,000</td><td>2026-03-25</td><td>박영업</td><td>성수</td></tr>
           </tbody>
         </table>
       </div>
@@ -421,24 +422,24 @@ tbody td { padding:10px 14px; vertical-align:middle; }
         <div class="filter-right"><button class="btn btn-primary">+ 재고 등록</button></div>
       </div>
       <div class="table-wrap">
-        <table id="inventory-table">
+        <table id="inventory-table" class="clickable-table">
           <thead><tr>
             <th class="col-no">No.</th>
             <th>재고SEQ</th><th>대표모델</th><th>년식</th><th>차대번호</th>
             <th>Fuel Type</th><th>재고구분</th><th>재고위치</th><th>재고상태</th>
-            <th>소비자가(V+)</th><th>매입일자</th><th style="width:80px">상세</th>
+            <th>소비자가(V+)</th><th>매입일자</th>
           </tr></thead>
           <tbody>
-            <tr><td class="col-no">1</td><td>SS260522000001</td><td><b>X6 xDrive40i</b></td><td>2026</td><td>WBA31BJ08PCM94568</td><td><span class="s-badge s-Petrol">Petrol</span></td><td>일반</td><td>수원전시장</td><td><span class="s-badge s-미배정">미배정</span></td><td>106,000,000</td><td>2026-05-01</td><td><button class="btn-detail" onclick="showDetail('inventory')">상세보기</button></td></tr>
-            <tr><td class="col-no">2</td><td>SS260522000002</td><td><b>530i xDrive</b></td><td>2026</td><td>WBA11CJ09PCM84421</td><td><span class="s-badge s-Petrol">Petrol</span></td><td>일반</td><td>성수전시장</td><td><span class="s-badge s-배정">배정</span></td><td>78,000,000</td><td>2026-05-01</td><td><button class="btn-detail" onclick="showDetail('inventory')">상세보기</button></td></tr>
-            <tr><td class="col-no">3</td><td>SS260522000003</td><td><b>i4 M50</b></td><td>2026</td><td>WBY73AJ04PCM55312</td><td><span class="s-badge s-BEV">BEV</span></td><td>일반</td><td>PDI</td><td><span class="s-badge s-미배정">미배정</span></td><td>89,000,000</td><td>2026-05-02</td><td><button class="btn-detail" onclick="showDetail('inventory')">상세보기</button></td></tr>
-            <tr><td class="col-no">4</td><td>SS260522000004</td><td><b>iX xDrive50</b></td><td>2026</td><td>WBY53DJ05PCM61874</td><td><span class="s-badge s-BEV">BEV</span></td><td>KR EM</td><td>하남전시장</td><td><span class="s-badge s-미배정">미배정</span></td><td>132,000,000</td><td>2026-05-02</td><td><button class="btn-detail" onclick="showDetail('inventory')">상세보기</button></td></tr>
-            <tr><td class="col-no">5</td><td>SS260522000005</td><td><b>X5 xDrive40i</b></td><td>2026</td><td>WBA53BJ07PCM72345</td><td><span class="s-badge s-Petrol">Petrol</span></td><td>일반</td><td>분당전시장</td><td><span class="s-badge s-배정">배정</span></td><td>98,000,000</td><td>2026-05-03</td><td><button class="btn-detail" onclick="showDetail('inventory')">상세보기</button></td></tr>
-            <tr><td class="col-no">6</td><td>SS260522000006</td><td><b>740i M Sport</b></td><td>2026</td><td>WBA71EJ02PCM83156</td><td><span class="s-badge s-Petrol">Petrol</span></td><td>Reserve</td><td>수원전시장</td><td><span class="s-badge s-미배정">미배정</span></td><td>142,000,000</td><td>2026-05-03</td><td><button class="btn-detail" onclick="showDetail('inventory')">상세보기</button></td></tr>
-            <tr><td class="col-no">7</td><td>SS260522000007</td><td><b>X3 xDrive20i</b></td><td>2026</td><td>WBA31AJ06PCM41287</td><td><span class="s-badge s-Petrol">Petrol</span></td><td>일반</td><td>성수전시장</td><td><span class="s-badge s-미배정">미배정</span></td><td>67,000,000</td><td>2026-05-04</td><td><button class="btn-detail" onclick="showDetail('inventory')">상세보기</button></td></tr>
-            <tr><td class="col-no">8</td><td>SS260522000008</td><td><b>530e PHEV</b></td><td>2026</td><td>WBA11CJ08PCM92634</td><td><span class="s-badge s-PHEV">PHEV</span></td><td>일반</td><td>하남전시장</td><td><span class="s-badge s-배정">배정</span></td><td>82,000,000</td><td>2026-05-04</td><td><button class="btn-detail" onclick="showDetail('inventory')">상세보기</button></td></tr>
-            <tr><td class="col-no">9</td><td>SS260522000009</td><td><b>M3 Competition</b></td><td>2026</td><td>WBS41CJ03PCM73891</td><td><span class="s-badge s-Petrol">Petrol</span></td><td>일반</td><td>PDI</td><td><span class="s-badge s-미배정">미배정</span></td><td>115,000,000</td><td>2026-05-05</td><td><button class="btn-detail" onclick="showDetail('inventory')">상세보기</button></td></tr>
-            <tr><td class="col-no">10</td><td>SS260522000010</td><td><b>i7 xDrive60</b></td><td>2026</td><td>WBY83AJ01PCM64512</td><td><span class="s-badge s-BEV">BEV</span></td><td>일반</td><td>분당전시장</td><td><span class="s-badge s-미배정">미배정</span></td><td>185,000,000</td><td>2026-05-05</td><td><button class="btn-detail" onclick="showDetail('inventory')">상세보기</button></td></tr>
+            <tr onclick="showDetail('inventory')"><td class="col-no">1</td><td>SS260522000001</td><td><b>X6 xDrive40i</b></td><td>2026</td><td>WBA31BJ08PCM94568</td><td><span class="s-badge s-Petrol">Petrol</span></td><td>일반</td><td>수원전시장</td><td><span class="s-badge s-미배정">미배정</span></td><td>106,000,000</td><td>2026-05-01</td></tr>
+            <tr onclick="showDetail('inventory')"><td class="col-no">2</td><td>SS260522000002</td><td><b>530i xDrive</b></td><td>2026</td><td>WBA11CJ09PCM84421</td><td><span class="s-badge s-Petrol">Petrol</span></td><td>일반</td><td>성수전시장</td><td><span class="s-badge s-배정">배정</span></td><td>78,000,000</td><td>2026-05-01</td></tr>
+            <tr onclick="showDetail('inventory')"><td class="col-no">3</td><td>SS260522000003</td><td><b>i4 M50</b></td><td>2026</td><td>WBY73AJ04PCM55312</td><td><span class="s-badge s-BEV">BEV</span></td><td>일반</td><td>PDI</td><td><span class="s-badge s-미배정">미배정</span></td><td>89,000,000</td><td>2026-05-02</td></tr>
+            <tr onclick="showDetail('inventory')"><td class="col-no">4</td><td>SS260522000004</td><td><b>iX xDrive50</b></td><td>2026</td><td>WBY53DJ05PCM61874</td><td><span class="s-badge s-BEV">BEV</span></td><td>KR EM</td><td>하남전시장</td><td><span class="s-badge s-미배정">미배정</span></td><td>132,000,000</td><td>2026-05-02</td></tr>
+            <tr onclick="showDetail('inventory')"><td class="col-no">5</td><td>SS260522000005</td><td><b>X5 xDrive40i</b></td><td>2026</td><td>WBA53BJ07PCM72345</td><td><span class="s-badge s-Petrol">Petrol</span></td><td>일반</td><td>분당전시장</td><td><span class="s-badge s-배정">배정</span></td><td>98,000,000</td><td>2026-05-03</td></tr>
+            <tr onclick="showDetail('inventory')"><td class="col-no">6</td><td>SS260522000006</td><td><b>740i M Sport</b></td><td>2026</td><td>WBA71EJ02PCM83156</td><td><span class="s-badge s-Petrol">Petrol</span></td><td>Reserve</td><td>수원전시장</td><td><span class="s-badge s-미배정">미배정</span></td><td>142,000,000</td><td>2026-05-03</td></tr>
+            <tr onclick="showDetail('inventory')"><td class="col-no">7</td><td>SS260522000007</td><td><b>X3 xDrive20i</b></td><td>2026</td><td>WBA31AJ06PCM41287</td><td><span class="s-badge s-Petrol">Petrol</span></td><td>일반</td><td>성수전시장</td><td><span class="s-badge s-미배정">미배정</span></td><td>67,000,000</td><td>2026-05-04</td></tr>
+            <tr onclick="showDetail('inventory')"><td class="col-no">8</td><td>SS260522000008</td><td><b>530e PHEV</b></td><td>2026</td><td>WBA11CJ08PCM92634</td><td><span class="s-badge s-PHEV">PHEV</span></td><td>일반</td><td>하남전시장</td><td><span class="s-badge s-배정">배정</span></td><td>82,000,000</td><td>2026-05-04</td></tr>
+            <tr onclick="showDetail('inventory')"><td class="col-no">9</td><td>SS260522000009</td><td><b>M3 Competition</b></td><td>2026</td><td>WBS41CJ03PCM73891</td><td><span class="s-badge s-Petrol">Petrol</span></td><td>일반</td><td>PDI</td><td><span class="s-badge s-미배정">미배정</span></td><td>115,000,000</td><td>2026-05-05</td></tr>
+            <tr onclick="showDetail('inventory')"><td class="col-no">10</td><td>SS260522000010</td><td><b>i7 xDrive60</b></td><td>2026</td><td>WBY83AJ01PCM64512</td><td><span class="s-badge s-BEV">BEV</span></td><td>일반</td><td>분당전시장</td><td><span class="s-badge s-미배정">미배정</span></td><td>185,000,000</td><td>2026-05-05</td></tr>
           </tbody>
         </table>
       </div>
