@@ -27,7 +27,7 @@ body { font-family: 'Segoe UI','Apple SD Gothic Neo',sans-serif; background:#f0f
 .nav-item .count { margin-left:auto; background:#1e3a5f; color:#4d9fff; font-size:10px; padding:2px 7px; border-radius:10px; }
 
 /* MAIN */
-.main { margin-left:220px; flex:1; padding:28px 32px; }
+.main { margin-left:220px; flex:1; padding:28px 32px; margin-right:300px; }
 .page { display:none; }
 .page.active { display:block; }
 .sub-view { display:none; }
@@ -176,6 +176,112 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 .status-dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; }
 .sd-blue{background:#4d9fff} .sd-purple{background:#a855f7} .sd-orange{background:#f7a35c} .sd-green{background:#34c38f} .sd-red{background:#e74c3c}
 
+
+/* ── RIGHT DESCRIPTION PANEL ── */
+.desc-panel {
+  position: fixed;
+  top: 60px; right: 0; bottom: 0;
+  width: 280px;
+  background: #fff;
+  border-left: 1px solid #e4eaf0;
+  display: flex;
+  flex-direction: column;
+  z-index: 90;
+  box-shadow: -2px 0 8px rgba(0,0,0,.04);
+}
+.desc-panel-header {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid #f0f2f5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.desc-panel-header h3 { font-size: 13px; font-weight: 700; color: #1a1a2e; flex: 1; }
+.desc-panel-header .page-label { font-size: 11px; color: #4d9fff; background: #e8f3ff; padding: 2px 8px; border-radius: 10px; }
+.desc-panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+}
+.desc-add-top {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+.desc-entry {
+  position: relative;
+  margin-bottom: 4px;
+}
+.desc-entry textarea {
+  width: 100%;
+  min-height: 70px;
+  border: 1px solid #e4eaf0;
+  border-radius: 7px;
+  padding: 8px 28px 8px 10px;
+  font-size: 12.5px;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  color: #334;
+  line-height: 1.5;
+  background: #fafbfe;
+  transition: border .15s;
+}
+.desc-entry textarea:focus { border-color: #4d9fff; background: #fff; }
+.desc-entry textarea::placeholder { color: #bbb; }
+.desc-entry .desc-del {
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 18px; height: 18px;
+  background: none;
+  border: none;
+  color: #bbb;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  line-height: 1;
+}
+.desc-entry .desc-del:hover { background: #fce4ec; color: #e74c3c; }
+.desc-divider {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 2px 0;
+  opacity: 0;
+  transition: opacity .15s;
+}
+.desc-divider:hover { opacity: 1; }
+.desc-entry:hover + .desc-divider,
+.desc-divider:hover { opacity: 1; }
+.desc-divider-line { flex: 1; height: 1px; background: #e4eaf0; }
+.desc-add-btn {
+  background: #4d9fff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 20px; height: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.desc-add-btn:hover { background: #2e7de0; }
+.desc-add-btn.outline {
+  background: #fff;
+  color: #4d9fff;
+  border: 1.5px solid #4d9fff;
+  font-size: 12px;
+  width: 24px; height: 24px;
+}
+.desc-add-btn.outline:hover { background: #e8f3ff; }
+
 .footer { margin-top:40px; padding:16px; text-align:center; font-size:12px; color:#aaa; }
 </style>
 </head>
@@ -211,6 +317,17 @@ tbody td { padding:10px 14px; vertical-align:middle; }
   <div class="sidebar-section">시스템</div>
   <div class="nav-item" onclick="switchPage('user',this)"><span class="icon">🔐</span> 사용자 정보<span class="count">84</span></div>
 </nav>
+
+<!-- RIGHT DESCRIPTION PANEL -->
+<aside class="desc-panel" id="descPanel">
+  <div class="desc-panel-header">
+    <h3>📝 설명</h3>
+    <span class="page-label" id="descPageLabel">대시보드</span>
+  </div>
+  <div class="desc-panel-body" id="descBody">
+    <!-- 동적으로 렌더링 -->
+  </div>
+</aside>
 
 <main class="main">
 
@@ -632,6 +749,7 @@ function _applyState(state) {
     }
   }
   window.scrollTo(0, 0);
+  if (typeof descRender === 'function') descRender(state.page);
 }
 
 /* ── 사이드바 메뉴 전환 ── */
@@ -749,6 +867,105 @@ function unmaskContractRow(rowNo) {
   const btn = row.querySelector('.btn-inquiry');
   if (btn) { btn.textContent = '✓ 조회됨'; btn.style.background='#34c38f'; btn.disabled=true; }
 }
+
+/* ── DESCRIPTION PANEL ── */
+const DESC_PAGES = {
+  dashboard: '대시보드', customer: '고객 정보', contract: '품의서 정보',
+  inventory: '재고 정보', user: '사용자 정보'
+};
+let _descPage = 'dashboard';
+
+function descLoad(page) {
+  const saved = localStorage.getItem('desc_' + page);
+  return saved ? JSON.parse(saved) : [''];
+}
+function descSave(page, items) {
+  localStorage.setItem('desc_' + page, JSON.stringify(items));
+}
+function descGetValues() {
+  return Array.from(document.querySelectorAll('#descBody .desc-entry textarea'))
+              .map(t => t.value);
+}
+function descRender(page) {
+  _descPage = page;
+  document.getElementById('descPageLabel').textContent = DESC_PAGES[page] || page;
+  const items = descLoad(page);
+  const body = document.getElementById('descBody');
+  body.innerHTML = '';
+
+  // 최상단 추가 버튼
+  const topDiv = document.createElement('div');
+  topDiv.className = 'desc-add-top';
+  const topBtn = document.createElement('button');
+  topBtn.className = 'desc-add-btn outline';
+  topBtn.title = '항목 추가';
+  topBtn.innerHTML = '+';
+  topBtn.onclick = () => { descInsert(0); };
+  topDiv.appendChild(topBtn);
+  body.appendChild(topDiv);
+
+  items.forEach((text, i) => {
+    body.appendChild(descMakeEntry(text, i));
+    body.appendChild(descMakeDivider(i + 1));
+  });
+}
+function descMakeEntry(text, idx) {
+  const wrap = document.createElement('div');
+  wrap.className = 'desc-entry';
+  wrap.dataset.idx = idx;
+
+  const ta = document.createElement('textarea');
+  ta.placeholder = '설명을 입력하세요…';
+  ta.value = text;
+  ta.addEventListener('input', () => {
+    const vals = descGetValues();
+    descSave(_descPage, vals);
+  });
+
+  const del = document.createElement('button');
+  del.className = 'desc-del';
+  del.innerHTML = '×';
+  del.title = '삭제';
+  del.onclick = () => {
+    const vals = descGetValues();
+    vals.splice(idx, 1);
+    if (vals.length === 0) vals.push('');
+    descSave(_descPage, vals);
+    descRender(_descPage);
+  };
+
+  wrap.appendChild(ta);
+  wrap.appendChild(del);
+  return wrap;
+}
+function descMakeDivider(insertIdx) {
+  const div = document.createElement('div');
+  div.className = 'desc-divider';
+  const line1 = document.createElement('div');
+  line1.className = 'desc-divider-line';
+  const btn = document.createElement('button');
+  btn.className = 'desc-add-btn';
+  btn.innerHTML = '+';
+  btn.title = '여기에 항목 추가';
+  btn.onclick = () => { descInsert(insertIdx); };
+  const line2 = document.createElement('div');
+  line2.className = 'desc-divider-line';
+  div.appendChild(line1); div.appendChild(btn); div.appendChild(line2);
+  return div;
+}
+function descInsert(idx) {
+  const vals = descGetValues();
+  vals.splice(idx, 0, '');
+  descSave(_descPage, vals);
+  descRender(_descPage);
+  // 새로 추가된 textarea에 포커스
+  const entries = document.querySelectorAll('#descBody .desc-entry textarea');
+  if (entries[idx]) entries[idx].focus();
+}
+
+// 페이지 전환 시 패널 업데이트 연동
+const _origApplyState = _applyState;
+
 function filterList(tableId, query) {
   const q = query.toLowerCase();
   document.querySelectorAll('#' + tableId + ' tbody tr').forEach(row => {
@@ -758,6 +975,7 @@ function filterList(tableId, query) {
 
 window.addEventListener('DOMContentLoaded', () => {
   history.replaceState({ page: 'dashboard', view: 'list' }, '', '#dashboard');
+  descRender('dashboard');
   Chart.defaults.font.family = "'Segoe UI','Apple SD Gothic Neo',sans-serif";
   Chart.defaults.color = '#667';
 
