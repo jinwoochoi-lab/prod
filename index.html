@@ -1066,7 +1066,7 @@ function descMakeEntry(text, idx, comments) {
   const inputRow = document.createElement('div');
   inputRow.className = 'desc-comment-input-row';
   inputRow.innerHTML =
-    '<textarea class="desc-comment-input" id="desc-comment-input-' + idx + '" placeholder="댓글을 입력하세요…" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();descAddComment(' + idx + ');}"></textarea>' +
+    '<textarea class="desc-comment-input" id="desc-comment-input-' + idx + '" placeholder="댓글을 입력하세요…" rows="1" onkeydown="if(event.key===&#39;Enter&#39;&&!event.shiftKey){event.preventDefault();descAddComment(' + idx + ');}"></textarea>' +
     '<button class="desc-comment-submit" onclick="descAddComment(' + idx + ')">등록</button>';
   listDiv.appendChild(inputRow);
 
