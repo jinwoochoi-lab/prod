@@ -749,7 +749,7 @@ function _applyState(state) {
     }
   }
   window.scrollTo(0, 0);
-  if (typeof descRender === 'function') descRender(state.page);
+  if (typeof descRender === 'function') descRender(state.page + '-' + (state.view || 'list'));
 }
 
 /* ── 사이드바 메뉴 전환 ── */
@@ -870,8 +870,14 @@ function unmaskContractRow(rowNo) {
 
 /* ── DESCRIPTION PANEL ── */
 const DESC_PAGES = {
-  dashboard: '대시보드', customer: '고객 정보', contract: '품의서 정보',
-  inventory: '재고 정보', user: '사용자 정보'
+  'dashboard-list':    '대시보드',
+  'customer-list':     '고객 정보 · 목록',
+  'customer-detail':   '고객 정보 · 상세',
+  'contract-list':     '품의서 정보 · 목록',
+  'contract-detail':   '품의서 정보 · 상세',
+  'inventory-list':    '재고 정보 · 목록',
+  'inventory-detail':  '재고 정보 · 상세',
+  'user-list':         '사용자 정보',
 };
 let _descPage = 'dashboard';
 
@@ -975,7 +981,7 @@ function filterList(tableId, query) {
 
 window.addEventListener('DOMContentLoaded', () => {
   history.replaceState({ page: 'dashboard', view: 'list' }, '', '#dashboard');
-  descRender('dashboard');
+  descRender('dashboard-list');
   Chart.defaults.font.family = "'Segoe UI','Apple SD Gothic Neo',sans-serif";
   Chart.defaults.color = '#667';
 
