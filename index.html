@@ -282,6 +282,55 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 }
 .desc-add-btn.outline:hover { background: #e8f3ff; }
 
+
+/* ── DESCRIPTION COMMENTS ── */
+.desc-comment-section { margin-top: 4px; }
+.desc-comment-toggle {
+  background: none; border: none; color: #4d9fff; font-size: 11.5px;
+  cursor: pointer; padding: 2px 4px; font-weight: 600; display: flex;
+  align-items: center; gap: 4px;
+}
+.desc-comment-toggle:hover { text-decoration: underline; }
+.desc-comment-list { margin-top: 6px; display: none; }
+.desc-comment-list.open { display: block; }
+.desc-comment-item {
+  display: flex; gap: 7px; margin-bottom: 8px; align-items: flex-start;
+}
+.desc-comment-avatar {
+  width: 24px; height: 24px; border-radius: 50%; background: #4d9fff;
+  color: #fff; font-size: 10px; font-weight: 700; display: flex;
+  align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+}
+.desc-comment-body { flex: 1; }
+.desc-comment-meta { display: flex; align-items: center; gap: 6px; margin-bottom: 2px; }
+.desc-comment-author { font-size: 11px; font-weight: 700; color: #334; }
+.desc-comment-time { font-size: 10px; color: #aaa; }
+.desc-comment-text {
+  font-size: 12px; color: #445; line-height: 1.5;
+  background: #f5f7fa; border-radius: 6px; padding: 5px 8px;
+  border: 1px solid #eaecf0;
+}
+.desc-comment-del {
+  background: none; border: none; color: #ccc; font-size: 12px;
+  cursor: pointer; padding: 2px; margin-top: 1px; flex-shrink: 0;
+}
+.desc-comment-del:hover { color: #e74c3c; }
+.desc-comment-input-row {
+  display: flex; gap: 6px; align-items: flex-end; margin-top: 6px;
+}
+.desc-comment-input {
+  flex: 1; border: 1px solid #d0d7e2; border-radius: 6px;
+  padding: 5px 8px; font-size: 12px; font-family: inherit; resize: none;
+  outline: none; min-height: 32px; max-height: 80px; line-height: 1.4;
+}
+.desc-comment-input:focus { border-color: #4d9fff; }
+.desc-comment-submit {
+  background: #4d9fff; color: #fff; border: none; border-radius: 6px;
+  padding: 5px 10px; font-size: 12px; font-weight: 600; cursor: pointer;
+  flex-shrink: 0; height: 32px;
+}
+.desc-comment-submit:hover { background: #2e7de0; }
+
 .footer { margin-top:40px; padding:16px; text-align:center; font-size:12px; color:#aaa; }
 </style>
 </head>
@@ -882,20 +931,51 @@ const DESC_PAGES = {
 let _descPage = 'dashboard';
 
 function descLoad(page) {
-  const saved = localStorage.getItem('desc_' + page);
-  return saved ? JSON.parse(saved) : [''];
+  const saved = localStorage.getItem('desc2_' + page);
+  if (saved) return JSON.parse(saved);
+  return { items: [''], comments: {} };
 }
-function descSave(page, items) {
-  localStorage.setItem('desc_' + page, JSON.stringify(items));
+function descSave(page, data) {
+  localStorage.setItem('desc2_' + page, JSON.stringify(data));
 }
 function descGetValues() {
-  return Array.from(document.querySelectorAll('#descBody .desc-entry textarea'))
+  return Array.from(document.querySelectorAll('#descBody .desc-entry textarea[data-role="desc"]'))
               .map(t => t.value);
+}
+function descGetData() {
+  const data = descLoad(_descPage);
+  data.items = descGetValues();
+  return data;
+}
+function descAddComment(entryIdx) {
+  const input = document.querySelector('#desc-comment-input-' + entryIdx);
+  const text = input ? input.value.trim() : '';
+  if (!text) return;
+  const data = descGetData();
+  if (!data.comments[entryIdx]) data.comments[entryIdx] = [];
+  data.comments[entryIdx].push({
+    id: Date.now(),
+    author: '최진우',
+    initials: '최',
+    text: text,
+    time: new Date().toLocaleString('ko-KR', {month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})
+  });
+  descSave(_descPage, data);
+  descRender(_descPage);
+}
+function descDelComment(entryIdx, commentId) {
+  const data = descGetData();
+  if (data.comments[entryIdx]) {
+    data.comments[entryIdx] = data.comments[entryIdx].filter(c => c.id !== commentId);
+  }
+  descSave(_descPage, data);
+  descRender(_descPage);
 }
 function descRender(page) {
   _descPage = page;
   document.getElementById('descPageLabel').textContent = DESC_PAGES[page] || page;
-  const items = descLoad(page);
+  const data = descLoad(page);
+  const items = data.items || [''];
   const body = document.getElementById('descBody');
   body.innerHTML = '';
 
@@ -911,11 +991,11 @@ function descRender(page) {
   body.appendChild(topDiv);
 
   items.forEach((text, i) => {
-    body.appendChild(descMakeEntry(text, i));
+    body.appendChild(descMakeEntry(text, i, data.comments && data.comments[i] ? data.comments[i] : []));
     body.appendChild(descMakeDivider(i + 1));
   });
 }
-function descMakeEntry(text, idx) {
+function descMakeEntry(text, idx, comments) {
   const wrap = document.createElement('div');
   wrap.className = 'desc-entry';
   wrap.dataset.idx = idx;
@@ -923,9 +1003,10 @@ function descMakeEntry(text, idx) {
   const ta = document.createElement('textarea');
   ta.placeholder = '설명을 입력하세요…';
   ta.value = text;
+  ta.dataset.role = 'desc';
   ta.addEventListener('input', () => {
-    const vals = descGetValues();
-    descSave(_descPage, vals);
+    const d = descGetData();
+    descSave(_descPage, d);
   });
 
   const del = document.createElement('button');
@@ -933,15 +1014,65 @@ function descMakeEntry(text, idx) {
   del.innerHTML = '×';
   del.title = '삭제';
   del.onclick = () => {
-    const vals = descGetValues();
-    vals.splice(idx, 1);
-    if (vals.length === 0) vals.push('');
-    descSave(_descPage, vals);
+    const d = descGetData();
+    d.items.splice(idx, 1);
+    if (d.items.length === 0) d.items.push('');
+    // shift comment keys
+    const newComments = {};
+    Object.keys(d.comments).forEach(k => {
+      const ki = parseInt(k);
+      if (ki < idx) newComments[ki] = d.comments[k];
+      else if (ki > idx) newComments[ki - 1] = d.comments[k];
+    });
+    d.comments = newComments;
+    descSave(_descPage, d);
     descRender(_descPage);
   };
 
   wrap.appendChild(ta);
   wrap.appendChild(del);
+
+  // 댓글 섹션
+  const commentSection = document.createElement('div');
+  commentSection.className = 'desc-comment-section';
+
+  const cList = comments || [];
+  const toggleBtn = document.createElement('button');
+  toggleBtn.className = 'desc-comment-toggle';
+  toggleBtn.innerHTML = '💬 댓글 ' + cList.length + '개';
+  const listDiv = document.createElement('div');
+  listDiv.className = 'desc-comment-list' + (cList.length > 0 ? ' open' : '');
+
+  toggleBtn.onclick = () => listDiv.classList.toggle('open');
+
+  // 기존 댓글 렌더
+  cList.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'desc-comment-item';
+    item.innerHTML =
+      '<div class="desc-comment-avatar">' + c.initials + '</div>' +
+      '<div class="desc-comment-body">' +
+        '<div class="desc-comment-meta">' +
+          '<span class="desc-comment-author">' + c.author + '</span>' +
+          '<span class="desc-comment-time">' + c.time + '</span>' +
+        '</div>' +
+        '<div class="desc-comment-text">' + c.text.replace(/</g,'&lt;') + '</div>' +
+      '</div>' +
+      '<button class="desc-comment-del" onclick="descDelComment(' + idx + ',' + c.id + ')">×</button>';
+    listDiv.appendChild(item);
+  });
+
+  // 댓글 입력
+  const inputRow = document.createElement('div');
+  inputRow.className = 'desc-comment-input-row';
+  inputRow.innerHTML =
+    '<textarea class="desc-comment-input" id="desc-comment-input-' + idx + '" placeholder="댓글을 입력하세요…" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();descAddComment(' + idx + ');}"></textarea>' +
+    '<button class="desc-comment-submit" onclick="descAddComment(' + idx + ')">등록</button>';
+  listDiv.appendChild(inputRow);
+
+  commentSection.appendChild(toggleBtn);
+  commentSection.appendChild(listDiv);
+  wrap.appendChild(commentSection);
   return wrap;
 }
 function descMakeDivider(insertIdx) {
@@ -960,12 +1091,19 @@ function descMakeDivider(insertIdx) {
   return div;
 }
 function descInsert(idx) {
-  const vals = descGetValues();
-  vals.splice(idx, 0, '');
-  descSave(_descPage, vals);
+  const d = descGetData();
+  d.items.splice(idx, 0, '');
+  // shift comment keys up
+  const newComments = {};
+  Object.keys(d.comments).forEach(k => {
+    const ki = parseInt(k);
+    if (ki < idx) newComments[ki] = d.comments[k];
+    else newComments[ki + 1] = d.comments[k];
+  });
+  d.comments = newComments;
+  descSave(_descPage, d);
   descRender(_descPage);
-  // 새로 추가된 textarea에 포커스
-  const entries = document.querySelectorAll('#descBody .desc-entry textarea');
+  const entries = document.querySelectorAll('#descBody .desc-entry textarea[data-role="desc"]');
   if (entries[idx]) entries[idx].focus();
 }
 
