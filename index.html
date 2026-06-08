@@ -331,11 +331,42 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 }
 .desc-comment-submit:hover { background: #2e7de0; }
 
+
+.pw-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:600; align-items:center; justify-content:center; }
+.pw-modal-overlay.open { display:flex; }
+.pw-modal-box { background:#fff; border-radius:12px; padding:24px 24px 20px; width:320px; box-shadow:0 8px 32px rgba(0,0,0,.18); }
+.pw-modal-box h3 { font-size:15px; font-weight:700; color:#0a0a23; margin-bottom:6px; }
+.pw-modal-box p { font-size:12.5px; color:#778; margin-bottom:14px; }
+.pw-input { width:100%; border:1px solid #d0d7e2; border-radius:7px; padding:9px 12px; font-size:14px; outline:none; letter-spacing:4px; text-align:center; }
+.pw-input:focus { border-color:#4d9fff; }
+.pw-error { color:#e74c3c; font-size:12px; margin-top:6px; min-height:16px; }
+.pw-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:14px; }
+.pw-cancel { background:#f5f7fa; border:1px solid #e0e0e0; color:#445; padding:7px 16px; border-radius:7px; font-size:13px; font-weight:600; cursor:pointer; }
+.pw-cancel:hover { background:#e8eaf0; }
+.pw-confirm { background:#e74c3c; color:#fff; border:none; padding:7px 16px; border-radius:7px; font-size:13px; font-weight:600; cursor:pointer; }
+.pw-confirm:hover { background:#c0392b; }
+
 .footer { margin-top:40px; padding:16px; text-align:center; font-size:12px; color:#aaa; }
 </style>
 </head>
 <body>
 
+
+
+<!-- 비밀번호 확인 모달 -->
+<div class="pw-modal-overlay" id="pwModal">
+  <div class="pw-modal-box">
+    <h3>🔒 삭제 확인</h3>
+    <p>삭제하려면 비밀번호를 입력해 주세요.</p>
+    <input class="pw-input" id="pwInput" type="password" placeholder="••••" maxlength="10"
+      onkeydown="if(event.key===&#39;Enter&#39;) confirmPwDelete()">
+    <div class="pw-error" id="pwError"></div>
+    <div class="pw-actions">
+      <button class="pw-cancel" onclick="closePwModal()">취소</button>
+      <button class="pw-confirm" onclick="confirmPwDelete()">삭제</button>
+    </div>
+  </div>
+</div>
 
 <!-- 조회 목적 모달 -->
 <div class="modal-overlay" id="inquiryModal">
@@ -897,6 +928,36 @@ function saveCustomerEdit() {
   _customerEditing = false;
 }
 
+
+let _pwCallback = null;
+function openPwModal(callback) {
+  _pwCallback = callback;
+  document.getElementById('pwInput').value = '';
+  document.getElementById('pwError').textContent = '';
+  document.getElementById('pwModal').classList.add('open');
+  setTimeout(() => document.getElementById('pwInput').focus(), 50);
+}
+function closePwModal() {
+  document.getElementById('pwModal').classList.remove('open');
+  _pwCallback = null;
+}
+function confirmPwDelete() {
+  const val = document.getElementById('pwInput').value;
+  if (val === '2487') {
+    closePwModal();
+    if (_pwCallback) _pwCallback();
+  } else {
+    document.getElementById('pwError').textContent = '비밀번호가 일치하지 않습니다.';
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').focus();
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('pwModal').addEventListener('click', function(e) {
+    if (e.target === this) closePwModal();
+  });
+});
+
 let _contractInquiryRow = null;
 function openContractInquiry(e, rowNo) {
   e.stopPropagation();
@@ -1014,19 +1075,20 @@ function descMakeEntry(text, idx, comments) {
   del.innerHTML = '×';
   del.title = '삭제';
   del.onclick = () => {
-    const d = descGetData();
-    d.items.splice(idx, 1);
-    if (d.items.length === 0) d.items.push('');
-    // shift comment keys
-    const newComments = {};
-    Object.keys(d.comments).forEach(k => {
-      const ki = parseInt(k);
-      if (ki < idx) newComments[ki] = d.comments[k];
-      else if (ki > idx) newComments[ki - 1] = d.comments[k];
+    openPwModal(() => {
+      const d = descGetData();
+      d.items.splice(idx, 1);
+      if (d.items.length === 0) d.items.push('');
+      const newComments = {};
+      Object.keys(d.comments).forEach(k => {
+        const ki = parseInt(k);
+        if (ki < idx) newComments[ki] = d.comments[k];
+        else if (ki > idx) newComments[ki - 1] = d.comments[k];
+      });
+      d.comments = newComments;
+      descSave(_descPage, d);
+      descRender(_descPage);
     });
-    d.comments = newComments;
-    descSave(_descPage, d);
-    descRender(_descPage);
   };
 
   wrap.appendChild(ta);
