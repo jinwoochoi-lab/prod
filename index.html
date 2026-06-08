@@ -357,7 +357,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 <div class="pw-modal-overlay" id="pwModal">
   <div class="pw-modal-box">
     <h3>🔒 삭제 확인</h3>
-    <p>삭제하려면 비밀번호를 입력해 주세요.</p>
+    <p id="pwModalDesc">해당 설명과 작성된 댓글이 모두 삭제됩니다.<br>삭제하려면 비밀번호를 입력해 주세요.</p>
     <input class="pw-input" id="pwInput" type="password" placeholder="••••" maxlength="10"
       onkeydown="if(event.key===&#39;Enter&#39;) confirmPwDelete()">
     <div class="pw-error" id="pwError"></div>
@@ -1077,8 +1077,11 @@ function descMakeEntry(text, idx, comments) {
   del.onclick = () => {
     openPwModal(() => {
       const d = descGetData();
+      // 해당 항목 텍스트 삭제
       d.items.splice(idx, 1);
       if (d.items.length === 0) d.items.push('');
+      // 해당 항목의 댓글 명시적 삭제 후 인덱스 재정렬
+      delete d.comments[idx];
       const newComments = {};
       Object.keys(d.comments).forEach(k => {
         const ki = parseInt(k);
