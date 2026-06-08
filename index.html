@@ -593,11 +593,9 @@ tbody td { padding:10px 14px; vertical-align:middle; }
           </tbody>
         </table>
       </div>
-      <div class="pagination">
-        <span class="info">총 2,883건 중 1-10 표시</span>
-        <div class="page-btns">
-          <div class="page-btn">‹</div><div class="page-btn active">1</div><div class="page-btn">2</div><div class="page-btn">3</div><div class="page-btn">…</div><div class="page-btn">289</div><div class="page-btn">›</div>
-        </div>
+      <div class="pagination" id="pagination-customer">
+        <span class="info" id="pagination-info-customer">총 2,883건 중 1-10 표시</span>
+        <div class="page-btns" id="pagination-btns-customer"></div>
       </div>
     </div>
   </div>
@@ -686,11 +684,9 @@ tbody td { padding:10px 14px; vertical-align:middle; }
           </tbody>
         </table>
       </div>
-      <div class="pagination">
-        <span class="info">총 348건 중 1-10 표시</span>
-        <div class="page-btns">
-          <div class="page-btn">‹</div><div class="page-btn active">1</div><div class="page-btn">2</div><div class="page-btn">3</div><div class="page-btn">…</div><div class="page-btn">35</div><div class="page-btn">›</div>
-        </div>
+      <div class="pagination" id="pagination-contract">
+        <span class="info" id="pagination-info-contract">총 348건 중 1-10 표시</span>
+        <div class="page-btns" id="pagination-btns-contract"></div>
       </div>
     </div>
   </div>
@@ -823,11 +819,9 @@ tbody td { padding:10px 14px; vertical-align:middle; }
           </tbody>
         </table>
       </div>
-      <div class="pagination">
-        <span class="info">총 487건 중 1-10 표시</span>
-        <div class="page-btns">
-          <div class="page-btn">‹</div><div class="page-btn active">1</div><div class="page-btn">2</div><div class="page-btn">3</div><div class="page-btn">…</div><div class="page-btn">49</div><div class="page-btn">›</div>
-        </div>
+      <div class="pagination" id="pagination-inventory">
+        <span class="info" id="pagination-info-inventory">총 487건 중 1-10 표시</span>
+        <div class="page-btns" id="pagination-btns-inventory"></div>
       </div>
     </div>
   </div>
@@ -1468,6 +1462,10 @@ function filterList(tableId, query) {
 window.addEventListener('DOMContentLoaded', () => {
   history.replaceState({ page: 'dashboard', view: 'list' }, '', '#dashboard');
   descRender('dashboard-list');
+  // 페이지네이션 초기화
+  initPagination('customer-table', 'customer');
+  initPagination('contract-table', 'contract');
+  initPagination('inventory-table', 'inventory');
   Chart.defaults.font.family = "'Segoe UI','Apple SD Gothic Neo',sans-serif";
   Chart.defaults.color = '#667';
 
@@ -1604,6 +1602,107 @@ function clearInquiryLog() {
     renderUserChip(user);
   }
 })();
+
+
+/* ══════════════════════════════════════════
+   페이지네이션 (50개씩)
+   ══════════════════════════════════════════ */
+const PAGE_SIZE = 50;
+const _pgState = {};  // { tableId: { page, total } }
+
+function initPagination(tableId, paginationKey) {
+  const rows = Array.from(document.querySelectorAll('#' + tableId + ' tbody tr'));
+  const visibleRows = rows.filter(r => r.style.display !== 'none');
+  _pgState[paginationKey] = { page: 1, rows: rows };
+  renderPagination(paginationKey);
+}
+
+function renderPagination(key) {
+  const state = _pgState[key];
+  if (!state) return;
+  const allRows = state.rows;
+  // 필터 적용된 rows만
+  const visible = allRows.filter(r => r.style.display !== 'none' || r._pgVisible !== false);
+
+  // 현재 페이지에 맞게 rows 표시/숨김
+  const visibleFiltered = allRows.filter(r => r.dataset.filtered !== 'false');
+  const total = visibleFiltered.length;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const page = Math.min(state.page, totalPages);
+  state.page = page;
+
+  const start = (page - 1) * PAGE_SIZE;
+  const end = start + PAGE_SIZE;
+
+  visibleFiltered.forEach((r, i) => {
+    r.style.display = (i >= start && i < end) ? '' : 'none';
+  });
+
+  // 숨긴 rows (필터됨) 유지
+  allRows.filter(r => r.dataset.filtered === 'false').forEach(r => r.style.display = 'none');
+
+  // info 업데이트
+  const infoEl = document.getElementById('pagination-info-' + key);
+  if (infoEl) {
+    const s = total === 0 ? 0 : start + 1;
+    const e = Math.min(end, total);
+    infoEl.textContent = '총 ' + total + '건 중 ' + s + '-' + e + ' 표시';
+  }
+
+  // buttons 업데이트
+  const btnsEl = document.getElementById('pagination-btns-' + key);
+  if (!btnsEl) return;
+  btnsEl.innerHTML = '';
+
+  const mkBtn = (label, pg, disabled) => {
+    const b = document.createElement('div');
+    b.className = 'page-btn' + (pg === page ? ' active' : '') + (disabled ? ' disabled' : '');
+    b.textContent = label;
+    if (!disabled) b.onclick = () => { state.page = pg; renderPagination(key); };
+    if (disabled) b.style.opacity = '0.4';
+    return b;
+  };
+
+  btnsEl.appendChild(mkBtn('‹', page - 1, page <= 1));
+
+  // 페이지 번호 표시 로직
+  let pages = [];
+  if (totalPages <= 7) {
+    for (let i = 1; i <= totalPages; i++) pages.push(i);
+  } else {
+    pages = [1];
+    if (page > 3) pages.push('…');
+    for (let i = Math.max(2, page-1); i <= Math.min(totalPages-1, page+1); i++) pages.push(i);
+    if (page < totalPages - 2) pages.push('…');
+    pages.push(totalPages);
+  }
+
+  pages.forEach(p => {
+    if (p === '…') {
+      const d = document.createElement('div');
+      d.className = 'page-btn'; d.textContent = '…'; d.style.cursor = 'default';
+      btnsEl.appendChild(d);
+    } else {
+      btnsEl.appendChild(mkBtn(p, p, false));
+    }
+  });
+
+  btnsEl.appendChild(mkBtn('›', page + 1, page >= totalPages));
+}
+
+function pgGoPage(key, pg) {
+  if (_pgState[key]) { _pgState[key].page = pg; renderPagination(key); }
+}
+
+// 필터 적용 후 페이지 리셋용 래퍼
+function applyFilterAndReset(tableId, key, filterFn) {
+  filterFn();
+  // filtered 상태 동기화
+  const rows = Array.from(document.querySelectorAll('#' + tableId + ' tbody tr'));
+  rows.forEach(r => { r.dataset.filtered = r.style.display === 'none' ? 'false' : 'true'; r.style.display = ''; });
+  if (_pgState[key]) _pgState[key].page = 1;
+  renderPagination(key);
+}
 
 </script>
 </body>
