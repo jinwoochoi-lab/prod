@@ -409,6 +409,39 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 }
 
 .footer { margin-top:40px; padding:16px; text-align:center; font-size:12px; color:#aaa; }
+
+/* ── 로그인 모달 ── */
+.login-overlay { position:fixed; inset:0; background:rgba(0,0,0,.65); z-index:9999; display:flex; align-items:center; justify-content:center; }
+.login-overlay.hidden { display:none; }
+.login-box { background:#fff; border-radius:14px; padding:36px 40px; width:380px; box-shadow:0 12px 48px rgba(0,0,0,.35); }
+.login-box .login-logo { font-size:20px; font-weight:800; color:#0a0a23; margin-bottom:4px; }
+.login-box .login-logo span { color:#4d9fff; }
+.login-box .login-sub { font-size:12px; color:#888; margin-bottom:24px; }
+.login-box label { display:block; font-size:12px; font-weight:600; color:#555; margin-bottom:5px; }
+.login-box .login-input { width:100%; padding:10px 13px; border:1px solid #dde; border-radius:7px; font-size:14px; margin-bottom:16px; outline:none; transition:border-color .15s; }
+.login-box .login-input:focus { border-color:#4d9fff; box-shadow:0 0 0 3px rgba(77,159,255,.12); }
+.login-box .login-btn { width:100%; padding:12px; background:#0a0a23; color:#fff; border:none; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; transition:background .15s; }
+.login-box .login-btn:hover { background:#1e3a5f; }
+.login-box .login-err { color:#e74c3c; font-size:12px; margin-top:-10px; margin-bottom:12px; min-height:16px; }
+
+/* ── 헤더 유저칩 ── */
+.header-user { margin-left:auto; display:flex; align-items:center; gap:8px; }
+.user-chip { display:flex; align-items:center; gap:8px; background:#1e3a5f; border:1px solid #4d9fff44; border-radius:20px; padding:4px 14px 4px 6px; }
+.user-avatar { background:#4d9fff; color:#fff; border-radius:50%; width:26px; height:26px; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.user-name { font-size:12px; color:#c5ddff; font-weight:600; }
+.user-empid { font-size:11px; color:#7a9bc4; }
+.user-change-btn { background:none; border:none; color:#7a9bc4; font-size:11px; cursor:pointer; padding:0; }
+.user-change-btn:hover { color:#4d9fff; text-decoration:underline; }
+
+/* ── 조회 이력 테이블 ── */
+.inquiry-log-table { width:100%; border-collapse:collapse; font-size:13px; }
+.inquiry-log-table th { background:#f4f6f9; font-size:11px; font-weight:600; color:#667; padding:8px 12px; text-align:left; border-bottom:2px solid #e8eaf0; }
+.inquiry-log-table td { padding:9px 12px; border-bottom:1px solid #f0f2f5; vertical-align:top; }
+.inquiry-log-table tr:hover td { background:#f9fbff; }
+.inquiry-log-empty { text-align:center; color:#bbb; padding:30px 0; font-size:13px; }
+.log-clear-btn { background:#fff; border:1px solid #e74c3c; color:#e74c3c; border-radius:6px; padding:5px 14px; font-size:12px; cursor:pointer; }
+.log-clear-btn:hover { background:#fdf0ee; }
+
 </style>
 </head>
 <body>
@@ -442,10 +475,26 @@ tbody td { padding:10px 14px; vertical-align:middle; }
     </div>
   </div>
 </div>
+<!-- 로그인 모달 -->
+<div class="login-overlay" id="loginModal">
+  <div class="login-box">
+    <div class="login-logo">Deutsch <span>Motors</span></div>
+    <div class="login-sub">AX실 전송정보 어드민 · 접속자 정보를 입력해 주세요</div>
+    <label>이름</label>
+    <input class="login-input" id="loginName" type="text" placeholder="예) 홍길동" maxlength="20"
+      onkeydown="if(event.key===&#39;Enter&#39;) document.getElementById(&#39;loginEmpId&#39;).focus()">
+    <label>사번</label>
+    <input class="login-input" id="loginEmpId" type="text" placeholder="예) EMP2011021" maxlength="20"
+      onkeydown="if(event.key===&#39;Enter&#39;) saveLogin()">
+    <div class="login-err" id="loginErr"></div>
+    <button class="login-btn" onclick="saveLogin()">접속하기</button>
+  </div>
+</div>
+
 <div class="header">
   <div class="logo">Deutsch <span>Motors</span></div>
   <div class="subtitle">AX실 전송정보 어드민 · v1.3</div>
-  <div class="badge">2026.05.12</div>
+  <div class="header-user" id="headerUserChip"></div>
 </div>
 
 <div class="layout">
@@ -701,6 +750,33 @@ tbody td { padding:10px 14px; vertical-align:middle; }
       </div>
     </div>
   </div>
+
+  <!-- 조회 이력 -->
+  <div class="card" style="margin-top:22px">
+    <div class="card-header" style="display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:10px">
+        <h2>🔍 조회 이력</h2>
+        <span class="pill" id="inquiryLogCount">0건</span>
+      </div>
+      <button class="log-clear-btn" onclick="clearInquiryLog()">전체 삭제</button>
+    </div>
+    <div class="table-wrap">
+      <table class="inquiry-log-table">
+        <thead>
+          <tr>
+            <th style="width:140px">일시</th>
+            <th style="width:90px">이름</th>
+            <th style="width:100px">사번</th>
+            <th style="width:160px">조회 대상</th>
+            <th>조회 목적</th>
+          </tr>
+        </thead>
+        <tbody id="inquiryLogBody">
+          <tr><td colspan="5" class="inquiry-log-empty">조회 이력이 없습니다.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 <!-- ===== 재고 정보 ===== -->
@@ -899,6 +975,7 @@ function _applyState(state) {
   }
   window.scrollTo(0, 0);
   if (typeof descRender === 'function') descRender(state.page + '-' + (state.view || 'list'));
+  if (page === 'user') renderInquiryLog();
 }
 
 /* ── 사이드바 메뉴 전환 ── */
@@ -945,6 +1022,8 @@ function saveInquiry() {
   if (!reason) { alert('조회 목적을 입력해 주세요.'); return; }
   if (confirm('입력하신 내용으로 저장하시겠습니까?\n\n"' + reason + '"')) {
     const target = document.getElementById('inquiryModal')._target;
+    const targetLabel = document.getElementById('inquiryTarget').textContent;
+    logInquiry(targetLabel, reason);
     if (target === 'contract') unmaskContractRow(_contractInquiryRow);
     else unmaskRow(_inquiryRow);
     closeInquiry();
@@ -1135,17 +1214,22 @@ function descAddComment(entryIdx) {
   const input = document.querySelector('#desc-comment-input-' + entryIdx);
   const text = input ? input.value.trim() : '';
   if (!text) return;
+  const cu = getCurrentUser() || { name: '익명', empId: '-' };
   const data = descGetData();
   if (!data.comments[entryIdx]) data.comments[entryIdx] = [];
   data.comments[entryIdx].push({
     id: Date.now(),
-    author: '최진우',
-    initials: '최',
+    author: cu.name,
+    initials: cu.name.charAt(0),
     text: text,
     time: new Date().toLocaleString('ko-KR', {month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})
   });
   descSave(_descPage, data);
   descRender(_descPage);
+  setTimeout(() => {
+    const list = document.querySelector('#desc-comment-list-' + entryIdx);
+    if (list) list.classList.add('open');
+  }, 50);
 }
 function descDelComment(entryIdx, commentId) {
   const data = descGetData();
@@ -1404,6 +1488,101 @@ window.addEventListener('DOMContentLoaded', () => {
     options:{responsive:true, plugins:{legend:{position:'bottom', labels:{boxWidth:11,padding:8,font:{size:10}}}}}
   });
 });
+
+/* ══════════════════════════════════════════
+   사용자 로그인 & 조회 이력 관리
+   ══════════════════════════════════════════ */
+
+function getCurrentUser() {
+  const s = localStorage.getItem('dmCurrentUser');
+  return s ? JSON.parse(s) : null;
+}
+
+function showLoginModal() {
+  document.getElementById('loginModal').classList.remove('hidden');
+  document.getElementById('loginErr').textContent = '';
+  setTimeout(() => document.getElementById('loginName').focus(), 80);
+}
+
+function saveLogin() {
+  const name  = document.getElementById('loginName').value.trim();
+  const empId = document.getElementById('loginEmpId').value.trim();
+  const errEl = document.getElementById('loginErr');
+  if (!name)  { errEl.textContent = '이름을 입력해 주세요.'; return; }
+  if (!empId) { errEl.textContent = '사번을 입력해 주세요.'; return; }
+  errEl.textContent = '';
+  const user = { name, empId };
+  localStorage.setItem('dmCurrentUser', JSON.stringify(user));
+  document.getElementById('loginModal').classList.add('hidden');
+  renderUserChip(user);
+}
+
+function renderUserChip(user) {
+  const initials = user.name.charAt(0);
+  document.getElementById('headerUserChip').innerHTML =
+    '<div class="user-chip">' +
+      '<div class="user-avatar">' + initials + '</div>' +
+      '<span class="user-name">' + user.name + '</span>' +
+      '<span class="user-empid">(' + user.empId + ')</span>' +
+      '<button class="user-change-btn" onclick="changeUser()">변경</button>' +
+    '</div>';
+}
+
+function changeUser() {
+  document.getElementById('loginName').value = '';
+  document.getElementById('loginEmpId').value = '';
+  showLoginModal();
+}
+
+/* ── 조회 이력 로그 ── */
+function logInquiry(target, reason) {
+  const cu = getCurrentUser() || { name: '익명', empId: '-' };
+  const now = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  const timeStr = now.getFullYear() + '-' + pad(now.getMonth()+1) + '-' + pad(now.getDate()) +
+                  ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+  const log = JSON.parse(localStorage.getItem('dmInquiryLog') || '[]');
+  log.unshift({ user: cu.name, empId: cu.empId, target, reason, time: timeStr });
+  localStorage.setItem('dmInquiryLog', JSON.stringify(log.slice(0, 1000)));
+}
+
+function renderInquiryLog() {
+  const log  = JSON.parse(localStorage.getItem('dmInquiryLog') || '[]');
+  const tbody = document.getElementById('inquiryLogBody');
+  const countEl = document.getElementById('inquiryLogCount');
+  if (!tbody) return;
+  if (countEl) countEl.textContent = log.length + '건';
+  if (log.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="inquiry-log-empty">조회 이력이 없습니다.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = log.map(r =>
+    '<tr>' +
+      '<td style="color:#667;font-size:12px">' + r.time + '</td>' +
+      '<td style="font-weight:600">' + r.user + '</td>' +
+      '<td style="color:#888">' + r.empId + '</td>' +
+      '<td>' + r.target + '</td>' +
+      '<td style="color:#444">' + r.reason + '</td>' +
+    '</tr>'
+  ).join('');
+}
+
+function clearInquiryLog() {
+  if (!confirm('조회 이력을 전체 삭제하시겠습니까?')) return;
+  localStorage.removeItem('dmInquiryLog');
+  renderInquiryLog();
+}
+
+/* ── 초기화: 로그인 체크 ── */
+(function initUser() {
+  const user = getCurrentUser();
+  if (!user) {
+    showLoginModal();
+  } else {
+    renderUserChip(user);
+  }
+})();
+
 </script>
 </body>
 </html>
