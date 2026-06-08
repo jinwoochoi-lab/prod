@@ -2026,6 +2026,20 @@ function descMakeDivider(insertIdx) {
   div.appendChild(line1); div.appendChild(btn); div.appendChild(line2);
   return div;
 }
+
+function descInsertDirect(idx, prefill) {
+  const d = descGetData();
+  d.items.splice(idx, 0, prefill || '');
+  const newComments = {};
+  Object.keys(d.comments).forEach(k => {
+    const ki = parseInt(k);
+    if (ki < idx) newComments[ki] = d.comments[k];
+    else newComments[ki + 1] = d.comments[k];
+  });
+  d.comments = newComments;
+  descSave(_descPage, d);
+  descRender(_descPage);
+}
 function descInsert(idx) {
   openPwModal(function() {
     const d = descGetData();
@@ -2351,12 +2365,23 @@ function _saveNumbers(nums) {
   localStorage.setItem(_numberStorageKey(), JSON.stringify(nums));
 }
 
+function _overlayBounds() {
+  // 사이드바·설명 패널 제외한 메인 영역만 오버레이
+  const sidebar = document.querySelector('.sidebar');
+  const panel   = document.querySelector('.desc-panel');
+  const sideW   = (sidebar && !sidebar.classList.contains('collapsed')) ? (sidebar.getBoundingClientRect().right) : 0;
+  const panelW  = (panel  && !panel.classList.contains('collapsed'))  ? (window.innerWidth - panel.getBoundingClientRect().left) : BTN_W;
+  return { left: sideW, right: panelW };
+}
 function toggleNumberingMode() {
   _numberingMode = !_numberingMode;
   const btn     = document.getElementById('numberingModeBtn');
   const overlay = document.getElementById('numberingOverlay');
   const tip     = document.getElementById('numberingTip');
   if (_numberingMode) {
+    const b = _overlayBounds();
+    overlay.style.left  = b.left + 'px';
+    overlay.style.right = b.right + 'px';
     btn.classList.add('active');
     btn.textContent = '✖ 추가 종료';
     overlay.classList.add('active');
@@ -2370,17 +2395,41 @@ function toggleNumberingMode() {
 }
 
 function clearAllNumbers() {
-  if (!confirm('이 화면의 넘버링을 모두 삭제하시겠습니까?')) return;
+  if (!confirm('이 화면의 넘버링을 모두 삭제하시겠습니까?\n연결된 설명 항목도 함께 초기화됩니다.')) return;
   localStorage.removeItem(_numberStorageKey());
   renderNumbers();
+  // 설명 항목 전체 초기화
+  const d = descGetData();
+  d.items = [''];
+  d.comments = {};
+  descSave(_descPage, d);
+  descRender(_descPage);
 }
 
 function deleteNumber(id) {
-  if (!confirm('이 넘버링을 삭제하시겠습니까?')) return;
-  let nums = _loadNumbers().filter(n => n.id !== id);
+  if (!confirm('이 넘버링을 삭제하시겠습니까?\n연결된 설명 항목도 함께 삭제됩니다.')) return;
+  const before = _loadNumbers();
+  const target = before.find(n => n.id === id);
+  if (!target) return;
+  const idx = target.num - 1;  // 0-indexed 설명 위치
+  let nums = before.filter(n => n.id !== id);
   nums = nums.map((n, i) => ({ ...n, num: i + 1 }));
   _saveNumbers(nums);
   renderNumbers();
+  // 해당 설명 항목 삭제
+  const d = descGetData();
+  if (d.items.length > idx) {
+    d.items.splice(idx, 1);
+    const newComments = {};
+    Object.keys(d.comments).forEach(k => {
+      const ki = parseInt(k);
+      if (ki < idx) newComments[ki] = d.comments[k];
+      else if (ki > idx) newComments[ki - 1] = d.comments[k];
+    });
+    d.comments = newComments;
+    descSave(_descPage, d);
+    descRender(_descPage);
+  }
 }
 
 function renderNumbers() {
@@ -2399,19 +2448,22 @@ function renderNumbers() {
   });
 }
 
-// 오버레이 클릭 → 넘버링 생성
+// 오버레이 클릭 → 넘버링 생성 + 설명 항목 자동 추가
 document.getElementById('numberingOverlay').addEventListener('click', function(e) {
   if (!_numberingMode) return;
   const nums = _loadNumbers();
+  const newNum = nums.length + 1;
   nums.push({
     id: Date.now(),
-    num: nums.length + 1,
-    vx: (e.clientX / window.innerWidth) * 100,   // viewport % 가로
-    vy: e.clientY,                                 // viewport px 세로
-    sy: window.scrollY                             // 스크롤 오프셋
+    num: newNum,
+    vx: (e.clientX / window.innerWidth) * 100,
+    vy: e.clientY,
+    sy: window.scrollY
   });
   _saveNumbers(nums);
   renderNumbers();
+  // 설명 항목 자동 추가 (해당 번호 위치에 삽입)
+  descInsertDirect(newNum - 1, '[' + newNum + '] ');
 });
 
 // 스크롤 시 배지 위치 갱신
