@@ -28,7 +28,7 @@ body { font-family: 'Segoe UI','Apple SD Gothic Neo',sans-serif; background:#f0f
 .nav-item .count { margin-left:auto; background:#1e3a5f; color:#4d9fff; font-size:10px; padding:2px 7px; border-radius:10px; }
 
 /* MAIN */
-.main { margin-left:220px; flex:1; padding:28px 32px; margin-right:300px; transition:margin-left .25s ease, margin-right .25s ease; }
+.main { margin-left:220px; flex:1; padding:28px 32px; margin-right:316px; transition:margin-left .25s ease, margin-right .25s ease; }
 .page { display:none; }
 .page.active { display:block; }
 .sub-view { display:none; }
@@ -375,7 +375,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
   position: fixed;
   top: 50%;
   right: 280px;
-  transform: translateY(-50%);
+  transform: translateY(-50%) translateX(0);
   width: 16px; height: 44px;
   background: #e4eaf0;
   border: 1px solid #d0d7e2;
@@ -1147,23 +1147,31 @@ function toggleSidebar() {
   }
 }
 
-function toggleDescPanel() {
-  _descOpen = !_descOpen;
+const PANEL_W = 280;   // desc-panel width
+const BTN_W   = 16;    // desc-panel-toggle width
+function _applyDescLayout() {
   const panel = document.querySelector('.desc-panel');
-  const btn = document.getElementById('descToggle');
-  const main = document.querySelector('.main');
+  const btn   = document.getElementById('descToggle');
+  const main  = document.querySelector('.main');
   if (_descOpen) {
     panel.classList.remove('collapsed');
     btn.textContent = '▶';
-    btn.style.right = '280px';
-    main.style.marginRight = '300px';
+    btn.style.right = PANEL_W + 'px';
+    main.style.marginRight = (PANEL_W + BTN_W + 20) + 'px';
   } else {
     panel.classList.add('collapsed');
     btn.textContent = '◀';
     btn.style.right = '0px';
-    main.style.marginRight = '0px';
+    main.style.marginRight = BTN_W + 'px';
   }
 }
+function toggleDescPanel() {
+  _descOpen = !_descOpen;
+  _applyDescLayout();
+}
+// 초기 레이아웃 적용
+_applyDescLayout();
+
 
 let _contractInquiryRow = null;
 function openContractInquiry(e, rowNo) {
