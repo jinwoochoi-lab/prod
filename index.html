@@ -454,20 +454,28 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 .numbering-overlay.active { display: block; }
 .numbering-badge {
   position: fixed; z-index: 799;
-  width: 26px; height: 26px; border-radius: 50%;
+  width: 28px; height: 28px; border-radius: 50%;
   background: #e74c3c; color: #fff;
   font-size: 12px; font-weight: 800;
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.35);
+  cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,.35);
   transform: translate(-50%, -50%);
-  user-select: none; transition: background .15s;
+  user-select: none;
   border: 2px solid #fff;
 }
-.numbering-badge:hover { background: #c0392b; }
-.numbering-badge:hover::after {
-  content: '×'; font-size: 14px;
+.numbering-badge.dragging { cursor: grabbing; opacity: .85; box-shadow: 0 6px 20px rgba(0,0,0,.4); }
+.numbering-badge-del {
+  position: fixed; z-index: 800;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #333; color: #fff;
+  font-size: 10px; font-weight: 700;
+  display: none; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.4);
+  transform: translate(6px, -22px);
+  line-height: 1;
 }
-.numbering-badge:hover span { display: none; }
+.numbering-badge:hover + .numbering-badge-del,
+.numbering-badge-del:hover { display: flex; }
 .desc-numbering-bar {
   display: flex; align-items: center; gap: 6px;
   padding: 8px 14px; border-bottom: 1px solid #f0f2f5;
@@ -1946,10 +1954,8 @@ function descMakeEntry(text, idx, comments) {
   del.onclick = () => {
     openPwModal(() => {
       const d = descGetData();
-      // 해당 항목 텍스트 삭제
       d.items.splice(idx, 1);
       if (d.items.length === 0) d.items.push('');
-      // 해당 항목의 댓글 명시적 삭제 후 인덱스 재정렬
       delete d.comments[idx];
       const newComments = {};
       Object.keys(d.comments).forEach(k => {
@@ -1960,6 +1966,12 @@ function descMakeEntry(text, idx, comments) {
       d.comments = newComments;
       descSave(_descPage, d);
       descRender(_descPage);
+      // 연결된 넘버링 삭제 및 나머지 당기기
+      let nums = _loadNumbers();
+      nums = nums.filter(n => n.num !== idx + 1);
+      nums = nums.map((n, i) => ({ ...n, num: i + 1 }));
+      _saveNumbers(nums);
+      renderNumbers();
     });
   };
 
@@ -2433,18 +2445,68 @@ function deleteNumber(id) {
 }
 
 function renderNumbers() {
-  document.querySelectorAll('.numbering-badge').forEach(el => el.remove());
+  document.querySelectorAll('.numbering-badge, .numbering-badge-del').forEach(el => el.remove());
   const nums = _loadNumbers();
   nums.forEach(n => {
     const badge = document.createElement('div');
     badge.className = 'numbering-badge';
+    badge.dataset.nid = n.id;
     badge.innerHTML = '<span>' + n.num + '</span>';
-    badge.title = n.num + '번 마커 — 클릭하여 삭제';
-    // position: fixed, stored as viewport-relative % + scrollY offset
+    badge.title = n.num + '번 마커 (드래그: 이동)';
+    const top = n.vy + n.sy - window.scrollY;
     badge.style.left = n.vx + 'vw';
-    badge.style.top  = (n.vy + n.sy - window.scrollY) + 'px';
-    badge.onclick = (e) => { e.stopPropagation(); deleteNumber(n.id); };
+    badge.style.top  = top + 'px';
+
+    // 드래그 앤 드롭
+    badge.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) return;
+      e.preventDefault();
+      let moved = false;
+      badge.classList.add('dragging');
+      const onMove = (ev) => {
+        moved = true;
+        badge.style.left = ev.clientX + 'px';
+        badge.style.top  = ev.clientY + 'px';
+        if (delBtn) { delBtn.style.left = ev.clientX + 'px'; delBtn.style.top = (ev.clientY - 14) + 'px'; }
+      };
+      const onUp = (ev) => {
+        badge.classList.remove('dragging');
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        if (moved) {
+          let nums2 = _loadNumbers();
+          const idx2 = nums2.findIndex(x => x.id === n.id);
+          if (idx2 !== -1) {
+            nums2[idx2].vx = (ev.clientX / window.innerWidth) * 100;
+            nums2[idx2].vy = ev.clientY;
+            nums2[idx2].sy = window.scrollY;
+            _saveNumbers(nums2);
+            renderNumbers();
+          }
+        }
+      };
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+
     document.body.appendChild(badge);
+
+    // 삭제 버튼 (배지 우상단)
+    const delBtn = document.createElement('div');
+    delBtn.className = 'numbering-badge-del';
+    delBtn.innerHTML = '×';
+    delBtn.title = n.num + '번 삭제';
+    delBtn.style.left = n.vx + 'vw';
+    delBtn.style.top  = top + 'px';
+    delBtn.addEventListener('click', (e) => { e.stopPropagation(); deleteNumber(n.id); });
+    document.body.appendChild(delBtn);
+
+    // 배지 hover 시 삭제 버튼 표시
+    badge.addEventListener('mouseenter', () => delBtn.style.display = 'flex');
+    badge.addEventListener('mouseleave', (e) => {
+      if (!delBtn.matches(':hover')) delBtn.style.display = 'none';
+    });
+    delBtn.addEventListener('mouseleave', () => delBtn.style.display = 'none');
   });
 }
 
