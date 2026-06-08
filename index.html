@@ -944,8 +944,9 @@ function closePwModal() {
 function confirmPwDelete() {
   const val = document.getElementById('pwInput').value;
   if (val === '2487') {
-    closePwModal();
-    if (_pwCallback) _pwCallback();
+    const cb = _pwCallback;  // 콜백 먼저 저장
+    closePwModal();           // 이후 null 처리
+    if (cb) cb();             // 저장된 콜백 실행
   } else {
     document.getElementById('pwError').textContent = '비밀번호가 일치하지 않습니다.';
     document.getElementById('pwInput').value = '';
