@@ -318,17 +318,8 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 }
 .desc-comment-del:hover { color: #e74c3c; }
 .desc-comment-input-row {
-  display: flex; flex-direction: column; gap: 5px; margin-top: 6px;
+  display: flex; gap: 6px; align-items: flex-end; margin-top: 6px;
 }
-.desc-comment-author-row {
-  display: flex; gap: 6px; align-items: center;
-}
-.desc-comment-author-input {
-  width: 90px; border: 1px solid #d0d7e2; border-radius: 6px;
-  padding: 4px 8px; font-size: 12px; font-family: inherit; outline: none;
-  color: #334; background: #f9fbff;
-}
-.desc-comment-author-input:focus { border-color: #4d9fff; }
 .desc-comment-input {
   flex: 1; border: 1px solid #d0d7e2; border-radius: 6px;
   padding: 5px 8px; font-size: 12px; font-family: inherit; resize: none;
@@ -1225,19 +1216,15 @@ function descGetData() {
   return data;
 }
 function descAddComment(entryIdx) {
-  const authorInput = document.querySelector('#desc-comment-author-' + entryIdx);
   const input = document.querySelector('#desc-comment-input-' + entryIdx);
-  const authorVal = (authorInput ? authorInput.value.trim() : '') || '익명';
   const text = input ? input.value.trim() : '';
   if (!text) return;
-  // 작성자명 기억 (로그인과 무관한 별도 저장)
-  localStorage.setItem('dmDescAuthor', authorVal);
   const data = descGetData();
   if (!data.comments[entryIdx]) data.comments[entryIdx] = [];
   data.comments[entryIdx].push({
     id: Date.now(),
-    author: authorVal,
-    initials: authorVal.charAt(0),
+    author: '',
+    initials: '',
     text: text,
     time: new Date().toLocaleString('ko-KR', {month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})
   });
@@ -1359,10 +1346,8 @@ function descMakeEntry(text, idx, comments) {
     const item = document.createElement('div');
     item.className = 'desc-comment-item';
     item.innerHTML =
-      '<div class="desc-comment-avatar">' + c.initials + '</div>' +
-      '<div class="desc-comment-body">' +
+      '<div class="desc-comment-body" style="width:100%">' +
         '<div class="desc-comment-meta">' +
-          '<span class="desc-comment-author">' + c.author + '</span>' +
           '<span class="desc-comment-time">' + c.time + '</span>' +
         '</div>' +
         '<div class="desc-comment-text">' + c.text.replace(/</g,'&lt;') + '</div>' +
@@ -1375,11 +1360,8 @@ function descMakeEntry(text, idx, comments) {
   const inputRow = document.createElement('div');
   inputRow.className = 'desc-comment-input-row';
   inputRow.innerHTML =
-    '<div class="desc-comment-author-row">' +
-    '<input class="desc-comment-author-input" id="desc-comment-author-' + idx + '" type="text" placeholder="이름" maxlength="10" value="' + (localStorage.getItem('dmDescAuthor')||'') + '" />' +
     '<textarea class="desc-comment-input" id="desc-comment-input-' + idx + '" placeholder="댓글을 입력하세요…" rows="1" onkeydown="if(event.key===&#39;Enter&#39;&&!event.shiftKey){event.preventDefault();descAddComment(' + idx + ');}"></textarea>' +
-    '<button class="desc-comment-submit" onclick="descAddComment(' + idx + ')">등록</button>' +
-    '</div>';
+    '<button class="desc-comment-submit" onclick="descAddComment(' + idx + ')">등록</button>';
   listDiv.appendChild(inputRow);
 
   commentSection.appendChild(toggleBtn);
