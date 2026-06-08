@@ -2437,10 +2437,19 @@ function deleteNumber(id) {
   nums = nums.map((n, i) => ({ ...n, num: i + 1 }));
   _saveNumbers(nums);
   renderNumbers();
-  // 해당 설명 항목 삭제
+  // 해당 설명 항목 삭제 + [N] 번호 당기기
   const d = descGetData();
   if (d.items.length > idx) {
     d.items.splice(idx, 1);
+    if (d.items.length === 0) d.items.push('');
+    // idx 이후 항목의 [N] 텍스트 접두어 당기기
+    for (let i = idx; i < d.items.length; i++) {
+      const oldTag = '[' + (i + 2) + ']';
+      const newTag = '[' + (i + 1) + ']';
+      if (d.items[i].startsWith(oldTag)) {
+        d.items[i] = newTag + d.items[i].slice(oldTag.length);
+      }
+    }
     const newComments = {};
     Object.keys(d.comments).forEach(k => {
       const ki = parseInt(k);
