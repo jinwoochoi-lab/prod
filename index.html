@@ -394,6 +394,20 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 .desc-panel-toggle:hover { background: #d0d7e2; }
 .desc-panel.collapsed { width: 0; overflow: hidden; }
 
+.desc-entry textarea[readonly] {
+  background: #f7f9fc;
+  cursor: pointer;
+  color: #556;
+}
+.desc-entry textarea[readonly]:hover {
+  border-color: #c8dcff;
+  background: #f0f4ff;
+}
+.desc-locked-hint {
+  font-size: 10.5px; color: #aaa; text-align: right;
+  margin-top: 2px; padding-right: 2px;
+}
+
 .footer { margin-top:40px; padding:16px; text-align:center; font-size:12px; color:#aaa; }
 </style>
 </head>
@@ -1154,12 +1168,28 @@ function descMakeEntry(text, idx, comments) {
   wrap.dataset.idx = idx;
 
   const ta = document.createElement('textarea');
-  ta.placeholder = '설명을 입력하세요…';
+  ta.placeholder = '🔒 클릭하여 수정';
   ta.value = text;
   ta.dataset.role = 'desc';
+  ta.readOnly = true;
   ta.addEventListener('input', () => {
     const d = descGetData();
     descSave(_descPage, d);
+  });
+  ta.addEventListener('click', () => {
+    if (!ta.readOnly) return;
+    openPwModal(() => {
+      ta.readOnly = false;
+      ta.placeholder = '설명을 입력하세요…';
+      ta.focus();
+      ta.selectionStart = ta.selectionEnd = ta.value.length;
+      // 수정 완료(blur) 시 다시 잠금
+      ta.addEventListener('blur', function lockAgain() {
+        ta.readOnly = true;
+        ta.placeholder = '🔒 클릭하여 수정';
+        ta.removeEventListener('blur', lockAgain);
+      });
+    });
   });
 
   const del = document.createElement('button');
@@ -1188,6 +1218,10 @@ function descMakeEntry(text, idx, comments) {
 
   wrap.appendChild(ta);
   wrap.appendChild(del);
+  const hint = document.createElement('div');
+  hint.className = 'desc-locked-hint';
+  hint.textContent = '🔒 클릭하여 수정';
+  wrap.appendChild(hint);
 
   // 댓글 섹션
   const commentSection = document.createElement('div');
