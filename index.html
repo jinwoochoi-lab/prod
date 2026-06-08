@@ -1956,6 +1956,13 @@ function descMakeEntry(text, idx, comments) {
       const d = descGetData();
       d.items.splice(idx, 1);
       if (d.items.length === 0) d.items.push('');
+      // idx 이후 항목의 [N] 텍스트 접두어 당기기
+      d.items = d.items.map((item, i) => {
+        if (i >= idx) {
+          return item.replace(new RegExp('^\\[' + (i + 2) + '\\]'), '[' + (i + 1) + ']');
+        }
+        return item;
+      });
       delete d.comments[idx];
       const newComments = {};
       Object.keys(d.comments).forEach(k => {
