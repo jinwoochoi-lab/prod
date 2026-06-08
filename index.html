@@ -1236,6 +1236,7 @@ function descAddComment(entryIdx) {
   }, 50);
 }
 function descDelComment(entryIdx, commentId) {
+  if (!confirm('댓글을 삭제하시겠습니까?')) return;
   const data = descGetData();
   if (data.comments[entryIdx]) {
     data.comments[entryIdx] = data.comments[entryIdx].filter(c => c.id !== commentId);
