@@ -994,10 +994,22 @@ function saveCustomerEdit() {
 
 
 let _pwCallback = null;
-function openPwModal(callback) {
+function openPwModal(callback, mode) {
   _pwCallback = callback;
   document.getElementById('pwInput').value = '';
   document.getElementById('pwError').textContent = '';
+  // 모드에 따라 모달 문구 변경
+  if (mode === 'edit') {
+    document.querySelector('.pw-modal-box h3').textContent = '✏️ 수정 확인';
+    document.getElementById('pwModalDesc').innerHTML = '수정하려면 비밀번호를 입력해 주세요.';
+    document.querySelector('.pw-confirm').textContent = '확인';
+    document.querySelector('.pw-confirm').style.background = '#4d9fff';
+  } else {
+    document.querySelector('.pw-modal-box h3').textContent = '🔒 삭제 확인';
+    document.getElementById('pwModalDesc').innerHTML = '해당 설명과 작성된 댓글이 모두 삭제됩니다.<br>삭제하려면 비밀번호를 입력해 주세요.';
+    document.querySelector('.pw-confirm').textContent = '삭제';
+    document.querySelector('.pw-confirm').style.background = '#e74c3c';
+  }
   document.getElementById('pwModal').classList.add('open');
   setTimeout(() => document.getElementById('pwInput').focus(), 50);
 }
@@ -1189,7 +1201,7 @@ function descMakeEntry(text, idx, comments) {
         ta.placeholder = '🔒 클릭하여 수정';
         ta.removeEventListener('blur', lockAgain);
       });
-    });
+    }, 'edit');
   });
 
   const del = document.createElement('button');
