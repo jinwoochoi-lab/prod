@@ -1957,12 +1957,13 @@ function descMakeEntry(text, idx, comments) {
       d.items.splice(idx, 1);
       if (d.items.length === 0) d.items.push('');
       // idx 이후 항목의 [N] 텍스트 접두어 당기기
-      d.items = d.items.map((item, i) => {
-        if (i >= idx) {
-          return item.replace(new RegExp('^\\[' + (i + 2) + '\\]'), '[' + (i + 1) + ']');
+      for (let i = idx; i < d.items.length; i++) {
+        const oldTag = '[' + (i + 2) + ']';
+        const newTag = '[' + (i + 1) + ']';
+        if (d.items[i].startsWith(oldTag)) {
+          d.items[i] = newTag + d.items[i].slice(oldTag.length);
         }
-        return item;
-      });
+      }
       delete d.comments[idx];
       const newComments = {};
       Object.keys(d.comments).forEach(k => {
@@ -2125,6 +2126,7 @@ function filterList(tableId, query) {
 window.addEventListener('DOMContentLoaded', () => {
   history.replaceState({ page: 'dashboard', view: 'list' }, '', '#dashboard');
   descRender('dashboard-list');
+  renderNumbers();   // 새로고침 후 넘버링 복원
   // 페이지네이션 초기화
   initPagination('customer-table', 'customer');
   initPagination('contract-table', 'contract');
