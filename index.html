@@ -600,10 +600,15 @@ tbody td { padding:10px 14px; vertical-align:middle; }
     <div class="card">
       <div class="filter-bar">
         <div class="search-box">🔍<input type="text" placeholder="계약서번호·계약자명 검색…" oninput="filterList('contract-table',this.value)"></div>
-        <select class="filter-select"><option>상태 전체</option><option>작성</option><option>계약</option><option>배정요청</option><option>출고예정</option><option>출고</option><option>취소</option></select>
-        <select class="filter-select"><option>구입조건 전체</option><option>현금</option><option>할부</option><option>운용리스</option><option>금융리스</option><option>렌트</option></select>
-        <select class="filter-select"><option>전시장 전체</option><option>수원</option><option>성수</option><option>하남</option><option>분당</option></select>
+        <select class="filter-select" onchange="applyContractFilters()"><option value="">상태 전체</option><option>작성</option><option>계약</option><option>배정요청</option><option>출고예정</option><option>출고</option><option>취소</option></select>
+        <select class="filter-select" onchange="applyContractFilters()"><option value="">구입조건 전체</option><option>현금</option><option>할부</option><option>운용리스</option><option>금융리스</option><option>렌트</option></select>
+        <select class="filter-select" onchange="applyContractFilters()"><option value="">전시장 전체</option><option>수원</option><option>성수</option><option>하남</option><option>분당</option></select>
         <div class="filter-right"><button class="btn btn-primary">+ 품의서 등록</button></div>
+      </div>
+      <div class="filter-bar" style="border-bottom:1px solid #f0f0f0; padding-top:10px;">
+        <div class="search-box"><span style="font-size:12px;color:#888;white-space:nowrap">차대번호</span><input id="filter-vin" type="text" placeholder="차대번호 입력…" oninput="applyContractFilters()" style="width:160px"></div>
+        <div class="search-box"><span style="font-size:12px;color:#888;white-space:nowrap">계약자 전화번호</span><input id="filter-phone" type="number" placeholder="숫자만 입력…" oninput="applyContractFilters()" style="width:150px"></div>
+        <div class="search-box"><span style="font-size:12px;color:#888;white-space:nowrap">대표차종</span><input id="filter-model" type="text" placeholder="차종 입력…" oninput="applyContractFilters()" style="width:130px"></div>
       </div>
       <div class="table-wrap">
         <table id="contract-table" class="clickable-table">
@@ -1312,6 +1317,40 @@ function descInsert(idx) {
 
 // 페이지 전환 시 패널 업데이트 연동
 const _origApplyState = _applyState;
+
+
+function applyContractFilters() {
+  const vinVal   = (document.getElementById('filter-vin')   || {}).value || '';
+  const phoneVal = (document.getElementById('filter-phone') || {}).value || '';
+  const modelVal = (document.getElementById('filter-model') || {}).value || '';
+
+  // 상태/구입조건/전시장 셀렉트 값
+  const selects = document.querySelectorAll('#page-contract .filter-bar select');
+  const statusVal = selects[0] ? selects[0].value : '';
+  const buyVal    = selects[1] ? selects[1].value : '';
+  const showVal   = selects[2] ? selects[2].value : '';
+
+  const rows = document.querySelectorAll('#contract-table tbody tr');
+  rows.forEach(row => {
+    const cells = row.querySelectorAll('td');
+    if (!cells.length) return;
+    const text = row.textContent;
+
+    // 컬럼 인덱스: No.=1, 계약서=2, 상태=3, 구분=4, 계약자명=5, 전화=6,
+    //   주소=7, 등록자=8, 출고전시장=9, 담당=10, 구입조건=11,
+    //   대표차종=12, 모델=13, ..., 차대번호=18(0-based)
+    const getCellText = (i) => cells[i] ? cells[i].textContent.trim() : '';
+
+    const vinMatch    = !vinVal   || getCellText(18).toLowerCase().includes(vinVal.toLowerCase());
+    const phoneMatch  = !phoneVal || getCellText(6).replace(/\D/g,'').includes(phoneVal.replace(/\D/g,''));
+    const modelMatch  = !modelVal || getCellText(12).toLowerCase().includes(modelVal.toLowerCase());
+    const statusMatch = !statusVal || getCellText(3).includes(statusVal);
+    const buyMatch    = !buyVal    || getCellText(11).includes(buyVal);
+    const showMatch   = !showVal   || getCellText(9).includes(showVal);
+
+    row.style.display = (vinMatch && phoneMatch && modelMatch && statusMatch && buyMatch && showMatch) ? '' : 'none';
+  });
+}
 
 function filterList(tableId, query) {
   const q = query.toLowerCase();
