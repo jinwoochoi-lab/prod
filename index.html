@@ -2395,24 +2395,32 @@ function _overlayBounds() {
   return { left: sideW, right: panelW };
 }
 function toggleNumberingMode() {
-  _numberingMode = !_numberingMode;
+  // 넘버링 추가 진입 시 비밀번호 확인
+  if (!_numberingMode) {
+    openPwModal(function() {
+      _numberingMode = true;
+      const btn     = document.getElementById('numberingModeBtn');
+      const overlay = document.getElementById('numberingOverlay');
+      const tip     = document.getElementById('numberingTip');
+      const b = _overlayBounds();
+      overlay.style.left  = b.left + 'px';
+      overlay.style.right = b.right + 'px';
+      btn.classList.add('active');
+      btn.textContent = '✖ 추가 종료';
+      overlay.classList.add('active');
+      tip.classList.add('visible');
+    });
+    return;
+  }
+  _numberingMode = false;
   const btn     = document.getElementById('numberingModeBtn');
   const overlay = document.getElementById('numberingOverlay');
   const tip     = document.getElementById('numberingTip');
-  if (_numberingMode) {
-    const b = _overlayBounds();
-    overlay.style.left  = b.left + 'px';
-    overlay.style.right = b.right + 'px';
-    btn.classList.add('active');
-    btn.textContent = '✖ 추가 종료';
-    overlay.classList.add('active');
-    tip.classList.add('visible');
-  } else {
-    btn.classList.remove('active');
-    btn.textContent = '🔢 넘버링 추가';
-    overlay.classList.remove('active');
-    tip.classList.remove('visible');
-  }
+  // 종료 처리
+  btn.classList.remove('active');
+  btn.textContent = '🔢 넘버링 추가';
+  overlay.classList.remove('active');
+  tip.classList.remove('visible');
 }
 
 function clearAllNumbers() {
