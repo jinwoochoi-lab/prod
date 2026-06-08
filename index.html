@@ -442,6 +442,56 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 .log-clear-btn { background:#fff; border:1px solid #e74c3c; color:#e74c3c; border-radius:6px; padding:5px 14px; font-size:12px; cursor:pointer; }
 .log-clear-btn:hover { background:#fdf0ee; }
 
+
+/* ── 넘버링 ── */
+.numbering-overlay {
+  display: none; position: fixed; inset: 0; z-index: 800;
+  cursor: crosshair;
+  background: rgba(77,159,255,.08);
+  border: 2px dashed #4d9fff;
+  pointer-events: all;
+}
+.numbering-overlay.active { display: block; }
+.numbering-badge {
+  position: fixed; z-index: 799;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: #e74c3c; color: #fff;
+  font-size: 12px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.35);
+  transform: translate(-50%, -50%);
+  user-select: none; transition: background .15s;
+  border: 2px solid #fff;
+}
+.numbering-badge:hover { background: #c0392b; }
+.numbering-badge:hover::after {
+  content: '×'; font-size: 14px;
+}
+.numbering-badge:hover span { display: none; }
+.desc-numbering-bar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-bottom: 1px solid #f0f2f5;
+  background: #f9fbff;
+}
+.numbering-mode-btn {
+  display: flex; align-items: center; gap: 5px;
+  background: #fff; border: 1px solid #d0d7e2;
+  border-radius: 6px; padding: 5px 10px;
+  font-size: 12px; font-weight: 600; color: #445; cursor: pointer;
+  transition: all .15s;
+}
+.numbering-mode-btn:hover { background: #e8f3ff; border-color: #4d9fff; color: #4d9fff; }
+.numbering-mode-btn.active { background: #4d9fff; border-color: #4d9fff; color: #fff; }
+.numbering-clear-btn {
+  margin-left: auto; background: none; border: none;
+  font-size: 11px; color: #aaa; cursor: pointer; padding: 2px 4px;
+}
+.numbering-clear-btn:hover { color: #e74c3c; }
+.numbering-tip {
+  font-size: 10px; color: #4d9fff; padding: 4px 14px 6px;
+  display: none; background: #e8f3ff;
+}
+.numbering-tip.visible { display: block; }
 </style>
 </head>
 <body>
@@ -475,6 +525,9 @@ tbody td { padding:10px 14px; vertical-align:middle; }
     </div>
   </div>
 </div>
+<!-- 넘버링 오버레이 -->
+<div id="numberingOverlay" class="numbering-overlay"></div>
+
 <!-- 로그인 모달 -->
 <div class="login-overlay" id="loginModal">
   <div class="login-box">
@@ -518,6 +571,11 @@ tbody td { padding:10px 14px; vertical-align:middle; }
     <h3>📝 설명</h3>
     <span class="page-label" id="descPageLabel">대시보드</span>
   </div>
+  <div class="desc-numbering-bar">
+    <button class="numbering-mode-btn" id="numberingModeBtn" onclick="toggleNumberingMode()">🔢 넘버링 추가</button>
+    <button class="numbering-clear-btn" onclick="clearAllNumbers()" title="넘버링 전체 삭제">🗑 초기화</button>
+  </div>
+  <div class="numbering-tip" id="numberingTip">화면 위 원하는 위치를 클릭하세요</div>
   <div class="desc-panel-body" id="descBody">
     <!-- 동적으로 렌더링 -->
   </div>
@@ -1547,11 +1605,13 @@ function _applyState(state) {
   }
   window.scrollTo(0, 0);
   if (typeof descRender === 'function') descRender(state.page + '-' + (state.view || 'list'));
+  if (typeof renderNumbers === 'function') renderNumbers();
   if (page === 'user' || page === 'inquiry') renderInquiryLog();
 }
 
 /* ── 사이드바 메뉴 전환 ── */
 function switchPage(id, el) {
+  if (_numberingMode) toggleNumberingMode();
   const state = { page: id, view: 'list' };
   history.pushState(state, '', '#' + id);
   _applyState(state);
@@ -2273,6 +2333,92 @@ function applyFilterAndReset(tableId, key, filterFn) {
   if (_pgState[key]) _pgState[key].page = 1;
   renderPagination(key);
 }
+
+
+/* ══════════════════════════════════════════
+   넘버링 기능
+   ══════════════════════════════════════════ */
+let _numberingMode = false;
+
+function _numberStorageKey() {
+  return 'dmNumbers_' + (_descPage || 'dashboard-list');
+}
+function _loadNumbers() {
+  const s = localStorage.getItem(_numberStorageKey());
+  return s ? JSON.parse(s) : [];
+}
+function _saveNumbers(nums) {
+  localStorage.setItem(_numberStorageKey(), JSON.stringify(nums));
+}
+
+function toggleNumberingMode() {
+  _numberingMode = !_numberingMode;
+  const btn     = document.getElementById('numberingModeBtn');
+  const overlay = document.getElementById('numberingOverlay');
+  const tip     = document.getElementById('numberingTip');
+  if (_numberingMode) {
+    btn.classList.add('active');
+    btn.textContent = '✖ 추가 종료';
+    overlay.classList.add('active');
+    tip.classList.add('visible');
+  } else {
+    btn.classList.remove('active');
+    btn.textContent = '🔢 넘버링 추가';
+    overlay.classList.remove('active');
+    tip.classList.remove('visible');
+  }
+}
+
+function clearAllNumbers() {
+  if (!confirm('이 화면의 넘버링을 모두 삭제하시겠습니까?')) return;
+  localStorage.removeItem(_numberStorageKey());
+  renderNumbers();
+}
+
+function deleteNumber(id) {
+  if (!confirm('이 넘버링을 삭제하시겠습니까?')) return;
+  let nums = _loadNumbers().filter(n => n.id !== id);
+  nums = nums.map((n, i) => ({ ...n, num: i + 1 }));
+  _saveNumbers(nums);
+  renderNumbers();
+}
+
+function renderNumbers() {
+  document.querySelectorAll('.numbering-badge').forEach(el => el.remove());
+  const nums = _loadNumbers();
+  nums.forEach(n => {
+    const badge = document.createElement('div');
+    badge.className = 'numbering-badge';
+    badge.innerHTML = '<span>' + n.num + '</span>';
+    badge.title = n.num + '번 마커 — 클릭하여 삭제';
+    // position: fixed, stored as viewport-relative % + scrollY offset
+    badge.style.left = n.vx + 'vw';
+    badge.style.top  = (n.vy + n.sy - window.scrollY) + 'px';
+    badge.onclick = (e) => { e.stopPropagation(); deleteNumber(n.id); };
+    document.body.appendChild(badge);
+  });
+}
+
+// 오버레이 클릭 → 넘버링 생성
+document.getElementById('numberingOverlay').addEventListener('click', function(e) {
+  if (!_numberingMode) return;
+  const nums = _loadNumbers();
+  nums.push({
+    id: Date.now(),
+    num: nums.length + 1,
+    vx: (e.clientX / window.innerWidth) * 100,   // viewport % 가로
+    vy: e.clientY,                                 // viewport px 세로
+    sy: window.scrollY                             // 스크롤 오프셋
+  });
+  _saveNumbers(nums);
+  renderNumbers();
+});
+
+// 스크롤 시 배지 위치 갱신
+window.addEventListener('scroll', renderNumbers, { passive: true });
+
+// 페이지 전환 시 해당 페이지 넘버링 렌더
+const _origApplyState2 = typeof _origApplyState !== 'undefined' ? _origApplyState : null;
 
 </script>
 </body>
