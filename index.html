@@ -1097,6 +1097,11 @@ function openPwModal(callback, mode) {
     document.getElementById('pwModalDesc').innerHTML = '수정하려면 비밀번호를 입력해 주세요.';
     document.querySelector('.pw-confirm').textContent = '확인';
     document.querySelector('.pw-confirm').style.background = '#4d9fff';
+  } else if (mode === 'add') {
+    document.querySelector('.pw-modal-box h3').textContent = '➕ 추가 확인';
+    document.getElementById('pwModalDesc').innerHTML = '설명 항목을 추가하려면 비밀번호를 입력해 주세요.';
+    document.querySelector('.pw-confirm').textContent = '추가';
+    document.querySelector('.pw-confirm').style.background = '#34c38f';
   } else {
     document.querySelector('.pw-modal-box h3').textContent = '🔒 삭제 확인';
     document.getElementById('pwModalDesc').innerHTML = '해당 설명과 작성된 댓글이 모두 삭제됩니다.<br>삭제하려면 비밀번호를 입력해 주세요.';
@@ -1398,20 +1403,22 @@ function descMakeDivider(insertIdx) {
   return div;
 }
 function descInsert(idx) {
-  const d = descGetData();
-  d.items.splice(idx, 0, '');
-  // shift comment keys up
-  const newComments = {};
-  Object.keys(d.comments).forEach(k => {
-    const ki = parseInt(k);
-    if (ki < idx) newComments[ki] = d.comments[k];
-    else newComments[ki + 1] = d.comments[k];
-  });
-  d.comments = newComments;
-  descSave(_descPage, d);
-  descRender(_descPage);
-  const entries = document.querySelectorAll('#descBody .desc-entry textarea[data-role="desc"]');
-  if (entries[idx]) entries[idx].focus();
+  openPwModal(function() {
+    const d = descGetData();
+    d.items.splice(idx, 0, '');
+    // shift comment keys up
+    const newComments = {};
+    Object.keys(d.comments).forEach(k => {
+      const ki = parseInt(k);
+      if (ki < idx) newComments[ki] = d.comments[k];
+      else newComments[ki + 1] = d.comments[k];
+    });
+    d.comments = newComments;
+    descSave(_descPage, d);
+    descRender(_descPage);
+    const entries = document.querySelectorAll('#descBody .desc-entry textarea[data-role="desc"]');
+    if (entries[idx]) entries[idx].focus();
+  }, 'add');
 }
 
 // 페이지 전환 시 패널 업데이트 연동
