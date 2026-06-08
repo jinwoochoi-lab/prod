@@ -505,6 +505,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
   <div class="nav-item" onclick="switchPage('customer',this)"><span class="icon">👤</span> 고객 정보<span class="count">2,883</span></div>
   <div class="nav-item" onclick="switchPage('contract',this)"><span class="icon">📋</span> 품의서 정보<span class="count">348</span></div>
   <div class="nav-item" onclick="switchPage('inventory',this)"><span class="icon">🚗</span> 재고 정보<span class="count">127</span></div>
+  <div class="nav-item" onclick="switchPage('inquiry',this)"><span class="icon">🔍</span> 조회 이력</div>
   <div class="sidebar-section">시스템</div>
   <div class="nav-item" onclick="switchPage('user',this)"><span class="icon">🔐</span> 사용자 정보<span class="count">84</span></div>
 </nav>
@@ -751,11 +752,18 @@ tbody td { padding:10px 14px; vertical-align:middle; }
     </div>
   </div>
 
-  <!-- 조회 이력 -->
-  <div class="card" style="margin-top:22px">
+</div>
+
+<!-- ===== 조회 이력 ===== -->
+<div id="page-inquiry" class="page">
+  <div class="page-header">
+    <div class="page-title">🔍 조회 이력</div>
+    <div class="page-desc">마스킹 해제(개인정보 조회) 이력 · 접속자별 조회 목적 기록</div>
+  </div>
+  <div class="card">
     <div class="card-header" style="display:flex;align-items:center;justify-content:space-between">
       <div style="display:flex;align-items:center;gap:10px">
-        <h2>🔍 조회 이력</h2>
+        <h2>조회 이력 목록</h2>
         <span class="pill" id="inquiryLogCount">0건</span>
       </div>
       <button class="log-clear-btn" onclick="clearInquiryLog()">전체 삭제</button>
@@ -767,7 +775,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
             <th style="width:140px">일시</th>
             <th style="width:90px">이름</th>
             <th style="width:100px">사번</th>
-            <th style="width:160px">조회 대상</th>
+            <th style="width:180px">조회 대상</th>
             <th>조회 목적</th>
           </tr>
         </thead>
@@ -975,7 +983,7 @@ function _applyState(state) {
   }
   window.scrollTo(0, 0);
   if (typeof descRender === 'function') descRender(state.page + '-' + (state.view || 'list'));
-  if (page === 'user') renderInquiryLog();
+  if (page === 'user' || page === 'inquiry') renderInquiryLog();
 }
 
 /* ── 사이드바 메뉴 전환 ── */
@@ -1203,6 +1211,7 @@ const DESC_PAGES = {
   'inventory-list':    '재고 정보 · 목록',
   'inventory-detail':  '재고 정보 · 상세',
   'user-list':         '사용자 정보',
+    'inquiry-list':      '조회 이력',
 };
 let _descPage = 'dashboard';
 
