@@ -18,7 +18,8 @@ body { font-family: 'Segoe UI','Apple SD Gothic Neo',sans-serif; background:#f0f
 
 /* SIDEBAR */
 .layout { display:flex; margin-top:60px; min-height:calc(100vh - 60px); }
-.sidebar { width:220px; background:#0f1629; color:#ccc; flex-shrink:0; position:fixed; top:60px; bottom:0; overflow-y:auto; }
+.sidebar { width:220px; background:#0f1629; color:#ccc; flex-shrink:0; position:fixed; top:60px; bottom:0; overflow-y:auto; transition:width .25s ease; overflow-x:hidden; }
+.sidebar.collapsed { width:0; }
 .sidebar-section { padding:20px 16px 8px; font-size:10px; color:#556; text-transform:uppercase; letter-spacing:1px; font-weight:600; }
 .nav-item { display:flex; align-items:center; gap:10px; padding:11px 20px; cursor:pointer; font-size:13.5px; color:#9aabb8; border-left:3px solid transparent; transition:all .15s; user-select:none; }
 .nav-item:hover { background:#1a2640; color:#fff; }
@@ -27,7 +28,7 @@ body { font-family: 'Segoe UI','Apple SD Gothic Neo',sans-serif; background:#f0f
 .nav-item .count { margin-left:auto; background:#1e3a5f; color:#4d9fff; font-size:10px; padding:2px 7px; border-radius:10px; }
 
 /* MAIN */
-.main { margin-left:220px; flex:1; padding:28px 32px; margin-right:300px; }
+.main { margin-left:220px; flex:1; padding:28px 32px; margin-right:300px; transition:margin-left .25s ease, margin-right .25s ease; }
 .page { display:none; }
 .page.active { display:block; }
 .sub-view { display:none; }
@@ -182,6 +183,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
   position: fixed;
   top: 60px; right: 0; bottom: 0;
   width: 280px;
+  transition: width .25s ease;
   background: #fff;
   border-left: 1px solid #e4eaf0;
   display: flex;
@@ -346,6 +348,55 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 .pw-confirm { background:#e74c3c; color:#fff; border:none; padding:7px 16px; border-radius:7px; font-size:13px; font-weight:600; cursor:pointer; }
 .pw-confirm:hover { background:#c0392b; }
 
+
+/* ── TOGGLE BUTTONS ── */
+.sidebar-toggle {
+  position: fixed;
+  top: 50%;
+  left: 220px;
+  transform: translateY(-50%) translateX(-50%);
+  z-index: 101;
+  width: 22px; height: 44px;
+  background: #1e3a5f;
+  border: 1px solid #2a4a6f;
+  border-radius: 0 6px 6px 0;
+  color: #4d9fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: left .25s ease;
+  box-shadow: 2px 0 6px rgba(0,0,0,.2);
+}
+.sidebar-toggle:hover { background: #2a4a6f; }
+.sidebar.collapsed ~ .main { margin-left: 0; }
+.desc-panel-toggle {
+  position: absolute;
+  top: 50%;
+  left: -14px;
+  transform: translateY(-50%);
+  width: 14px; height: 44px;
+  background: #e4eaf0;
+  border: 1px solid #d0d7e2;
+  border-right: none;
+  border-radius: 6px 0 0 6px;
+  color: #667;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  z-index: 91;
+  box-shadow: -2px 0 6px rgba(0,0,0,.06);
+}
+.desc-panel-toggle:hover { background: #d0d7e2; }
+.desc-panel.collapsed { width: 0; overflow: hidden; }
+.desc-panel.collapsed .desc-panel-toggle {
+  left: -14px;
+  border-radius: 6px 0 0 6px;
+}
+
 .footer { margin-top:40px; padding:16px; text-align:center; font-size:12px; color:#aaa; }
 </style>
 </head>
@@ -398,8 +449,10 @@ tbody td { padding:10px 14px; vertical-align:middle; }
   <div class="nav-item" onclick="switchPage('user',this)"><span class="icon">🔐</span> 사용자 정보<span class="count">84</span></div>
 </nav>
 
+<button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()" title="메뉴 접기/펼치기">◀</button>
 <!-- RIGHT DESCRIPTION PANEL -->
 <aside class="desc-panel" id="descPanel">
+  <button class="desc-panel-toggle" id="descToggle" onclick="toggleDescPanel()" title="패널 접기/펼치기">▶</button>
   <div class="desc-panel-header">
     <h3>📝 설명</h3>
     <span class="page-label" id="descPageLabel">대시보드</span>
@@ -958,6 +1011,45 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === this) closePwModal();
   });
 });
+
+
+/* ── SIDEBAR & PANEL TOGGLES ── */
+let _sidebarOpen = true;
+let _descOpen = true;
+
+function toggleSidebar() {
+  _sidebarOpen = !_sidebarOpen;
+  const sidebar = document.querySelector('.sidebar');
+  const btn = document.getElementById('sidebarToggle');
+  const main = document.querySelector('.main');
+  if (_sidebarOpen) {
+    sidebar.classList.remove('collapsed');
+    btn.style.left = '220px';
+    btn.textContent = '◀';
+    main.style.marginLeft = '220px';
+  } else {
+    sidebar.classList.add('collapsed');
+    btn.style.left = '0px';
+    btn.textContent = '▶';
+    main.style.marginLeft = '0px';
+  }
+}
+
+function toggleDescPanel() {
+  _descOpen = !_descOpen;
+  const panel = document.querySelector('.desc-panel');
+  const btn = document.getElementById('descToggle');
+  const main = document.querySelector('.main');
+  if (_descOpen) {
+    panel.classList.remove('collapsed');
+    btn.textContent = '▶';
+    main.style.marginRight = '300px';
+  } else {
+    panel.classList.add('collapsed');
+    btn.textContent = '◀';
+    main.style.marginRight = '0px';
+  }
+}
 
 let _contractInquiryRow = null;
 function openContractInquiry(e, rowNo) {
