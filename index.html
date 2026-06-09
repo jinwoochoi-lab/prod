@@ -2392,12 +2392,12 @@ function _saveNumbers(nums) {
 }
 
 function _overlayBounds() {
-  // 사이드바·설명 패널 제외한 메인 영역만 오버레이
-  const sidebar = document.querySelector('.sidebar');
-  const panel   = document.querySelector('.desc-panel');
-  const sideW   = (sidebar && !sidebar.classList.contains('collapsed')) ? (sidebar.getBoundingClientRect().right) : 0;
-  const panelW  = (panel  && !panel.classList.contains('collapsed'))  ? (window.innerWidth - panel.getBoundingClientRect().left) : BTN_W;
-  return { left: sideW, right: panelW };
+  // 설명 패널만 제외, 사이드바·헤더 포함 전체 오버레이
+  const panel  = document.querySelector('.desc-panel');
+  const panelW = (panel && !panel.classList.contains('collapsed'))
+                   ? (window.innerWidth - panel.getBoundingClientRect().left)
+                   : BTN_W;
+  return { left: 0, right: panelW };
 }
 function toggleNumberingMode() {
   // 넘버링 추가 진입 시 비밀번호 확인
