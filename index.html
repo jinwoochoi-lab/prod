@@ -71,7 +71,7 @@ body { font-family: 'Segoe UI','Apple SD Gothic Neo',sans-serif; background:#f0f
 .btn-edit-detail:hover { background:#e8f3ff; }
 .btn-save-detail { background:#4d9fff; color:#fff; border:none; padding:6px 16px; border-radius:7px; font-size:13px; font-weight:600; cursor:pointer; display:none; }
 .btn-save-detail:hover { background:#2e7de0; }
-.edit-input { width:100%; border:1px solid #c8dcff; border-radius:5px; padding:5px 8px; font-size:13px; font-family:inherit; background:#f7faff; outline:none; }
+.edit-input, select.edit-input { width:100%; border:1px solid #c8dcff; border-radius:5px; padding:5px 8px; font-size:13px; font-family:inherit; background:#f7faff; outline:none; box-sizing:border-box; }
 .edit-input:focus { border-color:#4d9fff; }
 .btn-inquiry { background:#4d9fff; color:#fff; border:none; padding:4px 10px; border-radius:5px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap; }
 .btn-inquiry:hover { background:#2e7de0; }
@@ -1758,26 +1758,110 @@ document.getElementById('inquiryModal').addEventListener('click', function(e) {
 });
 
 let _customerEditing = false;
+
+function _makeSelect(options, cur) {
+  let h = '<select class="edit-input">';
+  options.forEach(o => {
+    h += '<option value="' + o + '"' + (o === cur ? ' selected' : '') + '>' + o + '</option>';
+  });
+  return h + '</select>';
+}
+
 function toggleCustomerEdit() {
   _customerEditing = true;
   document.getElementById('btn-edit-customer').style.display = 'none';
   document.getElementById('btn-save-customer').style.display = 'inline-block';
-  // 정보·참고사항 셀을 인풋으로 전환
-  document.querySelectorAll('#tbl-customer .col-example, #tbl-customer .col-note').forEach(td => {
-    const val = td.dataset.value || td.textContent.trim();
-    td.innerHTML = '<input class="edit-input" value="' + val.replace(/"/g,'&quot;') + '">';
-  });
-}
-function saveCustomerEdit() {
-  // 인풋 값을 텍스트로 저장
-  document.querySelectorAll('#tbl-customer .col-example, #tbl-customer .col-note').forEach(td => {
-    const input = td.querySelector('input');
-    if (input) {
-      const newVal = input.value;
-      td.dataset.value = newVal;
-      td.textContent = newVal;
+
+  const rows = document.querySelectorAll('#tbl-customer tbody tr');
+  rows.forEach(row => {
+    const no = parseInt(row.querySelector('.col-no').textContent.trim());
+    const exTd   = row.querySelector('.col-example');
+    const noteTd = row.querySelector('.col-note');
+
+    // ── 참고사항: 일괄 text input ──
+    if (noteTd) {
+      const v = noteTd.dataset.value || noteTd.textContent.trim();
+      noteTd.innerHTML = '<input class="edit-input" type="text" value="' + v.replace(/"/g,'&quot;') + '">';
+    }
+
+    if (!exTd) return;
+    const val = exTd.dataset.value || exTd.textContent.trim();
+
+    switch (no) {
+      case 1:  // 고객번호 – 수정불가
+        exTd.innerHTML = '<input class="edit-input" value="' + val.replace(/"/g,'&quot;') + '" disabled style="background:#f4f4f4;color:#aaa;cursor:not-allowed">';
+        break;
+      case 3:  // 고객구분
+        exTd.innerHTML = _makeSelect(['출고고객','BMW오너','가망고객','잠재고객'], val);
+        break;
+      case 4:  // 고객유형
+        exTd.innerHTML = _makeSelect(['개인','법인','개인사업자'], val);
+        break;
+      case 5:  // 전시장
+        exTd.innerHTML = _makeSelect(['남양주','대치','동대문','성수1','성수2','송파','수원','양재','원주','잠실','제주','하남','한남'], val);
+        break;
+      case 6:  // 팀 – select (options TBD)
+        exTd.innerHTML = '<select class="edit-input"><option value="">선택</option></select>';
+        break;
+      case 10: // 생년월일
+        exTd.innerHTML = '<input class="edit-input" type="date" value="' + val + '">';
+        break;
+      case 11: // 성별
+        exTd.innerHTML = _makeSelect(['선택','남자','여자'], val);
+        break;
+      case 14: // 휴대전화 – 숫자만 입력
+        exTd.innerHTML = '<input class="edit-input" type="text" inputmode="numeric" placeholder="숫자만 입력 (01012345678)" value="' + val.replace(/[^0-9]/g,'') + '" data-format="phone">';
+        break;
+      case 18: // 예상구입시기
+        exTd.innerHTML = '<input class="edit-input" type="date" value="">';
+        break;
+      case 20: // 최초등록일
+        exTd.innerHTML = '<input class="edit-input" type="date" value="' + val + '">';
+        break;
+      case 22: // 사업자번호 – 숫자만 입력
+        exTd.innerHTML = '<input class="edit-input" type="text" inputmode="numeric" placeholder="숫자만 입력" value="' + val.replace(/[^0-9]/g,'') + '" data-format="biz">';
+        break;
+      default: // 나머지 – text input (현 상태 유지)
+        exTd.innerHTML = '<input class="edit-input" type="text" value="' + val.replace(/"/g,'&quot;') + '">';
     }
   });
+}
+
+function saveCustomerEdit() {
+  const rows = document.querySelectorAll('#tbl-customer tbody tr');
+  rows.forEach(row => {
+    const no = parseInt(row.querySelector('.col-no').textContent.trim());
+    const exTd   = row.querySelector('.col-example');
+    const noteTd = row.querySelector('.col-note');
+
+    // 참고사항 저장
+    if (noteTd) {
+      const inp = noteTd.querySelector('input,select');
+      if (inp) { noteTd.dataset.value = inp.value; noteTd.textContent = inp.value; }
+    }
+
+    if (!exTd || no === 1) return; // 고객번호 수정불가
+
+    const inp = exTd.querySelector('input,select');
+    if (!inp) return;
+    let newVal = inp.value;
+
+    // 포맷 변환
+    if (inp.dataset.format === 'phone') {
+      const d = newVal.replace(/\D/g,'');
+      if (d.length === 11)      newVal = d.slice(0,3)+'-'+d.slice(3,7)+'-'+d.slice(7);
+      else if (d.length === 10) newVal = d.slice(0,3)+'-'+d.slice(3,6)+'-'+d.slice(6);
+      else                      newVal = d;
+    } else if (inp.dataset.format === 'biz') {
+      const d = newVal.replace(/\D/g,'');
+      if (d.length === 10) newVal = d.slice(0,3)+'-'+d.slice(3,5)+'-'+d.slice(5);
+      else                 newVal = d;
+    }
+
+    exTd.dataset.value = newVal;
+    exTd.textContent = newVal;
+  });
+
   document.getElementById('btn-edit-customer').style.display = 'inline-block';
   document.getElementById('btn-save-customer').style.display = 'none';
   _customerEditing = false;
