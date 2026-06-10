@@ -1798,7 +1798,7 @@ function toggleCustomerEdit() {
         exTd.innerHTML = _makeSelect(['개인','법인','개인사업자'], val);
         break;
       case 5:  // 전시장
-        exTd.innerHTML = _makeSelect(['남양주','대치','동대문','성수1','성수2','송파','수원','양재','원주','잠실','제주','하남','한남'], val);
+        exTd.innerHTML = _makeSelect(['선택','남양주','대치','동대문','성수1','성수2','송파','수원','양재','원주','잠실','제주','하남','한남'], val);
         break;
       case 6:  // 팀 – select (options TBD)
         exTd.innerHTML = '<select class="edit-input"><option value="">선택</option></select>';
@@ -1820,6 +1820,9 @@ function toggleCustomerEdit() {
         break;
       case 22: // 사업자번호 – 숫자만 입력
         exTd.innerHTML = '<input class="edit-input" type="text" inputmode="numeric" placeholder="숫자만 입력" value="' + val.replace(/[^0-9]/g,'') + '" data-format="biz">';
+        break;
+      case 17: // 판매전만
+        exTd.innerHTML = _makeSelect(['선택','Hot','Warm','Cold'], val);
         break;
       default: // 나머지 – text input (현 상태 유지)
         exTd.innerHTML = '<input class="edit-input" type="text" value="' + val.replace(/"/g,'&quot;') + '">';
