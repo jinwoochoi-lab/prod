@@ -630,10 +630,27 @@ tbody td { padding:10px 14px; vertical-align:middle; }
     <div class="page-header"><div class="page-title">👤 고객 정보</div><div class="page-desc">전체 고객 목록</div></div>
     <div class="card">
       <div class="filter-bar">
-        <div class="search-box">🔍<input type="text" placeholder="고객명·고객번호 검색…" oninput="filterList('customer-table',this.value)"></div>
-        <select class="filter-select"><option>고객구분 전체</option><option>출고고객</option><option>가망고객</option><option>잠재고객</option><option>BMW오너</option></select>
-        <select class="filter-select"><option>전시장 전체</option><option>수원</option><option>성수</option><option>하남</option><option>분당</option></select>
-        <div class="filter-right"><button class="btn btn-primary">+ 고객 등록</button></div>
+        <div class="search-box">🔍<input type="text" id="customer-search" placeholder="고객명·고객번호 검색…" oninput="applyCustomerFilters()"></div>
+        <select class="filter-select" id="cf-gubun" onchange="applyCustomerFilters()">
+          <option value="">고객구분 전체</option>
+          <option>출고고객</option><option>BMW오너</option><option>가망고객</option><option>잠재고객</option>
+        </select>
+        <select class="filter-select" id="cf-type" onchange="applyCustomerFilters()">
+          <option value="">고객유형 전체</option>
+          <option>개인</option><option>법인</option><option>개인사업자</option>
+        </select>
+        <select class="filter-select" id="cf-store" onchange="applyCustomerFilters()">
+          <option value="">전시장 전체</option>
+          <option>남양주</option><option>대치</option><option>동대문</option><option>성수1</option>
+          <option>성수2</option><option>송파</option><option>수원</option><option>양재</option>
+          <option>원주</option><option>잠실</option><option>제주</option><option>하남</option><option>한남</option>
+        </select>
+        <select class="filter-select" id="cf-gender" onchange="applyCustomerFilters()">
+          <option value="">성별 전체</option>
+          <option>남자</option><option>여자</option>
+        </select>
+        <button class="filter-select" style="cursor:pointer;color:#e74c3c;border-color:#e74c3c;background:#fff" onclick="resetCustomerFilters()">✕ 초기화</button>
+        <div class="filter-right" style="margin-left:auto"><button class="btn btn-primary">+ 고객 등록</button></div>
       </div>
       <div class="table-wrap">
         <table id="customer-table" class="clickable-table">
@@ -2279,6 +2296,45 @@ function applyContractFilters() {
 
     row.style.display = (vinMatch && phoneMatch && modelMatch && statusMatch && buyMatch && showMatch) ? '' : 'none';
   });
+}
+
+
+function applyCustomerFilters() {
+  const q      = (document.getElementById('customer-search')?.value || '').toLowerCase();
+  const gubun  = document.getElementById('cf-gubun')?.value  || '';
+  const type   = document.getElementById('cf-type')?.value   || '';
+  const store  = document.getElementById('cf-store')?.value  || '';
+  const gender = document.getElementById('cf-gender')?.value || '';
+
+  const rows = Array.from(document.querySelectorAll('#customer-table tbody tr'));
+  rows.forEach(row => {
+    const tds = row.querySelectorAll('td');
+    const text    = row.textContent.toLowerCase();
+    const rowGubun  = tds[4]?.textContent.trim() || '';   // 고객구분
+    const rowType   = tds[5]?.textContent.trim() || '';   // 고객유형
+    const rowStore  = tds[6]?.textContent.trim() || '';   // 전시장
+    const rowGender = tds[12]?.textContent.trim() || '';  // 성별
+
+    const pass =
+      (!q      || text.includes(q)) &&
+      (!gubun  || rowGubun  === gubun) &&
+      (!type   || rowType   === type) &&
+      (!store  || rowStore  === store) &&
+      (!gender || rowGender === gender);
+
+    row.dataset.filtered = pass ? 'true' : 'false';
+    row.style.display = '';
+  });
+  if (_pgState['customer']) { _pgState['customer'].page = 1; renderPagination('customer'); }
+}
+
+function resetCustomerFilters() {
+  const ids = ['customer-search','cf-gubun','cf-type','cf-store','cf-gender'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  applyCustomerFilters();
 }
 
 function filterList(tableId, query) {
