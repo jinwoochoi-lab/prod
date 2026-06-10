@@ -1792,10 +1792,10 @@ function toggleCustomerEdit() {
         exTd.innerHTML = '<input class="edit-input" value="' + val.replace(/"/g,'&quot;') + '" disabled style="background:#f4f4f4;color:#aaa;cursor:not-allowed">';
         break;
       case 3:  // 고객구분
-        exTd.innerHTML = _makeSelect(['출고고객','BMW오너','가망고객','잠재고객'], val);
+        exTd.innerHTML = _makeSelect(['선택','출고고객','BMW오너','가망고객','잠재고객'], val);
         break;
       case 4:  // 고객유형
-        exTd.innerHTML = _makeSelect(['개인','법인','개인사업자'], val);
+        exTd.innerHTML = _makeSelect(['선택','개인','법인','개인사업자'], val);
         break;
       case 5:  // 전시장
         exTd.innerHTML = _makeSelect(['선택','남양주','대치','동대문','성수1','성수2','송파','수원','양재','원주','잠실','제주','하남','한남'], val);
