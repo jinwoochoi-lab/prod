@@ -1533,116 +1533,1259 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 
 <!-- ===== 사용자 정보 ===== -->
 <div id="page-user" class="page">
-  <div class="page-header"><div class="page-title">🔐 사용자 정보</div><div class="page-desc">시스템 사용자 필드 정의 및 권한 체계</div></div>
-  <div class="stat-row">
-    <div class="stat-card" style="--accent:#4d9fff"><div class="label">전체 필드</div><div class="value">15</div></div>
-    <div class="stat-card" style="--accent:#34c38f"><div class="label">사용권한 종류</div><div class="value">11</div></div>
-    <div class="stat-card" style="--accent:#f7a35c"><div class="label">직급</div><div class="value">8</div></div>
-    <div class="stat-card" style="--accent:#e74c3c"><div class="label">드롭박스 필드</div><div class="value">6</div></div>
+
+  <!-- ─── USER LIST ─── -->
+  <div id="user-list" class="sub-view active">
+    <div class="page-header">
+      <div class="page-title">🔐 사용자 정보</div>
+      <div class="page-desc">시스템 사용자 목록 및 계정 현황</div>
+    </div>
+    <div class="filter-bar" style="margin-bottom:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <input id="user-search" type="text" placeholder="🔍 이름·아이디·부서 검색…" oninput="applyUserFilters()"
+             style="padding:7px 12px;border:1px solid #dde1e7;border-radius:8px;font-size:13px;width:220px">
+      <select id="uf-store" onchange="applyUserFilters()" style="padding:7px 10px;border:1px solid #dde1e7;border-radius:8px;font-size:13px">
+        <option value="">전시장 전체</option>
+        <option>남양주</option><option>대치</option><option>동대문</option><option>성수1</option>
+        <option>성수2</option><option>송파</option><option>수원</option><option>양재</option>
+        <option>원주</option><option>잠실</option><option>제주</option><option>하남</option><option>한남</option>
+      </select>
+      <select id="uf-perm" onchange="applyUserFilters()" style="padding:7px 10px;border:1px solid #dde1e7;border-radius:8px;font-size:13px">
+        <option value="">사용권한 전체</option>
+        <option>Sales Consultant</option><option>Sales Leader</option><option>Receptionist</option>
+        <option>Marketing &amp; Sales Manager</option><option>General Director</option>
+        <option>CEO</option><option>ADMIN</option><option>Showroom Header</option>
+      </select>
+      <select id="uf-active" onchange="applyUserFilters()" style="padding:7px 10px;border:1px solid #dde1e7;border-radius:8px;font-size:13px">
+        <option value="">사용여부 전체</option><option>사용중</option><option>미사용</option>
+      </select>
+    </div>
+    <div class="card" style="padding:0">
+      <div class="table-wrap">
+        <table id="user-table">
+          <thead>
+            <tr>
+              <th class="col-no">No.</th>
+              <th>아이디</th><th>사용자명</th><th>전시장</th><th>소속부서</th>
+              <th>사번</th><th>직급</th><th>사용권한</th><th>사용여부</th><th>영업여부</th><th>입사일</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="user-row-1" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">1</td>
+              <td>김214</td>
+              <td>김민준</td>
+              <td>동대문</td>
+              <td>동대문1팀</td>
+              <td>2010859</td>
+              <td>과장</td>
+              <td>Marketing & Sales Manager</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2009-01-01</td>
+            </tr>
+            <tr id="user-row-2" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">2</td>
+              <td>이997</td>
+              <td>이서연</td>
+              <td>수원</td>
+              <td>수원5팀</td>
+              <td>2019127</td>
+              <td>과장</td>
+              <td>Marketing & Sales Manager</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2008-03-01</td>
+            </tr>
+            <tr id="user-row-3" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">3</td>
+              <td>박689</td>
+              <td>박지호</td>
+              <td>대치</td>
+              <td>대치3팀</td>
+              <td>2012320</td>
+              <td>부장</td>
+              <td>CEO</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2016-01-01</td>
+            </tr>
+            <tr id="user-row-4" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">4</td>
+              <td>최227</td>
+              <td>최유나</td>
+              <td>성수1</td>
+              <td>성수14팀</td>
+              <td>2011665</td>
+              <td>부장</td>
+              <td>CEO</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2010-04-01</td>
+            </tr>
+            <tr id="user-row-5" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">5</td>
+              <td>정913</td>
+              <td>정다은</td>
+              <td>분당</td>
+              <td>분당4팀</td>
+              <td>2020954</td>
+              <td>대리</td>
+              <td>Receptionist</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2010-10-01</td>
+            </tr>
+            <tr id="user-row-6" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">6</td>
+              <td>강507</td>
+              <td>강민서</td>
+              <td>양재</td>
+              <td>양재2팀</td>
+              <td>2012573</td>
+              <td>차장</td>
+              <td>General Director</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2015-01-01</td>
+            </tr>
+            <tr id="user-row-7" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">7</td>
+              <td>조433</td>
+              <td>조현우</td>
+              <td>분당</td>
+              <td>분당1팀</td>
+              <td>2013680</td>
+              <td>부장</td>
+              <td>CEO</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2022-03-01</td>
+            </tr>
+            <tr id="user-row-8" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">8</td>
+              <td>윤162</td>
+              <td>윤소희</td>
+              <td>수원</td>
+              <td>수원5팀</td>
+              <td>2018369</td>
+              <td>상무</td>
+              <td>ADMIN</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2023-02-01</td>
+            </tr>
+            <tr id="user-row-9" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">9</td>
+              <td>한249</td>
+              <td>한지수</td>
+              <td>성수2</td>
+              <td>성수22팀</td>
+              <td>2022796</td>
+              <td>주임</td>
+              <td>Sales Leader</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2008-11-01</td>
+            </tr>
+            <tr id="user-row-10" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">10</td>
+              <td>임329</td>
+              <td>임재원</td>
+              <td>원주</td>
+              <td>원주3팀</td>
+              <td>2022756</td>
+              <td>주임</td>
+              <td>Sales Leader</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2016-09-01</td>
+            </tr>
+            <tr id="user-row-11" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">11</td>
+              <td>오866</td>
+              <td>오준혁</td>
+              <td>성수1</td>
+              <td>성수13팀</td>
+              <td>2023754</td>
+              <td>과장</td>
+              <td>Marketing & Sales Manager</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2024-01-01</td>
+            </tr>
+            <tr id="user-row-12" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">12</td>
+              <td>신948</td>
+              <td>신예은</td>
+              <td>잠실</td>
+              <td>잠실1팀</td>
+              <td>2011471</td>
+              <td>차장</td>
+              <td>General Director</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>비영업</td>
+              <td>2012-03-01</td>
+            </tr>
+            <tr id="user-row-13" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">13</td>
+              <td>황956</td>
+              <td>황태양</td>
+              <td>양재</td>
+              <td>양재2팀</td>
+              <td>2014640</td>
+              <td>상무</td>
+              <td>ADMIN</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2017-07-01</td>
+            </tr>
+            <tr id="user-row-14" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">14</td>
+              <td>배191</td>
+              <td>배다은</td>
+              <td>잠실</td>
+              <td>잠실5팀</td>
+              <td>2017223</td>
+              <td>과장</td>
+              <td>Marketing & Sales Manager</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2015-01-01</td>
+            </tr>
+            <tr id="user-row-15" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">15</td>
+              <td>노838</td>
+              <td>노지훈</td>
+              <td>수원</td>
+              <td>수원1팀</td>
+              <td>2024132</td>
+              <td>부장</td>
+              <td>CEO</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2012-12-01</td>
+            </tr>
+            <tr id="user-row-16" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">16</td>
+              <td>문932</td>
+              <td>문혜진</td>
+              <td>수원</td>
+              <td>수원4팀</td>
+              <td>2022516</td>
+              <td>주임</td>
+              <td>Sales Leader</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2009-11-01</td>
+            </tr>
+            <tr id="user-row-17" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">17</td>
+              <td>안694</td>
+              <td>안성민</td>
+              <td>하남</td>
+              <td>하남4팀</td>
+              <td>2021447</td>
+              <td>주임</td>
+              <td>Sales Leader</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2013-05-01</td>
+            </tr>
+            <tr id="user-row-18" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">18</td>
+              <td>류317</td>
+              <td>류소연</td>
+              <td>제주</td>
+              <td>제주1팀</td>
+              <td>2017927</td>
+              <td>주임</td>
+              <td>Sales Leader</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2010-04-01</td>
+            </tr>
+            <tr id="user-row-19" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">19</td>
+              <td>전649</td>
+              <td>전민재</td>
+              <td>잠실</td>
+              <td>잠실4팀</td>
+              <td>2013985</td>
+              <td>수습사원</td>
+              <td>Sales Consultant</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2022-05-01</td>
+            </tr>
+            <tr id="user-row-20" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">20</td>
+              <td>송848</td>
+              <td>송예진</td>
+              <td>동대문</td>
+              <td>동대문4팀</td>
+              <td>2012294</td>
+              <td>과장</td>
+              <td>Marketing & Sales Manager</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2009-01-01</td>
+            </tr>
+            <tr id="user-row-21" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">21</td>
+              <td>권411</td>
+              <td>권준서</td>
+              <td>양재</td>
+              <td>양재5팀</td>
+              <td>2012158</td>
+              <td>주임</td>
+              <td>Sales Leader</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2011-10-01</td>
+            </tr>
+            <tr id="user-row-22" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">22</td>
+              <td>하955</td>
+              <td>하소연</td>
+              <td>한남</td>
+              <td>한남1팀</td>
+              <td>2016773</td>
+              <td>부장</td>
+              <td>CEO</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2020-03-01</td>
+            </tr>
+            <tr id="user-row-23" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">23</td>
+              <td>백433</td>
+              <td>백민호</td>
+              <td>잠실</td>
+              <td>잠실3팀</td>
+              <td>2024869</td>
+              <td>수습사원</td>
+              <td>Sales Consultant</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2014-09-01</td>
+            </tr>
+            <tr id="user-row-24" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">24</td>
+              <td>심959</td>
+              <td>심지은</td>
+              <td>대치</td>
+              <td>대치1팀</td>
+              <td>2024350</td>
+              <td>차장</td>
+              <td>General Director</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2024-01-01</td>
+            </tr>
+            <tr id="user-row-25" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">25</td>
+              <td>남534</td>
+              <td>남재원</td>
+              <td>분당</td>
+              <td>분당1팀</td>
+              <td>2024237</td>
+              <td>주임</td>
+              <td>Sales Leader</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2014-12-01</td>
+            </tr>
+            <tr id="user-row-26" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">26</td>
+              <td>장915</td>
+              <td>장서현</td>
+              <td>동대문</td>
+              <td>동대문3팀</td>
+              <td>2018600</td>
+              <td>수습사원</td>
+              <td>Sales Consultant</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2018-03-01</td>
+            </tr>
+            <tr id="user-row-27" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">27</td>
+              <td>고261</td>
+              <td>고민준</td>
+              <td>성수2</td>
+              <td>성수24팀</td>
+              <td>2018822</td>
+              <td>수습사원</td>
+              <td>Sales Consultant</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2012-07-01</td>
+            </tr>
+            <tr id="user-row-28" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">28</td>
+              <td>이294</td>
+              <td>이수아</td>
+              <td>분당</td>
+              <td>분당3팀</td>
+              <td>2024915</td>
+              <td>수습사원</td>
+              <td>Sales Consultant</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2021-10-01</td>
+            </tr>
+            <tr id="user-row-29" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">29</td>
+              <td>박415</td>
+              <td>박태현</td>
+              <td>제주</td>
+              <td>제주2팀</td>
+              <td>2022930</td>
+              <td>상무</td>
+              <td>ADMIN</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2021-11-01</td>
+            </tr>
+            <tr id="user-row-30" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">30</td>
+              <td>최134</td>
+              <td>최서연</td>
+              <td>성수2</td>
+              <td>성수21팀</td>
+              <td>2016993</td>
+              <td>대표이사</td>
+              <td>Showroom Header</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2015-04-01</td>
+            </tr>
+            <tr id="user-row-31" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">31</td>
+              <td>정245</td>
+              <td>정건우</td>
+              <td>송파</td>
+              <td>송파3팀</td>
+              <td>2014985</td>
+              <td>차장</td>
+              <td>General Director</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2018-01-01</td>
+            </tr>
+            <tr id="user-row-32" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">32</td>
+              <td>강594</td>
+              <td>강지현</td>
+              <td>성수2</td>
+              <td>성수25팀</td>
+              <td>2014139</td>
+              <td>상무</td>
+              <td>ADMIN</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2024-02-01</td>
+            </tr>
+            <tr id="user-row-33" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">33</td>
+              <td>조255</td>
+              <td>조민서</td>
+              <td>분당</td>
+              <td>분당1팀</td>
+              <td>2021546</td>
+              <td>과장</td>
+              <td>Marketing & Sales Manager</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2018-11-01</td>
+            </tr>
+            <tr id="user-row-34" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">34</td>
+              <td>윤325</td>
+              <td>윤재원</td>
+              <td>양재</td>
+              <td>양재3팀</td>
+              <td>2020518</td>
+              <td>상무</td>
+              <td>ADMIN</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2020-11-01</td>
+            </tr>
+            <tr id="user-row-35" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">35</td>
+              <td>한664</td>
+              <td>한예진</td>
+              <td>송파</td>
+              <td>송파5팀</td>
+              <td>2023100</td>
+              <td>차장</td>
+              <td>General Director</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2022-08-01</td>
+            </tr>
+            <tr id="user-row-36" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">36</td>
+              <td>임965</td>
+              <td>임소연</td>
+              <td>양재</td>
+              <td>양재4팀</td>
+              <td>2022915</td>
+              <td>대리</td>
+              <td>Receptionist</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2010-04-01</td>
+            </tr>
+            <tr id="user-row-37" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">37</td>
+              <td>오997</td>
+              <td>오민준</td>
+              <td>수원</td>
+              <td>수원2팀</td>
+              <td>2012125</td>
+              <td>과장</td>
+              <td>Marketing & Sales Manager</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2014-12-01</td>
+            </tr>
+            <tr id="user-row-38" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">38</td>
+              <td>신169</td>
+              <td>신태양</td>
+              <td>잠실</td>
+              <td>잠실4팀</td>
+              <td>2013251</td>
+              <td>수습사원</td>
+              <td>Sales Consultant</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2024-08-01</td>
+            </tr>
+            <tr id="user-row-39" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">39</td>
+              <td>황808</td>
+              <td>황지수</td>
+              <td>수원</td>
+              <td>수원1팀</td>
+              <td>2017236</td>
+              <td>대표이사</td>
+              <td>Showroom Header</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2024-07-01</td>
+            </tr>
+            <tr id="user-row-40" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">40</td>
+              <td>배195</td>
+              <td>배준서</td>
+              <td>성수2</td>
+              <td>성수24팀</td>
+              <td>2017365</td>
+              <td>과장</td>
+              <td>Marketing & Sales Manager</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2016-08-01</td>
+            </tr>
+            <tr id="user-row-41" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">41</td>
+              <td>노637</td>
+              <td>노소연</td>
+              <td>수원</td>
+              <td>수원3팀</td>
+              <td>2015427</td>
+              <td>주임</td>
+              <td>Sales Leader</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2014-02-01</td>
+            </tr>
+            <tr id="user-row-42" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">42</td>
+              <td>문588</td>
+              <td>문민준</td>
+              <td>대치</td>
+              <td>대치5팀</td>
+              <td>2017525</td>
+              <td>과장</td>
+              <td>Marketing & Sales Manager</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2008-10-01</td>
+            </tr>
+            <tr id="user-row-43" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">43</td>
+              <td>안957</td>
+              <td>안서연</td>
+              <td>하남</td>
+              <td>하남3팀</td>
+              <td>2014871</td>
+              <td>상무</td>
+              <td>ADMIN</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2020-06-01</td>
+            </tr>
+            <tr id="user-row-44" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">44</td>
+              <td>류693</td>
+              <td>류태현</td>
+              <td>남양주</td>
+              <td>남양주2팀</td>
+              <td>2023578</td>
+              <td>수습사원</td>
+              <td>Sales Consultant</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2021-03-01</td>
+            </tr>
+            <tr id="user-row-45" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">45</td>
+              <td>전208</td>
+              <td>전지은</td>
+              <td>하남</td>
+              <td>하남3팀</td>
+              <td>2016435</td>
+              <td>대표이사</td>
+              <td>Showroom Header</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2021-05-01</td>
+            </tr>
+            <tr id="user-row-46" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">46</td>
+              <td>송294</td>
+              <td>송민재</td>
+              <td>하남</td>
+              <td>하남5팀</td>
+              <td>2010458</td>
+              <td>주임</td>
+              <td>Sales Leader</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2008-10-01</td>
+            </tr>
+            <tr id="user-row-47" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">47</td>
+              <td>권492</td>
+              <td>권소연</td>
+              <td>성수2</td>
+              <td>성수24팀</td>
+              <td>2020217</td>
+              <td>과장</td>
+              <td>Marketing & Sales Manager</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2011-03-01</td>
+            </tr>
+            <tr id="user-row-48" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">48</td>
+              <td>하995</td>
+              <td>하준혁</td>
+              <td>한남</td>
+              <td>한남1팀</td>
+              <td>2024419</td>
+              <td>상무</td>
+              <td>ADMIN</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2015-02-01</td>
+            </tr>
+            <tr id="user-row-49" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">49</td>
+              <td>백638</td>
+              <td>백서현</td>
+              <td>제주</td>
+              <td>제주5팀</td>
+              <td>2022223</td>
+              <td>수습사원</td>
+              <td>Sales Consultant</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2018-01-01</td>
+            </tr>
+            <tr id="user-row-50" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">50</td>
+              <td>심788</td>
+              <td>심민재</td>
+              <td>성수1</td>
+              <td>성수14팀</td>
+              <td>2015750</td>
+              <td>대표이사</td>
+              <td>Showroom Header</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2016-10-01</td>
+            </tr>
+            <tr id="user-row-51" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">51</td>
+              <td>남697</td>
+              <td>남지수</td>
+              <td>잠실</td>
+              <td>잠실4팀</td>
+              <td>2023848</td>
+              <td>차장</td>
+              <td>General Director</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2022-04-01</td>
+            </tr>
+            <tr id="user-row-52" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">52</td>
+              <td>장119</td>
+              <td>장예진</td>
+              <td>대치</td>
+              <td>대치1팀</td>
+              <td>2017971</td>
+              <td>대리</td>
+              <td>Receptionist</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2016-09-01</td>
+            </tr>
+            <tr id="user-row-53" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">53</td>
+              <td>고474</td>
+              <td>고소연</td>
+              <td>수원</td>
+              <td>수원1팀</td>
+              <td>2013837</td>
+              <td>대표이사</td>
+              <td>Showroom Header</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2008-02-01</td>
+            </tr>
+            <tr id="user-row-54" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">54</td>
+              <td>이998</td>
+              <td>이민준</td>
+              <td>송파</td>
+              <td>송파2팀</td>
+              <td>2014779</td>
+              <td>부장</td>
+              <td>CEO</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2018-06-01</td>
+            </tr>
+            <tr id="user-row-55" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">55</td>
+              <td>박378</td>
+              <td>박서현</td>
+              <td>분당</td>
+              <td>분당3팀</td>
+              <td>2014336</td>
+              <td>과장</td>
+              <td>Marketing & Sales Manager</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2013-04-01</td>
+            </tr>
+            <tr id="user-row-56" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">56</td>
+              <td>최783</td>
+              <td>최재원</td>
+              <td>분당</td>
+              <td>분당5팀</td>
+              <td>2022637</td>
+              <td>차장</td>
+              <td>General Director</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2017-01-01</td>
+            </tr>
+            <tr id="user-row-57" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">57</td>
+              <td>정331</td>
+              <td>정소연</td>
+              <td>분당</td>
+              <td>분당1팀</td>
+              <td>2010666</td>
+              <td>대리</td>
+              <td>Receptionist</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>비영업</td>
+              <td>2022-06-01</td>
+            </tr>
+            <tr id="user-row-58" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">58</td>
+              <td>강412</td>
+              <td>강예진</td>
+              <td>분당</td>
+              <td>분당4팀</td>
+              <td>2011941</td>
+              <td>상무</td>
+              <td>ADMIN</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2017-02-01</td>
+            </tr>
+            <tr id="user-row-59" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">59</td>
+              <td>조821</td>
+              <td>조지수</td>
+              <td>양재</td>
+              <td>양재4팀</td>
+              <td>2019710</td>
+              <td>과장</td>
+              <td>Marketing & Sales Manager</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2021-05-01</td>
+            </tr>
+            <tr id="user-row-60" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">60</td>
+              <td>윤107</td>
+              <td>윤민재</td>
+              <td>한남</td>
+              <td>한남1팀</td>
+              <td>2022312</td>
+              <td>과장</td>
+              <td>Marketing & Sales Manager</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2010-03-01</td>
+            </tr>
+            <tr id="user-row-61" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">61</td>
+              <td>한904</td>
+              <td>한소연</td>
+              <td>잠실</td>
+              <td>잠실5팀</td>
+              <td>2017398</td>
+              <td>과장</td>
+              <td>Marketing & Sales Manager</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2015-05-01</td>
+            </tr>
+            <tr id="user-row-62" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">62</td>
+              <td>임258</td>
+              <td>임서현</td>
+              <td>송파</td>
+              <td>송파1팀</td>
+              <td>2018330</td>
+              <td>대리</td>
+              <td>Receptionist</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2017-08-01</td>
+            </tr>
+            <tr id="user-row-63" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">63</td>
+              <td>오214</td>
+              <td>오예진</td>
+              <td>남양주</td>
+              <td>남양주3팀</td>
+              <td>2021512</td>
+              <td>대표이사</td>
+              <td>Showroom Header</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2016-01-01</td>
+            </tr>
+            <tr id="user-row-64" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">64</td>
+              <td>신337</td>
+              <td>신민재</td>
+              <td>동대문</td>
+              <td>동대문5팀</td>
+              <td>2019121</td>
+              <td>차장</td>
+              <td>General Director</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2022-05-01</td>
+            </tr>
+            <tr id="user-row-65" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">65</td>
+              <td>황947</td>
+              <td>황소연</td>
+              <td>동대문</td>
+              <td>동대문4팀</td>
+              <td>2011581</td>
+              <td>상무</td>
+              <td>ADMIN</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2023-05-01</td>
+            </tr>
+            <tr id="user-row-66" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">66</td>
+              <td>배949</td>
+              <td>배서현</td>
+              <td>제주</td>
+              <td>제주5팀</td>
+              <td>2010565</td>
+              <td>부장</td>
+              <td>CEO</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2024-01-01</td>
+            </tr>
+            <tr id="user-row-67" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">67</td>
+              <td>노668</td>
+              <td>노예진</td>
+              <td>잠실</td>
+              <td>잠실4팀</td>
+              <td>2010292</td>
+              <td>부장</td>
+              <td>CEO</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2012-05-01</td>
+            </tr>
+            <tr id="user-row-68" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">68</td>
+              <td>문253</td>
+              <td>문민재</td>
+              <td>성수1</td>
+              <td>성수11팀</td>
+              <td>2020723</td>
+              <td>과장</td>
+              <td>Marketing & Sales Manager</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>비영업</td>
+              <td>2011-08-01</td>
+            </tr>
+            <tr id="user-row-69" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">69</td>
+              <td>안869</td>
+              <td>안지수</td>
+              <td>잠실</td>
+              <td>잠실3팀</td>
+              <td>2018822</td>
+              <td>상무</td>
+              <td>ADMIN</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2020-04-01</td>
+            </tr>
+            <tr id="user-row-70" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">70</td>
+              <td>류488</td>
+              <td>류서현</td>
+              <td>남양주</td>
+              <td>남양주2팀</td>
+              <td>2023171</td>
+              <td>상무</td>
+              <td>ADMIN</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2017-12-01</td>
+            </tr>
+            <tr id="user-row-71" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">71</td>
+              <td>전994</td>
+              <td>전소연</td>
+              <td>제주</td>
+              <td>제주2팀</td>
+              <td>2017651</td>
+              <td>부장</td>
+              <td>CEO</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2018-04-01</td>
+            </tr>
+            <tr id="user-row-72" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">72</td>
+              <td>송943</td>
+              <td>송지수</td>
+              <td>한남</td>
+              <td>한남4팀</td>
+              <td>2013976</td>
+              <td>상무</td>
+              <td>ADMIN</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2020-07-01</td>
+            </tr>
+            <tr id="user-row-73" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">73</td>
+              <td>권287</td>
+              <td>권민재</td>
+              <td>잠실</td>
+              <td>잠실1팀</td>
+              <td>2012614</td>
+              <td>부장</td>
+              <td>CEO</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2022-01-01</td>
+            </tr>
+            <tr id="user-row-74" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">74</td>
+              <td>하787</td>
+              <td>하서현</td>
+              <td>제주</td>
+              <td>제주2팀</td>
+              <td>2011580</td>
+              <td>차장</td>
+              <td>General Director</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2018-11-01</td>
+            </tr>
+            <tr id="user-row-75" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">75</td>
+              <td>백222</td>
+              <td>백예진</td>
+              <td>대치</td>
+              <td>대치4팀</td>
+              <td>2023654</td>
+              <td>주임</td>
+              <td>Sales Leader</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2010-07-01</td>
+            </tr>
+            <tr id="user-row-76" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">76</td>
+              <td>심777</td>
+              <td>심소연</td>
+              <td>잠실</td>
+              <td>잠실2팀</td>
+              <td>2021406</td>
+              <td>수습사원</td>
+              <td>Sales Consultant</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2012-04-01</td>
+            </tr>
+            <tr id="user-row-77" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">77</td>
+              <td>남421</td>
+              <td>남민재</td>
+              <td>한남</td>
+              <td>한남2팀</td>
+              <td>2012279</td>
+              <td>상무</td>
+              <td>ADMIN</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2016-08-01</td>
+            </tr>
+            <tr id="user-row-78" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">78</td>
+              <td>장428</td>
+              <td>장지수</td>
+              <td>원주</td>
+              <td>원주4팀</td>
+              <td>2024394</td>
+              <td>대리</td>
+              <td>Receptionist</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2021-12-01</td>
+            </tr>
+            <tr id="user-row-79" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">79</td>
+              <td>고947</td>
+              <td>고예진</td>
+              <td>제주</td>
+              <td>제주3팀</td>
+              <td>2013493</td>
+              <td>대표이사</td>
+              <td>Showroom Header</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2017-01-01</td>
+            </tr>
+            <tr id="user-row-80" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">80</td>
+              <td>이554</td>
+              <td>이서현</td>
+              <td>분당</td>
+              <td>분당1팀</td>
+              <td>2019985</td>
+              <td>수습사원</td>
+              <td>Sales Consultant</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2015-10-01</td>
+            </tr>
+            <tr id="user-row-81" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">81</td>
+              <td>박846</td>
+              <td>박소연</td>
+              <td>동대문</td>
+              <td>동대문2팀</td>
+              <td>2019356</td>
+              <td>대리</td>
+              <td>Receptionist</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2022-01-01</td>
+            </tr>
+            <tr id="user-row-82" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">82</td>
+              <td>최745</td>
+              <td>최민재</td>
+              <td>남양주</td>
+              <td>남양주2팀</td>
+              <td>2011402</td>
+              <td>상무</td>
+              <td>ADMIN</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2019-09-01</td>
+            </tr>
+            <tr id="user-row-83" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">83</td>
+              <td>정967</td>
+              <td>정서현</td>
+              <td>제주</td>
+              <td>제주2팀</td>
+              <td>2014944</td>
+              <td>차장</td>
+              <td>General Director</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>영업</td>
+              <td>2015-11-01</td>
+            </tr>
+            <tr id="user-row-84" onclick="showDetail('user')" style="cursor:pointer">
+              <td class="col-no">84</td>
+              <td>윤586</td>
+              <td>윤예진</td>
+              <td>제주</td>
+              <td>제주5팀</td>
+              <td>2015192</td>
+              <td>상무</td>
+              <td>ADMIN</td>
+              <td><span class="s-badge s-출고고객" style="background:#e6f4ea;color:#2e7d32">사용중</span></td>
+              <td>비영업</td>
+              <td>2016-10-01</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination-bar">
+      <span class="info" id="pagination-info-user"></span>
+      <div class="page-btns" id="pagination-btns-user"></div>
+    </div>
   </div>
-  <div class="two-col">
-    <!-- 사용자 필드 목록 -->
-    <div class="card">
-      <div class="card-header">
-        <h2>사용자 필드 목록</h2><span class="pill">15 fields</span>
-        <div style="margin-left:auto;display:flex;gap:8px">
-          <button class="btn-edit-detail" id="btn-edit-user" onclick="toggleUserEdit()">수정</button>
-          <button class="btn-save-detail" id="btn-save-user" onclick="saveUserEdit()">저장</button>
+
+  <!-- ─── USER DETAIL ─── -->
+  <div id="user-detail" class="sub-view">
+    <div class="page-header">
+      <div class="breadcrumb">
+        <span onclick="showList('user')" style="cursor:pointer;color:#4d9fff">🔐 사용자 정보</span>
+        <span style="margin:0 6px;color:#aab4c4">›</span>
+        <span>사용자 상세</span>
+      </div>
+    </div>
+    <div class="two-col">
+      <!-- 사용자 필드 목록 -->
+      <div class="card">
+        <div class="card-header">
+          <h2>사용자 필드 목록</h2><span class="pill">15 fields</span>
+          <div style="margin-left:auto;display:flex;gap:8px">
+            <button class="btn-edit-detail" id="btn-edit-user" onclick="openPwModal(toggleUserEdit,'edit')">수정</button>
+            <button class="btn-save-detail" id="btn-save-user" onclick="saveUserEdit()">저장</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table id="tbl-user-fields">
+            <thead><tr><th class="col-no">No.</th><th>컬럼명</th><th>정보</th><th>설명</th></tr></thead>
+            <tbody>
+              <!-- 1 아이디: text -->
+              <tr><td class="col-no">1</td><td><span class="col-name">아이디</span></td>
+                <td class="uf-info" data-type="text" data-value="ldm001"><input class="edit-input" type="text" value="ldm001"></td>
+                <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+              <!-- 2 사용자명: text -->
+              <tr><td class="col-no">2</td><td><span class="col-name">사용자명</span></td>
+                <td class="uf-info" data-type="text" data-value="홍길동"><input class="edit-input" type="text" value="홍길동"></td>
+                <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+              <!-- 3 전시장: select -->
+              <tr><td class="col-no">3</td><td><span class="col-name">전시장</span></td>
+                <td class="uf-info" data-type="select" data-value="하남"><select class="edit-input"><option value="">선택</option><option>남양주</option><option>대치</option><option>동대문</option><option>성수1</option><option>성수2</option><option>송파</option><option>수원</option><option>양재</option><option>원주</option><option>잠실</option><option>제주</option><option selected>하남</option><option>한남</option></select></td>
+                <td class="uf-desc" data-value="전시장 변경 시 바뀌는 정보"><input class="edit-input" type="text" value="전시장 변경 시 바뀌는 정보"></td></tr>
+              <!-- 4 소속부서: text -->
+              <tr><td class="col-no">4</td><td><span class="col-name">소속부서</span></td>
+                <td class="uf-info" data-type="text" data-value="하남6팀"><input class="edit-input" type="text" value="하남6팀"></td>
+                <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+              <!-- 5 사번: text -->
+              <tr><td class="col-no">5</td><td><span class="col-name">사번</span></td>
+                <td class="uf-info" data-type="text" data-value="2011021"><input class="edit-input" type="text" value="2011021"></td>
+                <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+              <!-- 6 DT: text -->
+              <tr><td class="col-no">6</td><td><span class="col-name">DT</span></td>
+                <td class="uf-info" data-type="text" data-value="DT142"><input class="edit-input" type="text" value="DT142"></td>
+                <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+              <!-- 7 직급: select -->
+              <tr><td class="col-no">7</td><td><span class="col-name">직급</span></td>
+                <td class="uf-info" data-type="select" data-value="부장"><select class="edit-input"><option value="">선택</option><option>수습사원</option><option>주임</option><option>대리</option><option>과장</option><option>차장</option><option selected>부장</option><option>상무</option><option>대표이사</option></select></td>
+                <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+              <!-- 8 직책: text -->
+              <tr><td class="col-no">8</td><td><span class="col-name">직책</span></td>
+                <td class="uf-info" data-type="text" data-value="영업팀장"><input class="edit-input" type="text" value="영업팀장"></td>
+                <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+              <!-- 9 사용권한: select -->
+              <tr><td class="col-no">9</td><td><span class="col-name">사용권한</span></td>
+                <td class="uf-info" data-type="select" data-value="Sales Consultant"><select class="edit-input"><option value="">선택</option><option selected>Sales Consultant</option><option>Sales Leader</option><option>Receptionist</option><option>Marketing &amp; Sales Manager</option><option>General Director</option><option>CEO</option><option>ADMIN</option><option>Showroom Header</option><option>Accounting Manager</option><option>PDC Manager</option><option>Export Control Manager</option><option>Personal Info Manager</option></select></td>
+                <td class="uf-desc" data-value="영업사원 권한 – 고객/품의서 조회 및 등록"><input class="edit-input" type="text" value="영업사원 권한 – 고객/품의서 조회 및 등록"></td></tr>
+              <!-- 10 사용여부: select -->
+              <tr><td class="col-no">10</td><td><span class="col-name">사용여부</span></td>
+                <td class="uf-info" data-type="select" data-value="사용중"><select class="edit-input"><option value="">선택</option><option selected>사용중</option><option>미사용</option></select></td>
+                <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+              <!-- 11 영업여부: select -->
+              <tr><td class="col-no">11</td><td><span class="col-name">영업여부</span></td>
+                <td class="uf-info" data-type="select" data-value="영업"><select class="edit-input"><option value="">선택</option><option selected>영업</option><option>비영업</option></select></td>
+                <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+              <!-- 12 휴직여부: select -->
+              <tr><td class="col-no">12</td><td><span class="col-name">휴직여부</span></td>
+                <td class="uf-info" data-type="select" data-value="아니오"><select class="edit-input"><option value="">선택</option><option>예</option><option selected>아니오</option></select></td>
+                <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+              <!-- 13 입사일: date -->
+              <tr><td class="col-no">13</td><td><span class="col-name">입사일</span></td>
+                <td class="uf-info" data-type="date" data-value="2013-09-01"><input class="edit-input" type="date" value="2013-09-01"></td>
+                <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+              <!-- 14 퇴사일: date -->
+              <tr><td class="col-no">14</td><td><span class="col-name">퇴사일</span></td>
+                <td class="uf-info" data-type="date" data-value="2026-05-01"><input class="edit-input" type="date" value="2026-05-01"></td>
+                <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+              <!-- 15 WDMS ID: text -->
+              <tr><td class="col-no">15</td><td><span class="col-name">WDMS ID</span></td>
+                <td class="uf-info" data-type="text" data-value="ldm001"><input class="edit-input" type="text" value="ldm001"></td>
+                <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      <div class="table-wrap">
-        <table id="tbl-user-fields">
-          <thead><tr><th class="col-no">No.</th><th>컬럼명</th><th>정보</th><th>설명</th></tr></thead>
-          <tbody>
-            <!-- 1 아이디: text -->
-            <tr><td class="col-no">1</td><td><span class="col-name">아이디</span></td>
-              <td class="uf-info" data-type="text" data-value="ldm001"><input class="edit-input" type="text" value="ldm001"></td>
-              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
-            <!-- 2 사용자명: text -->
-            <tr><td class="col-no">2</td><td><span class="col-name">사용자명</span></td>
-              <td class="uf-info" data-type="text" data-value="홍길동"><input class="edit-input" type="text" value="홍길동"></td>
-              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
-            <!-- 3 전시장: select -->
-            <tr><td class="col-no">3</td><td><span class="col-name">전시장</span></td>
-              <td class="uf-info" data-type="select" data-value="하남"><select class="edit-input"><option value="">선택</option><option>남양주</option><option>대치</option><option>동대문</option><option>성수1</option><option>성수2</option><option>송파</option><option>수원</option><option>양재</option><option>원주</option><option>잠실</option><option>제주</option><option selected>하남</option><option>한남</option></select></td>
-              <td class="uf-desc" data-value="전시장 변경 시 바뀌는 정보"><input class="edit-input" type="text" value="전시장 변경 시 바뀌는 정보"></td></tr>
-            <!-- 4 소속부서: text -->
-            <tr><td class="col-no">4</td><td><span class="col-name">소속부서</span></td>
-              <td class="uf-info" data-type="text" data-value="하남6팀"><input class="edit-input" type="text" value="하남6팀"></td>
-              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
-            <!-- 5 사번: text -->
-            <tr><td class="col-no">5</td><td><span class="col-name">사번</span></td>
-              <td class="uf-info" data-type="text" data-value="2011021"><input class="edit-input" type="text" value="2011021"></td>
-              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
-            <!-- 6 DT: text -->
-            <tr><td class="col-no">6</td><td><span class="col-name">DT</span></td>
-              <td class="uf-info" data-type="text" data-value="DT142"><input class="edit-input" type="text" value="DT142"></td>
-              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
-            <!-- 7 직급: select (사용권한 체계의 직급 목록) -->
-            <tr><td class="col-no">7</td><td><span class="col-name">직급</span></td>
-              <td class="uf-info" data-type="select" data-value="부장"><select class="edit-input"><option value="">선택</option><option>수습사원</option><option>주임</option><option>대리</option><option>과장</option><option>차장</option><option selected>부장</option><option>상무</option><option>대표이사</option></select></td>
-              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
-            <!-- 8 직책: text -->
-            <tr><td class="col-no">8</td><td><span class="col-name">직책</span></td>
-              <td class="uf-info" data-type="text" data-value="영업팀장"><input class="edit-input" type="text" value="영업팀장"></td>
-              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
-            <!-- 9 사용권한: select (사용권한 체계의 권한 목록 + 설명) -->
-            <tr><td class="col-no">9</td><td><span class="col-name">사용권한</span></td>
-              <td class="uf-info" data-type="select" data-value="Sales Consultant"><select class="edit-input"><option value="">선택</option><option selected>Sales Consultant</option><option>Sales Leader</option><option>Receptionist</option><option>Marketing &amp; Sales Manager</option><option>General Director</option><option>CEO</option><option>ADMIN</option><option>Showroom Header</option><option>Accounting Manager</option><option>PDC Manager</option><option>Export Control Manager</option><option>Personal Info Manager</option></select></td>
-              <td class="uf-desc" data-value="영업사원 권한 – 고객/품의서 조회 및 등록"><input class="edit-input" type="text" value="영업사원 권한 – 고객/품의서 조회 및 등록"></td></tr>
-            <!-- 10 사용여부: select -->
-            <tr><td class="col-no">10</td><td><span class="col-name">사용여부</span></td>
-              <td class="uf-info" data-type="select" data-value="사용중"><select class="edit-input"><option value="">선택</option><option selected>사용중</option><option>미사용</option></select></td>
-              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
-            <!-- 11 영업여부: select -->
-            <tr><td class="col-no">11</td><td><span class="col-name">영업여부</span></td>
-              <td class="uf-info" data-type="select" data-value="영업"><select class="edit-input"><option value="">선택</option><option selected>영업</option><option>비영업</option></select></td>
-              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
-            <!-- 12 휴직여부: select -->
-            <tr><td class="col-no">12</td><td><span class="col-name">휴직여부</span></td>
-              <td class="uf-info" data-type="select" data-value="아니오"><select class="edit-input"><option value="">선택</option><option>예</option><option selected>아니오</option></select></td>
-              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
-            <!-- 13 입사일: date -->
-            <tr><td class="col-no">13</td><td><span class="col-name">입사일</span></td>
-              <td class="uf-info" data-type="date" data-value="2013-09-01"><input class="edit-input" type="date" value="2013-09-01"></td>
-              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
-            <!-- 14 퇴사일: date -->
-            <tr><td class="col-no">14</td><td><span class="col-name">퇴사일</span></td>
-              <td class="uf-info" data-type="date" data-value="2026-05-01"><input class="edit-input" type="date" value="2026-05-01"></td>
-              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
-            <!-- 15 WDMS ID: text -->
-            <tr><td class="col-no">15</td><td><span class="col-name">WDMS ID</span></td>
-              <td class="uf-info" data-type="text" data-value="ldm001"><input class="edit-input" type="text" value="ldm001"></td>
-              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <!-- 사용권한 체계 -->
-    <div class="card">
-      <div class="card-header"><h2>사용권한 체계</h2><span class="pill">11 roles</span></div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th style="width:80px">직급</th><th style="width:200px">사용권한</th><th>설명</th></tr></thead>
-          <tbody>
-            <tr><td>수습사원</td><td><span class="perm-badge">Sales Consultant</span></td><td>영업사원</td></tr>
-            <tr><td>주임</td><td><span class="perm-badge">Sales Leader</span></td><td>영업팀장</td></tr>
-            <tr><td>대리</td><td><span class="perm-badge">Receptionist</span></td><td>지점 리셉션</td></tr>
-            <tr><td>과장</td><td><span class="perm-badge">Marketing &amp; Sales Manager</span></td><td>마케팅</td></tr>
-            <tr><td>차장</td><td><span class="perm-badge">General Director</span></td><td>영업본부장</td></tr>
-            <tr><td>부장</td><td><span class="perm-badge">CEO</span></td><td>대표이사</td></tr>
-            <tr><td>상무</td><td><span class="perm-badge">ADMIN</span></td><td>사용자정보·지점정보 설정</td></tr>
-            <tr><td>대표이사</td><td><span class="perm-badge">Showroom Header</span></td><td>지점장</td></tr>
-            <tr><td>–</td><td><span class="perm-badge">Accounting Manager</span></td><td>회계</td></tr>
-            <tr><td>–</td><td><span class="perm-badge">PDC Manager</span></td><td>PDC-Coupon 확인</td></tr>
-            <tr><td>–</td><td><span class="perm-badge">Export Control Manager</span></td><td>수출통제 승인</td></tr>
-            <tr><td>–</td><td><span class="perm-badge">Personal Info Manager</span></td><td>2차인증·비밀번호 관리</td></tr>
-          </tbody>
-        </table>
+      <!-- 사용권한 체계 -->
+      <div class="card">
+        <div class="card-header"><h2>사용권한 체계</h2><span class="pill">11 roles</span></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th style="width:80px">직급</th><th style="width:200px">사용권한</th><th>설명</th></tr></thead>
+            <tbody>
+              <tr><td>수습사원</td><td><span class="perm-badge">Sales Consultant</span></td><td>영업사원</td></tr>
+              <tr><td>주임</td><td><span class="perm-badge">Sales Leader</span></td><td>영업팀장</td></tr>
+              <tr><td>대리</td><td><span class="perm-badge">Receptionist</span></td><td>지점 리셉션</td></tr>
+              <tr><td>과장</td><td><span class="perm-badge">Marketing &amp; Sales Manager</span></td><td>마케팅</td></tr>
+              <tr><td>차장</td><td><span class="perm-badge">General Director</span></td><td>영업본부장</td></tr>
+              <tr><td>부장</td><td><span class="perm-badge">CEO</span></td><td>대표이사</td></tr>
+              <tr><td>상무</td><td><span class="perm-badge">ADMIN</span></td><td>사용자정보·지점정보 설정</td></tr>
+              <tr><td>대표이사</td><td><span class="perm-badge">Showroom Header</span></td><td>지점장</td></tr>
+              <tr><td>–</td><td><span class="perm-badge">Accounting Manager</span></td><td>회계</td></tr>
+              <tr><td>–</td><td><span class="perm-badge">PDC Manager</span></td><td>PDC-Coupon 확인</td></tr>
+              <tr><td>–</td><td><span class="perm-badge">Export Control Manager</span></td><td>수출통제 승인</td></tr>
+              <tr><td>–</td><td><span class="perm-badge">Personal Info Manager</span></td><td>2차인증·비밀번호 관리</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+</div></div>
 
 <div class="footer">Deutsch Motors AX실 · 전송정보 어드민 v1.3 · 2026.05.12</div>
 </main>
@@ -1972,14 +3115,13 @@ function saveUserEdit() {
   _applyUserReadonly();
 }
 function _applyUserReadonly() {
-  document.querySelectorAll('#tbl-user-fields .uf-info input, #tbl-user-fields .uf-info select').forEach(el => {
+  document.querySelectorAll('#tbl-user-fields .uf-info input, #tbl-user-fields .uf-info select, #tbl-user-fields .uf-desc input').forEach(el => {
     el.disabled = true;
     el.style.background = '#f8f9fa';
     el.style.color = '#555';
     el.style.border = '1px solid #e8e8e8';
     el.style.cursor = 'default';
   });
-  // 설명은 항상 활성
 }
 let _pwCallback = null;
 function openPwModal(callback, mode) {
@@ -2118,7 +3260,8 @@ const DESC_PAGES = {
   'contract-detail':   '품의서 정보 · 상세',
   'inventory-list':    '재고 정보 · 목록',
   'inventory-detail':  '재고 정보 · 상세',
-  'user-list':         '사용자 정보',
+  'user-list':         '사용자 정보 · 목록',
+  'user-detail':       '사용자 정보 · 상세',
     'inquiry-list':      '조회 이력',
 };
 let _descPage = 'dashboard';
@@ -2359,6 +3502,25 @@ function descInsert(idx) {
 const _origApplyState = _applyState;
 
 
+
+function applyUserFilters() {
+  const q      = (document.getElementById('user-search')?.value || '').toLowerCase();
+  const store  = document.getElementById('uf-store')?.value  || '';
+  const perm   = document.getElementById('uf-perm')?.value   || '';
+  const active = document.getElementById('uf-active')?.value || '';
+  const rows = Array.from(document.querySelectorAll('#user-table tbody tr'));
+  rows.forEach(row => {
+    const tds = row.querySelectorAll('td');
+    const pass =
+      (!q      || row.textContent.toLowerCase().includes(q)) &&
+      (!store  || tds[3]?.textContent.trim() === store) &&
+      (!perm   || tds[7]?.textContent.trim() === perm) &&
+      (!active || tds[8]?.textContent.trim() === active);
+    row.dataset.filtered = pass ? 'true' : 'false';
+  });
+  if (_pgState['user']) { _pgState['user'].page = 1; renderPagination('user'); }
+}
+
 function applyContractFilters() {
   const vinVal   = (document.getElementById('filter-vin')   || {}).value || '';
   const phoneVal = (document.getElementById('filter-phone') || {}).value || '';
@@ -2467,6 +3629,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initPagination('customer-table', 'customer');
   initPagination('contract-table', 'contract');
   initPagination('inventory-table', 'inventory');
+  initPagination('user-table', 'user');
   Chart.defaults.font.family = "'Segoe UI','Apple SD Gothic Neo',sans-serif";
   Chart.defaults.color = '#667';
 
@@ -2899,3 +4062,4 @@ const _origApplyState2 = typeof _origApplyState !== 'undefined' ? _origApplyStat
 </script>
 </body>
 </html>
+                                        
