@@ -630,7 +630,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
     <div class="page-header"><div class="page-title">👤 고객 정보</div><div class="page-desc">전체 고객 목록</div></div>
     <div class="card">
       <div class="filter-bar">
-        <div class="search-box">🔍<input type="text" id="customer-search" placeholder="고객명·고객번호 검색…" oninput="applyCustomerFilters()"></div>
+        <div class="search-box">🔍<input type="text" id="customer-search-input" placeholder="고객명·고객번호 검색…" oninput="applyCustomerFilters()"></div>
         <select class="filter-select" id="cf-gubun" onchange="applyCustomerFilters()">
           <option value="">고객구분 전체</option>
           <option>출고고객</option><option>BMW오너</option><option>가망고객</option><option>잠재고객</option>
@@ -649,7 +649,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
           <option value="">성별 전체</option>
           <option>남자</option><option>여자</option>
         </select>
-        <button class="filter-select" style="cursor:pointer;color:#e74c3c;border-color:#e74c3c;background:#fff" onclick="resetCustomerFilters()">✕ 초기화</button>
+        <button type="button" class="btn btn-outline" onclick="resetCustomerFilters()">필터 초기화</button>
         <div class="filter-right" style="margin-left:auto"><button class="btn btn-primary">+ 고객 등록</button></div>
       </div>
       <div class="table-wrap">
@@ -1541,31 +1541,84 @@ tbody td { padding:10px 14px; vertical-align:middle; }
     <div class="stat-card" style="--accent:#e74c3c"><div class="label">드롭박스 필드</div><div class="value">6</div></div>
   </div>
   <div class="two-col">
+    <!-- 사용자 필드 목록 -->
     <div class="card">
-      <div class="card-header"><h2>사용자 필드 목록</h2><span class="pill">15 fields</span></div>
+      <div class="card-header">
+        <h2>사용자 필드 목록</h2><span class="pill">15 fields</span>
+        <div style="margin-left:auto;display:flex;gap:8px">
+          <button class="btn-edit-detail" id="btn-edit-user" onclick="toggleUserEdit()">수정</button>
+          <button class="btn-save-detail" id="btn-save-user" onclick="saveUserEdit()">저장</button>
+        </div>
+      </div>
       <div class="table-wrap">
-        <table>
-          <thead><tr><th class="col-no">No.</th><th>컬럼명</th><th style="width:90px">입력방식</th><th>예시</th></tr></thead>
+        <table id="tbl-user-fields">
+          <thead><tr><th class="col-no">No.</th><th>컬럼명</th><th>정보</th><th>설명</th></tr></thead>
           <tbody>
-            <tr><td class="col-no">1</td><td><span class="col-name">아이디</span></td><td><span class="badge-type bt-string">키인</span></td><td>ldm001</td></tr>
-            <tr><td class="col-no">2</td><td><span class="col-name">사용자명</span></td><td><span class="badge-type bt-string">키인</span></td><td>홍길동</td></tr>
-            <tr><td class="col-no">3</td><td><span class="col-name">전시장</span></td><td><span class="badge-type bt-enum">드롭박스</span></td><td>하남</td></tr>
-            <tr><td class="col-no">4</td><td><span class="col-name">소속부서</span></td><td><span class="badge-type bt-enum">드롭박스</span></td><td>하남6팀</td></tr>
-            <tr><td class="col-no">5</td><td><span class="col-name">사번</span></td><td><span class="badge-type bt-string">키인</span></td><td>2011021</td></tr>
-            <tr><td class="col-no">6</td><td><span class="col-name">DT</span></td><td><span class="badge-type bt-string">키인</span></td><td>DT142</td></tr>
-            <tr><td class="col-no">7</td><td><span class="col-name">직급</span></td><td><span class="badge-type bt-enum">드롭박스</span></td><td>부장</td></tr>
-            <tr><td class="col-no">8</td><td><span class="col-name">직책</span></td><td><span class="badge-type bt-string">키인</span></td><td>영업팀장</td></tr>
-            <tr><td class="col-no">9</td><td><span class="col-name">사용권한</span></td><td><span class="badge-type bt-enum">드롭박스</span></td><td>Sales Consultant</td></tr>
-            <tr><td class="col-no">10</td><td><span class="col-name">사용여부</span></td><td><span class="badge-type bt-enum">드롭박스</span></td><td>사용중</td></tr>
-            <tr><td class="col-no">11</td><td><span class="col-name">영업여부</span></td><td><span class="badge-type bt-enum">드롭박스</span></td><td>영업</td></tr>
-            <tr><td class="col-no">12</td><td><span class="col-name">휴직여부</span></td><td><span class="badge-type bt-enum">드롭박스</span></td><td>아니오</td></tr>
-            <tr><td class="col-no">13</td><td><span class="col-name">입사일</span></td><td><span class="badge-type bt-date">키인</span></td><td>2013-09-01</td></tr>
-            <tr><td class="col-no">14</td><td><span class="col-name">퇴사일</span></td><td><span class="badge-type bt-date">키인</span></td><td>2026-05-01</td></tr>
-            <tr><td class="col-no">15</td><td><span class="col-name">WDMS ID</span></td><td><span class="badge-type bt-string">키인</span></td><td>ldm001</td></tr>
+            <!-- 1 아이디: text -->
+            <tr><td class="col-no">1</td><td><span class="col-name">아이디</span></td>
+              <td class="uf-info" data-type="text" data-value="ldm001"><input class="edit-input" type="text" value="ldm001"></td>
+              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+            <!-- 2 사용자명: text -->
+            <tr><td class="col-no">2</td><td><span class="col-name">사용자명</span></td>
+              <td class="uf-info" data-type="text" data-value="홍길동"><input class="edit-input" type="text" value="홍길동"></td>
+              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+            <!-- 3 전시장: select -->
+            <tr><td class="col-no">3</td><td><span class="col-name">전시장</span></td>
+              <td class="uf-info" data-type="select" data-value="하남"><select class="edit-input"><option value="">선택</option><option>남양주</option><option>대치</option><option>동대문</option><option>성수1</option><option>성수2</option><option>송파</option><option>수원</option><option>양재</option><option>원주</option><option>잠실</option><option>제주</option><option selected>하남</option><option>한남</option></select></td>
+              <td class="uf-desc" data-value="전시장 변경 시 바뀌는 정보"><input class="edit-input" type="text" value="전시장 변경 시 바뀌는 정보"></td></tr>
+            <!-- 4 소속부서: text -->
+            <tr><td class="col-no">4</td><td><span class="col-name">소속부서</span></td>
+              <td class="uf-info" data-type="text" data-value="하남6팀"><input class="edit-input" type="text" value="하남6팀"></td>
+              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+            <!-- 5 사번: text -->
+            <tr><td class="col-no">5</td><td><span class="col-name">사번</span></td>
+              <td class="uf-info" data-type="text" data-value="2011021"><input class="edit-input" type="text" value="2011021"></td>
+              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+            <!-- 6 DT: text -->
+            <tr><td class="col-no">6</td><td><span class="col-name">DT</span></td>
+              <td class="uf-info" data-type="text" data-value="DT142"><input class="edit-input" type="text" value="DT142"></td>
+              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+            <!-- 7 직급: select (사용권한 체계의 직급 목록) -->
+            <tr><td class="col-no">7</td><td><span class="col-name">직급</span></td>
+              <td class="uf-info" data-type="select" data-value="부장"><select class="edit-input"><option value="">선택</option><option>수습사원</option><option>주임</option><option>대리</option><option>과장</option><option>차장</option><option selected>부장</option><option>상무</option><option>대표이사</option></select></td>
+              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+            <!-- 8 직책: text -->
+            <tr><td class="col-no">8</td><td><span class="col-name">직책</span></td>
+              <td class="uf-info" data-type="text" data-value="영업팀장"><input class="edit-input" type="text" value="영업팀장"></td>
+              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+            <!-- 9 사용권한: select (사용권한 체계의 권한 목록 + 설명) -->
+            <tr><td class="col-no">9</td><td><span class="col-name">사용권한</span></td>
+              <td class="uf-info" data-type="select" data-value="Sales Consultant"><select class="edit-input"><option value="">선택</option><option selected>Sales Consultant</option><option>Sales Leader</option><option>Receptionist</option><option>Marketing &amp; Sales Manager</option><option>General Director</option><option>CEO</option><option>ADMIN</option><option>Showroom Header</option><option>Accounting Manager</option><option>PDC Manager</option><option>Export Control Manager</option><option>Personal Info Manager</option></select></td>
+              <td class="uf-desc" data-value="영업사원 권한 – 고객/품의서 조회 및 등록"><input class="edit-input" type="text" value="영업사원 권한 – 고객/품의서 조회 및 등록"></td></tr>
+            <!-- 10 사용여부: select -->
+            <tr><td class="col-no">10</td><td><span class="col-name">사용여부</span></td>
+              <td class="uf-info" data-type="select" data-value="사용중"><select class="edit-input"><option value="">선택</option><option selected>사용중</option><option>미사용</option></select></td>
+              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+            <!-- 11 영업여부: select -->
+            <tr><td class="col-no">11</td><td><span class="col-name">영업여부</span></td>
+              <td class="uf-info" data-type="select" data-value="영업"><select class="edit-input"><option value="">선택</option><option selected>영업</option><option>비영업</option></select></td>
+              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+            <!-- 12 휴직여부: select -->
+            <tr><td class="col-no">12</td><td><span class="col-name">휴직여부</span></td>
+              <td class="uf-info" data-type="select" data-value="아니오"><select class="edit-input"><option value="">선택</option><option>예</option><option selected>아니오</option></select></td>
+              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+            <!-- 13 입사일: date -->
+            <tr><td class="col-no">13</td><td><span class="col-name">입사일</span></td>
+              <td class="uf-info" data-type="date" data-value="2013-09-01"><input class="edit-input" type="date" value="2013-09-01"></td>
+              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+            <!-- 14 퇴사일: date -->
+            <tr><td class="col-no">14</td><td><span class="col-name">퇴사일</span></td>
+              <td class="uf-info" data-type="date" data-value="2026-05-01"><input class="edit-input" type="date" value="2026-05-01"></td>
+              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
+            <!-- 15 WDMS ID: text -->
+            <tr><td class="col-no">15</td><td><span class="col-name">WDMS ID</span></td>
+              <td class="uf-info" data-type="text" data-value="ldm001"><input class="edit-input" type="text" value="ldm001"></td>
+              <td class="uf-desc" data-value=""><input class="edit-input" type="text" value="" placeholder="설명 입력"></td></tr>
           </tbody>
         </table>
       </div>
     </div>
+    <!-- 사용권한 체계 -->
     <div class="card">
       <div class="card-header"><h2>사용권한 체계</h2><span class="pill">11 roles</span></div>
       <div class="table-wrap">
@@ -1888,6 +1941,46 @@ function saveCustomerEdit() {
 }
 
 
+
+let _userEditing = false;
+function toggleUserEdit() {
+  _userEditing = true;
+  document.getElementById('btn-edit-user').style.display = 'none';
+  document.getElementById('btn-save-user').style.display = 'inline-block';
+  // 정보·설명 셀의 input/select를 활성화 (이미 렌더링된 상태 유지)
+  document.querySelectorAll('#tbl-user-fields .uf-info input, #tbl-user-fields .uf-info select, #tbl-user-fields .uf-desc input').forEach(el => {
+    el.disabled = false;
+    el.style.background = '';
+    el.style.color = '';
+  });
+}
+function saveUserEdit() {
+  // 정보 셀 저장
+  document.querySelectorAll('#tbl-user-fields .uf-info').forEach(td => {
+    const inp = td.querySelector('input,select');
+    if (inp) { td.dataset.value = inp.value; }
+  });
+  // 설명 셀 저장
+  document.querySelectorAll('#tbl-user-fields .uf-desc').forEach(td => {
+    const inp = td.querySelector('input');
+    if (inp) { td.dataset.value = inp.value; }
+  });
+  _userEditing = false;
+  document.getElementById('btn-edit-user').style.display = 'inline-block';
+  document.getElementById('btn-save-user').style.display = 'none';
+  // 비수정 상태로 input/select 비활성화
+  _applyUserReadonly();
+}
+function _applyUserReadonly() {
+  document.querySelectorAll('#tbl-user-fields .uf-info input, #tbl-user-fields .uf-info select').forEach(el => {
+    el.disabled = true;
+    el.style.background = '#f8f9fa';
+    el.style.color = '#555';
+    el.style.border = '1px solid #e8e8e8';
+    el.style.cursor = 'default';
+  });
+  // 설명은 항상 활성
+}
 let _pwCallback = null;
 function openPwModal(callback, mode) {
   _pwCallback = callback;
@@ -1941,7 +2034,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (orig) el.textContent = maskNameFull(orig);
   });
 
-  document.getElementById('pwModal').addEventListener('click', function(e) {
+  _applyUserReadonly();
+    document.getElementById('pwModal').addEventListener('click', function(e) {
     if (e.target === this) closePwModal();
   });
 });
@@ -2300,7 +2394,7 @@ function applyContractFilters() {
 
 
 function applyCustomerFilters() {
-  const q      = (document.getElementById('customer-search')?.value || '').toLowerCase();
+  const q      = (document.getElementById('customer-search-input')?.value || '').trim().toLowerCase();
   const gubun  = document.getElementById('cf-gubun')?.value  || '';
   const type   = document.getElementById('cf-type')?.value   || '';
   const store  = document.getElementById('cf-store')?.value  || '';
@@ -2309,14 +2403,16 @@ function applyCustomerFilters() {
   const rows = Array.from(document.querySelectorAll('#customer-table tbody tr'));
   rows.forEach(row => {
     const tds = row.querySelectorAll('td');
-    const text    = row.textContent.toLowerCase();
-    const rowGubun  = tds[4]?.textContent.trim() || '';   // 고객구분
-    const rowType   = tds[5]?.textContent.trim() || '';   // 고객유형
-    const rowStore  = tds[6]?.textContent.trim() || '';   // 전시장
-    const rowGender = tds[12]?.textContent.trim() || '';  // 성별
+    const getCellText = (i) => tds[i] ? tds[i].textContent.trim() : '';
+    const originalName = tds[3]?.querySelector('[data-original]')?.dataset.original || '';
+    const searchText = [getCellText(2), getCellText(3), originalName].join(' ').toLowerCase();
+    const rowGubun  = getCellText(4);   // 고객구분
+    const rowType   = getCellText(5);   // 고객유형
+    const rowStore  = getCellText(6);   // 전시장
+    const rowGender = getCellText(12);  // 성별
 
     const pass =
-      (!q      || text.includes(q)) &&
+      (!q      || searchText.includes(q)) &&
       (!gubun  || rowGubun  === gubun) &&
       (!type   || rowType   === type) &&
       (!store  || rowStore  === store) &&
@@ -2325,11 +2421,18 @@ function applyCustomerFilters() {
     row.dataset.filtered = pass ? 'true' : 'false';
     row.style.display = '';
   });
-  if (_pgState['customer']) { _pgState['customer'].page = 1; renderPagination('customer'); }
+  if (_pgState['customer']) {
+    _pgState['customer'].page = 1;
+    renderPagination('customer');
+  } else {
+    rows.forEach(row => {
+      row.style.display = row.dataset.filtered === 'false' ? 'none' : '';
+    });
+  }
 }
 
 function resetCustomerFilters() {
-  const ids = ['customer-search','cf-gubun','cf-type','cf-store','cf-gender'];
+  const ids = ['customer-search-input','cf-gubun','cf-type','cf-store','cf-gender'];
   ids.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
@@ -2338,10 +2441,22 @@ function resetCustomerFilters() {
 }
 
 function filterList(tableId, query) {
-  const q = query.toLowerCase();
-  document.querySelectorAll('#' + tableId + ' tbody tr').forEach(row => {
-    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+  const q = (query || '').toLowerCase();
+  const rows = Array.from(document.querySelectorAll('#' + tableId + ' tbody tr'));
+  rows.forEach(row => {
+    row.dataset.filtered = row.textContent.toLowerCase().includes(q) ? 'true' : 'false';
+    row.style.display = '';
   });
+  const keyMap = { 'customer-table': 'customer', 'contract-table': 'contract', 'inventory-table': 'inventory' };
+  const key = keyMap[tableId];
+  if (key && _pgState[key]) {
+    _pgState[key].page = 1;
+    renderPagination(key);
+  } else {
+    rows.forEach(row => {
+      row.style.display = row.dataset.filtered === 'false' ? 'none' : '';
+    });
+  }
 }
 
 window.addEventListener('DOMContentLoaded', () => {
