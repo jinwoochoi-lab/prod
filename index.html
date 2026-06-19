@@ -2896,28 +2896,41 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 
     <!-- ④ 배정 (span 2) -->
     <div class="db2-card" style="grid-column:span 2">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
         <div class="db2-card-title" style="margin:0">배정</div>
         <div class="db2-tab-mini"><button class="db2-tabm active">일별</button><button class="db2-tabm">월별</button><button class="db2-tabm">전체</button></div>
       </div>
-      <div style="display:flex;gap:20px;align-items:center;margin-bottom:10px">
-        <div style="text-align:center;flex-shrink:0">
-          <div style="font-size:10px;color:#999">계약</div>
-          <div style="font-size:22px;font-weight:700">245</div>
+      <!-- 계약 / 배정 / 출고 -->
+      <div style="display:flex;align-items:center;margin-bottom:16px">
+        <!-- 계약 label -->
+        <div style="flex:0 0 54px;text-align:center">
+          <div style="font-size:12px;color:#aab4c4;font-weight:600;letter-spacing:.5px">계약</div>
         </div>
-        <div style="flex:1;min-width:0">
-          <div class="db2-alloc-row"><span>승인</span><span class="db2-alloc-n" style="color:#4d9fff">142</span></div>
-          <div class="db2-alloc-row"><span>미승인</span><span class="db2-alloc-n" style="color:#aab4c4">103</span></div>
-          <div class="db2-alloc-row"><span>이월</span><span class="db2-alloc-n">3</span></div>
-          <div class="db2-alloc-row"><span>Delivery Stop</span><span class="db2-alloc-n">0</span></div>
-          <div class="db2-alloc-row" style="border:none"><span>TC</span><span class="db2-alloc-n">2</span></div>
+        <!-- 배정 center -->
+        <div style="flex:1;display:flex;align-items:center;gap:18px;padding:8px 16px;border-left:2px solid #edf1f7;border-right:2px solid #edf1f7">
+          <div style="font-size:32px;font-weight:700;line-height:1;color:#1a3a62;flex-shrink:0">245</div>
+          <div style="flex:1;min-width:0">
+            <div class="db2-alloc-row"><span>승인</span><span class="db2-alloc-n" style="color:#2d7be5">142</span></div>
+            <div class="db2-alloc-row"><span>미승인</span><span class="db2-alloc-n" style="color:#aab4c4">103</span></div>
+            <div class="db2-alloc-row"><span>이월</span><span class="db2-alloc-n">3</span></div>
+            <div class="db2-alloc-row"><span>Delivery Stop</span><span class="db2-alloc-n">0</span></div>
+            <div class="db2-alloc-row" style="border:none"><span>TC</span><span class="db2-alloc-n">2</span></div>
+          </div>
         </div>
-        <div style="text-align:center;flex-shrink:0">
-          <div style="font-size:10px;color:#999">출고</div>
-          <div style="font-size:22px;font-weight:700">89</div>
+        <!-- 출고 label -->
+        <div style="flex:0 0 54px;text-align:center">
+          <div style="font-size:12px;color:#aab4c4;font-weight:600;letter-spacing:.5px">출고</div>
         </div>
       </div>
-      <div class="db2-ch-box" style="height:68px"><canvas id="db2-alloc-bar"></canvas></div>
+      <!-- 퍼널 바: 계약→배정→출고 단계별 겹침 시각화 -->
+      <div style="position:relative;height:56px">
+        <!-- 계약: 가장 넓고 옅은 하늘색, 뒤 레이어 -->
+        <div style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:80%;height:18px;background:#87cdef;border-radius:9px;z-index:1"></div>
+        <!-- 배정: 중간 너비, 진한 파랑, 가장 두꺼움, 중간 레이어 -->
+        <div style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:61%;height:40px;background:#1a6fd4;border-radius:20px;z-index:2"></div>
+        <!-- 출고: 가장 좁고 진한 네이비, 앞 레이어 -->
+        <div style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:22%;height:28px;background:#0f2a4e;border-radius:14px;z-index:3"></div>
+      </div>
     </div>
 
     <!-- ⑤ SF RV -->
@@ -4318,19 +4331,6 @@ function initDashboard2() {
           tooltip: { callbacks: { label: function(ctx) { var t=[1350,1000,800,840,53],v=[1253,942,685,834,21]; return ctx.datasetIndex===0 ? v[ctx.dataIndex]+' / '+t[ctx.dataIndex] : ''; } } } },
         animation: { duration: 500 } } });
 
-    // 배정 bar
-    mkChart('db2-alloc-bar', { type: 'bar',
-      data: { labels: [''],
-        datasets: [
-          { label:'계약', data:[245], backgroundColor:'#b8d4f0', barThickness:30 },
-          { label:'승인', data:[142], backgroundColor:'#4d9fff', barThickness:30 },
-          { label:'출고', data:[89], backgroundColor:'#0a2a6e', barThickness:30 }
-        ] },
-      options: { maintainAspectRatio: false, indexAxis: 'y',
-        scales: { x: { display: false }, y: { display: false } },
-        plugins: { legend: { display: false } },
-        animation: { duration: 500 } } });
-
     // SF RV pie
     mkChart('db2-sfrv-pie', { type: 'doughnut',
       data: { labels: ['OL','IL','RT'],
@@ -4395,4 +4395,3 @@ function initDashboard2() {
 </script>
 </body>
 </html>
-      
