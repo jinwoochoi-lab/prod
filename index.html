@@ -502,33 +502,32 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 .numbering-tip.visible { display: block; }
 
 /* ── Dashboard 2 ── */
-.db2-topbar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border-radius:10px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
-.db2-brand{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800;color:#0a0a23;letter-spacing:-.3px}
-.db2-tab{padding:5px 14px;border-radius:20px;border:none;background:#f0f4f8;color:#555;font-size:12px;font-weight:500;cursor:pointer;transition:.2s}
-.db2-tab.db2-tab-active{background:#0a0a23;color:#fff}
-.db2-refresh-btn{width:30px;height:30px;border:1px solid #dde1e7;border-radius:50%;background:#fff;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.db2-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.db2-card{background:#fff;border-radius:10px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.07);min-width:0;box-sizing:border-box}
+.db2-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:0}
+.db2-card{background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.07);min-width:0;box-sizing:border-box}
 .db2-card-title{font-size:13px;font-weight:700;color:#222;margin-bottom:4px}
 .db2-sec-sub{font-size:10px;color:#999;margin-bottom:2px}
-.db2-gauge-wrap{position:relative;display:flex;justify-content:center;margin:2px 0 6px}
-.db2-gauge-over{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);text-align:center;white-space:nowrap;pointer-events:none}
+.db2-gauge-wrap{display:flex;justify-content:center;margin:4px 0 6px}
+.db2-gauge-box{position:relative;width:160px;height:80px;flex-shrink:0}
+.db2-gauge-box canvas{position:absolute;top:0;left:0;width:160px!important;height:80px!important}
+.db2-gauge-over{position:absolute;bottom:0;left:0;right:0;text-align:center;pointer-events:none}
 .db2-g-num{font-size:17px;font-weight:700;color:#0a0a23;line-height:1}
 .db2-g-pct{font-size:14px;font-weight:700;line-height:1.3}
 .db2-kpi-row{display:flex;align-items:center;gap:5px;margin-bottom:5px;font-size:11px}
 .db2-kpi-lbl{color:#999;width:26px;flex-shrink:0}
-.db2-kpi-val{font-weight:700;width:30px;font-size:12px}
-.db2-badge{font-size:9px;font-weight:700;padding:1px 4px;border-radius:3px;width:34px;text-align:center;flex-shrink:0}
+.db2-kpi-val{font-weight:700;width:32px;font-size:12px}
+.db2-badge{font-size:9px;font-weight:700;padding:1px 4px;border-radius:3px;width:32px;text-align:center;flex-shrink:0}
 .db2-badge.up{background:#e6f4ea;color:#2e7d32}
 .db2-badge.dn{background:#fce4e4;color:#c62828}
 .db2-bar-track{flex:1;height:3px;background:#f0f0f0;border-radius:2px;overflow:hidden}
 .db2-bar-fill{height:100%;border-radius:2px}
-.db2-kpi-tgt{color:#ccc;font-size:10px;width:26px;text-align:right;flex-shrink:0}
+.db2-kpi-tgt{color:#ccc;font-size:10px;width:24px;text-align:right;flex-shrink:0}
 .db2-tab-mini{display:flex}
 .db2-tabm{padding:2px 7px;font-size:10px;border:1px solid #e0e0e0;background:#fff;cursor:pointer;color:#777}
 .db2-tabm:first-child{border-radius:4px 0 0 4px}
 .db2-tabm:last-child{border-radius:0 4px 4px 0}
 .db2-tabm.active{background:#0a0a23;color:#fff;border-color:#0a0a23}
+.db2-ch-box{position:relative;width:100%}
+.db2-ch-box canvas{position:absolute;top:0;left:0;width:100%!important;height:100%!important}
 .db2-alloc-row{display:flex;justify-content:space-between;font-size:11px;padding:2px 0;color:#555;border-bottom:1px solid #f5f5f5}
 .db2-alloc-n{font-weight:600}
 .db2-sfrv-row{display:flex;align-items:center;gap:5px;font-size:11px;margin-bottom:4px}
@@ -538,8 +537,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 .db2-cal-head{text-align:center;color:#999;font-weight:600;padding:2px;font-size:9px}
 .db2-cal-head.sun{color:#e74c3c}
 .db2-cal-head.sat{color:#4d9fff}
-.db2-cal-cell{text-align:center;padding:3px 1px;border-radius:5px;position:relative}
-.db2-cal-cell.empty{background:none}
+.db2-cal-cell{text-align:center;padding:3px 1px;border-radius:5px}
 .db2-cal-cell.green{background:#34c38f;color:#fff;font-weight:600}
 .db2-cal-cell.red{background:#e74c3c;color:#fff;font-weight:600}
 .db2-cal-cell.orange{background:#f7a35c;color:#fff;font-weight:600}
@@ -2824,21 +2822,9 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 </div></div>
 
 <div id="page-dashboard2" class="page">
-  <!-- topbar -->
-  <div class="db2-topbar">
-    <div class="db2-brand">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" stroke="#0a0a23" stroke-width="1.5"/><circle cx="12" cy="12" r="5.5" stroke="#0a0a23" stroke-width="1.5"/><line x1="12" y1="1.5" x2="12" y2="22.5" stroke="#0a0a23" stroke-width="1.5"/><line x1="1.5" y1="12" x2="22.5" y2="12" stroke="#0a0a23" stroke-width="1.5"/></svg>
-      <span><strong>DEUTSCH</strong>&nbsp;MOTORS</span>
-    </div>
-    <div style="display:flex;gap:3px">
-      <button class="db2-tab db2-tab-active">Sales Status</button>
-      <button class="db2-tab">SC Management</button>
-    </div>
-    <div style="flex:1"></div>
-    <div style="font-size:11px;color:#555;display:flex;align-items:center;gap:5px">
-      <span>📅</span><span id="db2-date">2026년 02월 02일</span>
-    </div>
-    <button class="db2-refresh-btn" onclick="_db2Inited=false;initDashboard2()">↻</button>
+  <div class="page-header">
+    <div class="page-title">📈 대시보드2</div>
+    <div class="page-desc">Sales Status · 2026년 02월 기준</div>
   </div>
 
   <div class="db2-grid">
@@ -2848,10 +2834,12 @@ tbody td { padding:10px 14px; vertical-align:middle; }
       <div class="db2-card-title">계약</div>
       <div class="db2-sec-sub">전체</div>
       <div class="db2-gauge-wrap">
-        <canvas id="db2-g-contract" width="170" height="85" style="width:170px;height:85px;display:block"></canvas>
-        <div class="db2-gauge-over">
-          <div class="db2-g-num">2,421</div>
-          <div class="db2-g-pct" style="color:#e74c3c">32%</div>
+        <div class="db2-gauge-box">
+          <canvas id="db2-g-contract"></canvas>
+          <div class="db2-gauge-over">
+            <div class="db2-g-num">2,421</div>
+            <div class="db2-g-pct" style="color:#e74c3c">32%</div>
+          </div>
         </div>
       </div>
       <div class="db2-kpi-row"><span class="db2-kpi-lbl">월별</span><span class="db2-kpi-val">653</span><span class="db2-badge up">+2%</span><div class="db2-bar-track"><div class="db2-bar-fill" style="width:67%;background:#34c38f"></div></div><span class="db2-kpi-tgt">520</span></div>
@@ -2863,79 +2851,81 @@ tbody td { padding:10px 14px; vertical-align:middle; }
       <div class="db2-card-title">출고</div>
       <div class="db2-sec-sub">전체</div>
       <div class="db2-gauge-wrap">
-        <canvas id="db2-g-delivery" width="170" height="85" style="width:170px;height:85px;display:block"></canvas>
-        <div class="db2-gauge-over">
-          <div class="db2-g-num">1,145</div>
-          <div class="db2-g-pct" style="color:#f7a35c">52.1%</div>
+        <div class="db2-gauge-box">
+          <canvas id="db2-g-delivery"></canvas>
+          <div class="db2-gauge-over">
+            <div class="db2-g-num">1,145</div>
+            <div class="db2-g-pct" style="color:#f7a35c">52.1%</div>
+          </div>
         </div>
       </div>
       <div class="db2-kpi-row"><span class="db2-kpi-lbl">월별</span><span class="db2-kpi-val">132</span><span class="db2-badge dn">-6%</span><div class="db2-bar-track"><div class="db2-bar-fill" style="width:31%;background:#e74c3c"></div></div><span class="db2-kpi-tgt">422</span></div>
       <div class="db2-kpi-row"><span class="db2-kpi-lbl">일별</span><span class="db2-kpi-val">89</span><span class="db2-badge up">+5%</span><div class="db2-bar-track"><div class="db2-bar-fill" style="width:74%;background:#34c38f"></div></div><span class="db2-kpi-tgt">120</span></div>
     </div>
 
-    <!-- ③ Made (2 cols) -->
+    <!-- ③ Made (span 2) -->
     <div class="db2-card" style="grid-column:span 2">
       <div class="db2-card-title">Made</div>
-      <div style="display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start">
-        <div>
+      <div style="display:flex;gap:14px;align-items:flex-start">
+        <div style="flex-shrink:0">
           <div class="db2-sec-sub">전체</div>
           <div class="db2-gauge-wrap">
-            <canvas id="db2-g-made" width="170" height="85" style="width:170px;height:85px;display:block"></canvas>
-            <div class="db2-gauge-over">
-              <div class="db2-g-num">953</div>
-              <div class="db2-g-pct" style="color:#e74c3c">15%</div>
+            <div class="db2-gauge-box">
+              <canvas id="db2-g-made"></canvas>
+              <div class="db2-gauge-over">
+                <div class="db2-g-num">953</div>
+                <div class="db2-g-pct" style="color:#e74c3c">15%</div>
+              </div>
             </div>
           </div>
           <div class="db2-kpi-row"><span class="db2-kpi-lbl">월별</span><span class="db2-kpi-val">245</span><span class="db2-badge dn">-6%</span><div class="db2-bar-track"><div class="db2-bar-fill" style="width:53%;background:#e74c3c"></div></div><span class="db2-kpi-tgt">460</span></div>
           <div class="db2-kpi-row"><span class="db2-kpi-lbl">일별</span><span class="db2-kpi-val">175</span><span class="db2-badge up">+5%</span><div class="db2-bar-track"><div class="db2-bar-fill" style="width:100%;background:#34c38f"></div></div><span class="db2-kpi-tgt">160</span></div>
         </div>
-        <div><canvas id="db2-made-line" style="width:100%;height:100px;display:block"></canvas></div>
-      </div>
-      <div style="margin-top:10px;border-top:1px solid #f0f2f5;padding-top:8px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
-          <span style="font-size:11px;font-weight:700;color:#333">Models</span>
-          <div class="db2-tab-mini">
-            <button class="db2-tabm active">일별</button><button class="db2-tabm">월별</button><button class="db2-tabm">전체</button>
-          </div>
+        <div style="flex:1;min-width:0">
+          <div class="db2-ch-box" style="height:100px"><canvas id="db2-made-line"></canvas></div>
         </div>
-        <canvas id="db2-models-bar" style="width:100%;height:88px;display:block"></canvas>
+      </div>
+      <div style="margin-top:10px;padding-top:8px;border-top:1px solid #f0f2f5">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:11px;font-weight:700;color:#333">Models</span>
+          <div class="db2-tab-mini"><button class="db2-tabm active">일별</button><button class="db2-tabm">월별</button><button class="db2-tabm">전체</button></div>
+        </div>
+        <div class="db2-ch-box" style="height:100px"><canvas id="db2-models-bar"></canvas></div>
       </div>
     </div>
 
-    <!-- ④ 배정 (2 cols) -->
+    <!-- ④ 배정 (span 2) -->
     <div class="db2-card" style="grid-column:span 2">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
         <div class="db2-card-title" style="margin:0">배정</div>
-        <div class="db2-tab-mini">
-          <button class="db2-tabm active">일별</button><button class="db2-tabm">월별</button><button class="db2-tabm">전체</button>
-        </div>
+        <div class="db2-tab-mini"><button class="db2-tabm active">일별</button><button class="db2-tabm">월별</button><button class="db2-tabm">전체</button></div>
       </div>
-      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:start;margin-bottom:10px">
-        <div style="text-align:center">
-          <div style="font-size:10px;color:#999;margin-bottom:2px">계약</div>
+      <div style="display:flex;gap:20px;align-items:center;margin-bottom:10px">
+        <div style="text-align:center;flex-shrink:0">
+          <div style="font-size:10px;color:#999">계약</div>
           <div style="font-size:22px;font-weight:700">245</div>
         </div>
-        <div>
-          <div class="db2-alloc-row"><span>승인</span><span class="db2-alloc-n" style="color:#4d9fff;font-size:13px">142</span></div>
-          <div class="db2-alloc-row"><span>미승인</span><span class="db2-alloc-n" style="color:#aab4c4;font-size:13px">103</span></div>
+        <div style="flex:1;min-width:0">
+          <div class="db2-alloc-row"><span>승인</span><span class="db2-alloc-n" style="color:#4d9fff">142</span></div>
+          <div class="db2-alloc-row"><span>미승인</span><span class="db2-alloc-n" style="color:#aab4c4">103</span></div>
           <div class="db2-alloc-row"><span>이월</span><span class="db2-alloc-n">3</span></div>
           <div class="db2-alloc-row"><span>Delivery Stop</span><span class="db2-alloc-n">0</span></div>
           <div class="db2-alloc-row" style="border:none"><span>TC</span><span class="db2-alloc-n">2</span></div>
         </div>
-        <div style="text-align:center">
-          <div style="font-size:10px;color:#999;margin-bottom:2px">출고</div>
+        <div style="text-align:center;flex-shrink:0">
+          <div style="font-size:10px;color:#999">출고</div>
           <div style="font-size:22px;font-weight:700">89</div>
         </div>
       </div>
-      <canvas id="db2-alloc-bar" style="width:100%;height:48px;display:block"></canvas>
+      <div class="db2-ch-box" style="height:52px"><canvas id="db2-alloc-bar"></canvas></div>
     </div>
 
     <!-- ⑤ SF RV -->
     <div class="db2-card">
       <div class="db2-card-title">SF RV</div>
-      <div style="display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center">
-        <canvas id="db2-sfrv-pie" width="105" height="105" style="width:105px;height:105px;display:block"></canvas>
-        <div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <div class="db2-ch-box" style="width:110px;height:110px;flex-shrink:0"><canvas id="db2-sfrv-pie"></canvas></div>
+        <div style="flex:1;min-width:0">
           <div class="db2-sfrv-row"><span class="db2-sfrv-dot" style="background:#c8d8e8"></span><span style="flex:1">SF RV OL</span><strong>179</strong></div>
           <div class="db2-sfrv-row"><span class="db2-sfrv-dot" style="background:#333"></span><span style="flex:1">SF RV IL</span><strong>53</strong></div>
           <div class="db2-sfrv-row"><span class="db2-sfrv-dot" style="background:#aab4c4"></span><span style="flex:1">SF RV RT</span><strong>21</strong></div>
@@ -2951,47 +2941,44 @@ tbody td { padding:10px 14px; vertical-align:middle; }
     <div class="db2-card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
         <div class="db2-card-title" style="margin:0">Royalty &amp; Trade-in</div>
-        <div class="db2-tab-mini">
-          <button class="db2-tabm active">일별</button><button class="db2-tabm">월별</button><button class="db2-tabm">전체</button>
-        </div>
+        <div class="db2-tab-mini"><button class="db2-tabm active">일별</button><button class="db2-tabm">월별</button><button class="db2-tabm">전체</button></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
         <div class="db2-royalty-box">
           <div style="font-size:9px;color:#999">D to D</div>
-          <div style="font-size:20px;font-weight:700;line-height:1.2">212</div>
+          <div style="font-size:20px;font-weight:700">212</div>
           <div style="font-size:11px;color:#555">18.7%</div>
         </div>
         <div class="db2-royalty-box">
           <div style="font-size:9px;color:#999">B to B</div>
-          <div style="font-size:20px;font-weight:700;line-height:1.2">105</div>
+          <div style="font-size:20px;font-weight:700">105</div>
           <div style="font-size:11px;color:#555">9.3%</div>
         </div>
       </div>
-      <canvas id="db2-royalty-line" style="width:100%;height:58px;display:block"></canvas>
+      <div class="db2-ch-box" style="height:60px"><canvas id="db2-royalty-line"></canvas></div>
       <div style="display:flex;gap:12px;justify-content:center;margin-top:4px;font-size:9px;color:#aaa">
         <span>—— D to D</span><span style="letter-spacing:1px">- - B to B</span>
       </div>
     </div>
 
-    <!-- ⑦ Target 달성률 (2 cols) -->
+    <!-- ⑦ Target 달성률 (span 2) -->
     <div class="db2-card" style="grid-column:span 2">
       <div class="db2-card-title">Target 달성률</div>
       <div id="db2-calendar" class="db2-calendar"></div>
     </div>
 
-    <!-- ⑧ 지점 현황 (2 cols) -->
+    <!-- ⑧ 지점 현황 (span 2) -->
     <div class="db2-card" style="grid-column:span 2">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
         <div class="db2-card-title" style="margin:0">지점 현황</div>
-        <div class="db2-tab-mini">
-          <button class="db2-tabm active">일별</button><button class="db2-tabm">월별</button><button class="db2-tabm">전체</button>
-        </div>
+        <div class="db2-tab-mini"><button class="db2-tabm active">일별</button><button class="db2-tabm">월별</button><button class="db2-tabm">전체</button></div>
       </div>
-      <canvas id="db2-branch-bar" style="width:100%;height:112px;display:block"></canvas>
+      <div class="db2-ch-box" style="height:120px"><canvas id="db2-branch-bar"></canvas></div>
     </div>
 
   </div>
 </div>
+
 
 <div class="footer">Deutsch Motors AX실 · 전송정보 어드민 v1.3 · 2026.05.12</div>
 </main>
@@ -3034,7 +3021,7 @@ function _applyState(state) {
   if (typeof descRender === 'function') descRender(state.page + '-' + (state.view || 'list'));
   if (typeof renderNumbers === 'function') renderNumbers();
   if (page === 'user' || page === 'inquiry') renderInquiryLog();
-  if (page === 'dashboard2') initDashboard2();
+  if (page === 'dashboard2') { _db2Inited = false; initDashboard2(); }
 }
 
 /* ── 사이드바 메뉴 전환 ── */
@@ -4270,128 +4257,140 @@ const _origApplyState2 = typeof _origApplyState !== 'undefined' ? _origApplyStat
 
 /* ─── Dashboard 2 Charts ─────────────────────────────────────── */
 let _db2Inited = false;
+let _db2Charts = [];
 function initDashboard2() {
   if (_db2Inited) return;
-  _db2Inited = true;
+  // delay 1 frame so layout is settled
+  setTimeout(function() {
+    _db2Inited = true;
+    _db2Charts.forEach(function(c){try{c.destroy();}catch(e){}});
+    _db2Charts = [];
 
-  // date
-  const now = new Date();
-  const el = document.getElementById('db2-date');
-  if (el) el.textContent = now.getFullYear()+'년 '+String(now.getMonth()+1).padStart(2,'0')+'월 '+String(now.getDate()).padStart(2,'0')+'일';
-
-  const GO = { rotation:-90, circumference:180, cutout:'72%',
-    plugins:{ legend:{display:false}, tooltip:{enabled:false} }, animation:{duration:500} };
-
-  function makeGauge(id, pct, color) {
-    const c = document.getElementById(id); if (!c) return;
-    new Chart(c, { type:'doughnut',
-      data:{ datasets:[{ data:[pct, 100-pct], backgroundColor:[color,'#f0f2f5'], borderWidth:0 }] },
-      options: GO });
-  }
-  makeGauge('db2-g-contract', 32, '#e74c3c');
-  makeGauge('db2-g-delivery', 52.1, '#f7a35c');
-  makeGauge('db2-g-made', 15, '#e74c3c');
-
-  // Made 연간 추이 line
-  const madeC = document.getElementById('db2-made-line');
-  if (madeC) new Chart(madeC, { type:'line',
-    data:{ labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-      datasets:[
-        { data:[80,170,310,480,640,770,845,893,953,null,null,null], borderColor:'#555', borderWidth:1.5, pointRadius:0, tension:.4, fill:true, backgroundColor:'rgba(100,100,100,.06)' },
-        { data:[480,480,480,480,480,480,480,480,480,480,480,480], borderColor:'#ddd', borderWidth:1, borderDash:[4,3], pointRadius:0, fill:false }
-      ] },
-    options:{ maintainAspectRatio:false, plugins:{legend:{display:false}},
-      scales:{ x:{ticks:{font:{size:8},color:'#bbb'},grid:{display:false}}, y:{display:false} }, animation:{duration:500} } });
-
-  // Models horizontal bar
-  const modC = document.getElementById('db2-models-bar');
-  if (modC) new Chart(modC, { type:'bar',
-    data:{ labels:['G60','7er','BEV','M','Corp.'],
-      datasets:[
-        { data:[1253,942,685,834,21], backgroundColor:'#8899aa', barThickness:8, label:'실적' },
-        { data:[97,58,115,6,32], backgroundColor:'#e8eaee', barThickness:8, label:'잔여' }
-      ] },
-    options:{ maintainAspectRatio:false, indexAxis:'y',
-      scales:{ x:{stacked:true,display:false}, y:{stacked:true,ticks:{font:{size:10},color:'#555'},grid:{display:false}} },
-      plugins:{ legend:{display:false},
-        tooltip:{ callbacks:{ label:(ctx)=>{ const totals=[1350,1000,800,840,53],vals=[1253,942,685,834,21]; return ctx.datasetIndex===0? vals[ctx.dataIndex]+' / '+totals[ctx.dataIndex]:''; } } } },
-      animation:{duration:500} } });
-
-  // 배정 stacked bar
-  const allocC = document.getElementById('db2-alloc-bar');
-  if (allocC) new Chart(allocC, { type:'bar',
-    data:{ labels:[''],
-      datasets:[
-        { label:'계약', data:[245], backgroundColor:'#b8d4f0', barThickness:28 },
-        { label:'승인', data:[142], backgroundColor:'#4d9fff', barThickness:28 },
-        { label:'출고', data:[89], backgroundColor:'#0a2a6e', barThickness:28 }
-      ] },
-    options:{ maintainAspectRatio:false, indexAxis:'y',
-      scales:{ x:{display:false,stacked:false}, y:{display:false} },
-      plugins:{legend:{display:false}}, animation:{duration:500} } });
-
-  // SF RV pie
-  const sfrvC = document.getElementById('db2-sfrv-pie');
-  if (sfrvC) new Chart(sfrvC, { type:'doughnut',
-    data:{ labels:['OL','IL','RT'], datasets:[{ data:[179,53,21], backgroundColor:['#c8d8e8','#333','#aab4c4'], borderWidth:2, borderColor:'#fff' }] },
-    options:{ cutout:'30%',
-      plugins:{ legend:{display:false}, tooltip:{callbacks:{label:(ctx)=>ctx.label+': '+ctx.raw}} },
-      animation:{duration:500} } });
-
-  // Royalty line
-  const royC = document.getElementById('db2-royalty-line');
-  if (royC) new Chart(royC, { type:'line',
-    data:{ labels:['Jan','Mar','May','Jul','Sep'],
-      datasets:[
-        { label:'D to D', data:[185,196,208,205,212], borderColor:'#555', borderWidth:1.5, pointRadius:2, tension:.4, fill:false },
-        { label:'B to B', data:[92,98,101,107,105], borderColor:'#aab4c4', borderWidth:1.5, borderDash:[4,3], pointRadius:2, tension:.4, fill:false }
-      ] },
-    options:{ maintainAspectRatio:false, plugins:{legend:{display:false}},
-      scales:{ x:{ticks:{font:{size:8},color:'#bbb'},grid:{display:false}}, y:{display:false} },
-      animation:{duration:500} } });
-
-  // 지점 현황 bar
-  const brC = document.getElementById('db2-branch-bar');
-  if (brC) new Chart(brC, { type:'bar',
-    data:{ labels:['대치','잠실','성수1','성수2','수원','동대문','송파','양재','한남','하남','남양주','원주','제주'],
-      datasets:[
-        { label:'목표', data:[150,130,100,80,140,50,75,90,100,80,60,45,50], backgroundColor:'#e0e4e8', barThickness:12 },
-        { label:'실적', data:[135,121,94,62,127,35,62,81,97,75,54,38,42], backgroundColor:'#7a8fa6', barThickness:12 }
-      ] },
-    options:{ maintainAspectRatio:false,
-      scales:{ x:{ticks:{font:{size:9},color:'#666'},grid:{display:false}}, y:{display:false} },
-      plugins:{legend:{display:false},
-        tooltip:{callbacks:{label:(ctx)=>ctx.dataset.label+': '+ctx.raw}} },
-      animation:{duration:500} } });
-
-  // Calendar
-  const cal = document.getElementById('db2-calendar');
-  if (cal) {
-    const perf = {1:'gray',2:'orange',3:'gray',4:'gray',5:'green',6:'gray',7:'gray',
-      8:'green',9:'gray',10:'gray',11:'red',12:'gray',13:'green',14:'green',
-      15:'blue',16:'gray',17:'gray',18:'gray',19:'gray',20:'gray',21:'gray',
-      22:'gray',23:'gray',24:'gray',25:'gray',26:'gray',27:'gray',28:'gray'};
-    const vals = {2:'75',5:'138',8:'142',11:'112',13:'141',14:'136',15:'98'};
-    const heads = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    let h = heads.map((d,i)=>'<div class="db2-cal-head'+(i===0?' sun':i===6?' sat':'')+'">' +d+'</div>').join('');
-    // Feb 2026 starts on Sunday (day 0)
-    for (let d=1;d<=28;d++) {
-      const cls = perf[d]||'gray';
-      const sub = vals[d]?'<div class="db2-cal-sub">'+vals[d]+'</div>':'';
-      h += '<div class="db2-cal-cell '+cls+'"><div class="db2-cal-num">'+d+'</div>'+sub+'</div>';
+    function mkChart(id, cfg) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      _db2Charts.push(new Chart(el, cfg));
     }
-    cal.innerHTML = h;
-  }
 
-  // mini tab handlers
-  document.querySelectorAll('#page-dashboard2 .db2-tab-mini').forEach(wrap => {
-    wrap.querySelectorAll('.db2-tabm').forEach(btn => {
-      btn.addEventListener('click', () => {
-        wrap.querySelectorAll('.db2-tabm').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
+    var gaugeOpts = {
+      rotation: -90, circumference: 180, cutout: '72%',
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
+      animation: { duration: 500 }
+    };
+
+    // 계약 gauge
+    mkChart('db2-g-contract', { type: 'doughnut',
+      data: { datasets: [{ data: [32, 68], backgroundColor: ['#e74c3c','#f0f2f5'], borderWidth: 0 }] },
+      options: gaugeOpts });
+
+    // 출고 gauge
+    mkChart('db2-g-delivery', { type: 'doughnut',
+      data: { datasets: [{ data: [52.1, 47.9], backgroundColor: ['#f7a35c','#f0f2f5'], borderWidth: 0 }] },
+      options: gaugeOpts });
+
+    // Made gauge
+    mkChart('db2-g-made', { type: 'doughnut',
+      data: { datasets: [{ data: [15, 85], backgroundColor: ['#e74c3c','#f0f2f5'], borderWidth: 0 }] },
+      options: gaugeOpts });
+
+    // Made 연간 line
+    mkChart('db2-made-line', { type: 'line',
+      data: { labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+        datasets: [
+          { data: [80,170,310,480,640,770,845,893,953,null,null,null], borderColor:'#555', borderWidth:1.5, pointRadius:0, tension:.4, fill:true, backgroundColor:'rgba(100,100,100,.06)' },
+          { data: [480,480,480,480,480,480,480,480,480,480,480,480], borderColor:'#ddd', borderWidth:1, borderDash:[4,3], pointRadius:0, fill:false }
+        ] },
+      options: { maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { x: { ticks: { font: { size: 8 }, color: '#bbb' }, grid: { display: false } }, y: { display: false } },
+        animation: { duration: 500 } } });
+
+    // Models horizontal bar
+    mkChart('db2-models-bar', { type: 'bar',
+      data: { labels: ['G60','7er','BEV','M','Corp.'],
+        datasets: [
+          { data: [1253,942,685,834,21], backgroundColor: '#8899aa', label: '실적', barThickness: 10 },
+          { data: [97,58,115,6,32], backgroundColor: '#e0e4e8', label: '잔여', barThickness: 10 }
+        ] },
+      options: { maintainAspectRatio: false, indexAxis: 'y',
+        scales: { x: { stacked: true, display: false }, y: { stacked: true, ticks: { font: { size: 10 }, color: '#555' }, grid: { display: false } } },
+        plugins: { legend: { display: false },
+          tooltip: { callbacks: { label: function(ctx) { var t=[1350,1000,800,840,53],v=[1253,942,685,834,21]; return ctx.datasetIndex===0 ? v[ctx.dataIndex]+' / '+t[ctx.dataIndex] : ''; } } } },
+        animation: { duration: 500 } } });
+
+    // 배정 bar
+    mkChart('db2-alloc-bar', { type: 'bar',
+      data: { labels: [''],
+        datasets: [
+          { label:'계약', data:[245], backgroundColor:'#b8d4f0', barThickness:30 },
+          { label:'승인', data:[142], backgroundColor:'#4d9fff', barThickness:30 },
+          { label:'출고', data:[89], backgroundColor:'#0a2a6e', barThickness:30 }
+        ] },
+      options: { maintainAspectRatio: false, indexAxis: 'y',
+        scales: { x: { display: false }, y: { display: false } },
+        plugins: { legend: { display: false } },
+        animation: { duration: 500 } } });
+
+    // SF RV pie
+    mkChart('db2-sfrv-pie', { type: 'doughnut',
+      data: { labels: ['OL','IL','RT'],
+        datasets: [{ data: [179,53,21], backgroundColor: ['#c8d8e8','#333','#aab4c4'], borderWidth: 2, borderColor: '#fff' }] },
+      options: { cutout: '30%',
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(ctx) { return ctx.label+': '+ctx.raw; } } } },
+        animation: { duration: 500 } } });
+
+    // Royalty line
+    mkChart('db2-royalty-line', { type: 'line',
+      data: { labels: ['Jan','Mar','May','Jul','Sep'],
+        datasets: [
+          { label:'D to D', data:[185,196,208,205,212], borderColor:'#555', borderWidth:1.5, pointRadius:2, tension:.4, fill:false },
+          { label:'B to B', data:[92,98,101,107,105], borderColor:'#aab4c4', borderWidth:1.5, borderDash:[4,3], pointRadius:2, tension:.4, fill:false }
+        ] },
+      options: { maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { x: { ticks: { font: { size: 8 }, color: '#bbb' }, grid: { display: false } }, y: { display: false } },
+        animation: { duration: 500 } } });
+
+    // 지점 현황 bar
+    mkChart('db2-branch-bar', { type: 'bar',
+      data: { labels: ['대치','잠실','성수1','성수2','수원','동대문','송파','양재','한남','하남','남양주','원주','제주'],
+        datasets: [
+          { label:'목표', data:[150,130,100,80,140,50,75,90,100,80,60,45,50], backgroundColor:'#e0e4e8', barThickness:10 },
+          { label:'실적', data:[135,121,94,62,127,35,62,81,97,75,54,38,42], backgroundColor:'#7a8fa6', barThickness:10 }
+        ] },
+      options: { maintainAspectRatio: false,
+        scales: { x: { ticks: { font: { size: 9 }, color: '#666' }, grid: { display: false } }, y: { display: false } },
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(ctx) { return ctx.dataset.label+': '+ctx.raw; } } } },
+        animation: { duration: 500 } } });
+
+    // Calendar
+    var cal = document.getElementById('db2-calendar');
+    if (cal) {
+      var perf = {1:'gray',2:'orange',3:'gray',4:'gray',5:'green',6:'gray',7:'gray',
+        8:'green',9:'gray',10:'gray',11:'red',12:'gray',13:'green',14:'green',
+        15:'blue',16:'gray',17:'gray',18:'gray',19:'gray',20:'gray',21:'gray',
+        22:'gray',23:'gray',24:'gray',25:'gray',26:'gray',27:'gray',28:'gray'};
+      var vals = {2:'75',5:'138',8:'142',11:'112',13:'141',14:'136',15:'98'};
+      var heads = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      var h = heads.map(function(d,i){ return '<div class="db2-cal-head'+(i===0?' sun':i===6?' sat':'')+'">' +d+'</div>'; }).join('');
+      for (var d=1; d<=28; d++) {
+        var cls = perf[d]||'gray';
+        var sub = vals[d] ? '<div class="db2-cal-sub">'+vals[d]+'</div>' : '';
+        h += '<div class="db2-cal-cell '+cls+'"><div class="db2-cal-num">'+d+'</div>'+sub+'</div>';
+      }
+      cal.innerHTML = h;
+    }
+
+    // mini tab handlers
+    document.querySelectorAll('#page-dashboard2 .db2-tab-mini').forEach(function(wrap) {
+      wrap.querySelectorAll('.db2-tabm').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          wrap.querySelectorAll('.db2-tabm').forEach(function(b){ b.classList.remove('active'); });
+          btn.classList.add('active');
+        });
       });
     });
-  });
+  }, 80);
 }
 </script>
 </body>
