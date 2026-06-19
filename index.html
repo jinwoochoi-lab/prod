@@ -507,8 +507,8 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 .db2-tab{padding:5px 14px;border-radius:20px;border:none;background:#f0f4f8;color:#555;font-size:12px;font-weight:500;cursor:pointer;transition:.2s}
 .db2-tab.db2-tab-active{background:#0a0a23;color:#fff}
 .db2-refresh-btn{width:30px;height:30px;border:1px solid #dde1e7;border-radius:50%;background:#fff;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.db2-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.db2-card{background:#fff;border-radius:10px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.07);overflow:hidden;min-width:0}
+.db2-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.db2-card{background:#fff;border-radius:10px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.07);min-width:0;box-sizing:border-box}
 .db2-card-title{font-size:13px;font-weight:700;color:#222;margin-bottom:4px}
 .db2-sec-sub{font-size:10px;color:#999;margin-bottom:2px}
 .db2-gauge-wrap{position:relative;display:flex;justify-content:center;margin:2px 0 6px}
@@ -2848,7 +2848,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
       <div class="db2-card-title">계약</div>
       <div class="db2-sec-sub">전체</div>
       <div class="db2-gauge-wrap">
-        <canvas id="db2-g-contract" width="170" height="85" style="max-width:170px"></canvas>
+        <canvas id="db2-g-contract" width="170" height="85" style="width:170px;height:85px;display:block"></canvas>
         <div class="db2-gauge-over">
           <div class="db2-g-num">2,421</div>
           <div class="db2-g-pct" style="color:#e74c3c">32%</div>
@@ -2863,7 +2863,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
       <div class="db2-card-title">출고</div>
       <div class="db2-sec-sub">전체</div>
       <div class="db2-gauge-wrap">
-        <canvas id="db2-g-delivery" width="170" height="85" style="max-width:170px"></canvas>
+        <canvas id="db2-g-delivery" width="170" height="85" style="width:170px;height:85px;display:block"></canvas>
         <div class="db2-gauge-over">
           <div class="db2-g-num">1,145</div>
           <div class="db2-g-pct" style="color:#f7a35c">52.1%</div>
@@ -2876,12 +2876,12 @@ tbody td { padding:10px 14px; vertical-align:middle; }
     <!-- ③ Made (2 cols) -->
     <div class="db2-card" style="grid-column:span 2">
       <div class="db2-card-title">Made</div>
-      <div style="display:grid;grid-template-columns:190px 1fr;gap:12px">
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start">
         <div>
           <div class="db2-sec-sub">전체</div>
-          <div class="db2-gauge-wrap" style="justify-content:flex-start">
-            <canvas id="db2-g-made" width="170" height="85" style="max-width:170px"></canvas>
-            <div class="db2-gauge-over" style="left:85px">
+          <div class="db2-gauge-wrap">
+            <canvas id="db2-g-made" width="170" height="85" style="width:170px;height:85px;display:block"></canvas>
+            <div class="db2-gauge-over">
               <div class="db2-g-num">953</div>
               <div class="db2-g-pct" style="color:#e74c3c">15%</div>
             </div>
@@ -2889,7 +2889,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
           <div class="db2-kpi-row"><span class="db2-kpi-lbl">월별</span><span class="db2-kpi-val">245</span><span class="db2-badge dn">-6%</span><div class="db2-bar-track"><div class="db2-bar-fill" style="width:53%;background:#e74c3c"></div></div><span class="db2-kpi-tgt">460</span></div>
           <div class="db2-kpi-row"><span class="db2-kpi-lbl">일별</span><span class="db2-kpi-val">175</span><span class="db2-badge up">+5%</span><div class="db2-bar-track"><div class="db2-bar-fill" style="width:100%;background:#34c38f"></div></div><span class="db2-kpi-tgt">160</span></div>
         </div>
-        <div><canvas id="db2-made-line" style="height:110px;width:100%"></canvas></div>
+        <div><canvas id="db2-made-line" style="width:100%;height:100px;display:block"></canvas></div>
       </div>
       <div style="margin-top:10px;border-top:1px solid #f0f2f5;padding-top:8px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
@@ -2898,7 +2898,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
             <button class="db2-tabm active">일별</button><button class="db2-tabm">월별</button><button class="db2-tabm">전체</button>
           </div>
         </div>
-        <canvas id="db2-models-bar" style="height:90px;width:100%"></canvas>
+        <canvas id="db2-models-bar" style="width:100%;height:88px;display:block"></canvas>
       </div>
     </div>
 
@@ -2927,14 +2927,14 @@ tbody td { padding:10px 14px; vertical-align:middle; }
           <div style="font-size:22px;font-weight:700">89</div>
         </div>
       </div>
-      <canvas id="db2-alloc-bar" style="height:50px;width:100%"></canvas>
+      <canvas id="db2-alloc-bar" style="width:100%;height:48px;display:block"></canvas>
     </div>
 
     <!-- ⑤ SF RV -->
     <div class="db2-card">
       <div class="db2-card-title">SF RV</div>
       <div style="display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center">
-        <canvas id="db2-sfrv-pie" width="105" height="105"></canvas>
+        <canvas id="db2-sfrv-pie" width="105" height="105" style="width:105px;height:105px;display:block"></canvas>
         <div>
           <div class="db2-sfrv-row"><span class="db2-sfrv-dot" style="background:#c8d8e8"></span><span style="flex:1">SF RV OL</span><strong>179</strong></div>
           <div class="db2-sfrv-row"><span class="db2-sfrv-dot" style="background:#333"></span><span style="flex:1">SF RV IL</span><strong>53</strong></div>
@@ -2967,7 +2967,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
           <div style="font-size:11px;color:#555">9.3%</div>
         </div>
       </div>
-      <canvas id="db2-royalty-line" style="height:60px;width:100%"></canvas>
+      <canvas id="db2-royalty-line" style="width:100%;height:58px;display:block"></canvas>
       <div style="display:flex;gap:12px;justify-content:center;margin-top:4px;font-size:9px;color:#aaa">
         <span>—— D to D</span><span style="letter-spacing:1px">- - B to B</span>
       </div>
@@ -2987,7 +2987,7 @@ tbody td { padding:10px 14px; vertical-align:middle; }
           <button class="db2-tabm active">일별</button><button class="db2-tabm">월별</button><button class="db2-tabm">전체</button>
         </div>
       </div>
-      <canvas id="db2-branch-bar" style="height:115px;width:100%"></canvas>
+      <canvas id="db2-branch-bar" style="width:100%;height:112px;display:block"></canvas>
     </div>
 
   </div>
@@ -4279,7 +4279,7 @@ function initDashboard2() {
   const el = document.getElementById('db2-date');
   if (el) el.textContent = now.getFullYear()+'년 '+String(now.getMonth()+1).padStart(2,'0')+'월 '+String(now.getDate()).padStart(2,'0')+'일';
 
-  const GO = { rotation:-90, circumference:180, cutout:'72%', maintainAspectRatio:false,
+  const GO = { rotation:-90, circumference:180, cutout:'72%',
     plugins:{ legend:{display:false}, tooltip:{enabled:false} }, animation:{duration:500} };
 
   function makeGauge(id, pct, color) {
@@ -4297,7 +4297,7 @@ function initDashboard2() {
   if (madeC) new Chart(madeC, { type:'line',
     data:{ labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
       datasets:[
-        { data:[80,170,310,480,640,770,845,893,953,null,null,null], borderColor:'#555', borderWidth:1.5, pointRadius:0, tension:.4, fill:true, backgroundColor:'rgba(100,100,100,.06)', maintainAspectRatio:false },
+        { data:[80,170,310,480,640,770,845,893,953,null,null,null], borderColor:'#555', borderWidth:1.5, pointRadius:0, tension:.4, fill:true, backgroundColor:'rgba(100,100,100,.06)' },
         { data:[480,480,480,480,480,480,480,480,480,480,480,480], borderColor:'#ddd', borderWidth:1, borderDash:[4,3], pointRadius:0, fill:false }
       ] },
     options:{ maintainAspectRatio:false, plugins:{legend:{display:false}},
@@ -4334,7 +4334,7 @@ function initDashboard2() {
   const sfrvC = document.getElementById('db2-sfrv-pie');
   if (sfrvC) new Chart(sfrvC, { type:'doughnut',
     data:{ labels:['OL','IL','RT'], datasets:[{ data:[179,53,21], backgroundColor:['#c8d8e8','#333','#aab4c4'], borderWidth:2, borderColor:'#fff' }] },
-    options:{ cutout:'30%', maintainAspectRatio:false,
+    options:{ cutout:'30%',
       plugins:{ legend:{display:false}, tooltip:{callbacks:{label:(ctx)=>ctx.label+': '+ctx.raw}} },
       animation:{duration:500} } });
 
