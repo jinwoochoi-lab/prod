@@ -521,6 +521,14 @@ tbody td { padding:10px 14px; vertical-align:middle; }
 .db2-bar-track{flex:1;height:4px;background:#f0f0f0;border-radius:2px;overflow:hidden}
 .db2-bar-fill{height:100%;border-radius:2px}
 .db2-kpi-tgt{color:#ccc;font-size:10px;width:24px;text-align:right;flex-shrink:0}
+.db2-kpi-block{padding:10px 14px;background:#f8f9fb;border-radius:8px;margin-bottom:8px}
+.db2-kpi-block:last-child{margin-bottom:0}
+.db2-kpi-block-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.db2-kpi-lbl2{font-size:12px;color:#aab4c4;font-weight:600;letter-spacing:.3px}
+.db2-kpi-block-mid{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+.db2-kpi-val2{font-size:28px;font-weight:700;color:#1a2332;line-height:1}
+.db2-kpi-tgt2{font-size:12px;color:#ccc}
+.db2-bar-track2{height:7px;background:#edf1f7;border-radius:4px;overflow:hidden}
 .db2-tab-mini{display:flex}
 .db2-tabm{padding:2px 7px;font-size:10px;border:1px solid #e0e0e0;background:#fff;cursor:pointer;color:#777}
 .db2-tabm:first-child{border-radius:4px 0 0 4px}
@@ -2842,8 +2850,16 @@ tbody td { padding:10px 14px; vertical-align:middle; }
           </div>
         </div>
       </div>
-      <div class="db2-kpi-row"><span class="db2-kpi-lbl">월별</span><span class="db2-kpi-val">653</span><span class="db2-badge up">+2%</span><div class="db2-bar-track"><div class="db2-bar-fill" style="width:67%;background:#34c38f"></div></div><span class="db2-kpi-tgt">520</span></div>
-      <div class="db2-kpi-row"><span class="db2-kpi-lbl">일별</span><span class="db2-kpi-val">132</span><span class="db2-badge dn">-3%</span><div class="db2-bar-track"><div class="db2-bar-fill" style="width:57%;background:#e74c3c"></div></div><span class="db2-kpi-tgt">230</span></div>
+      <div class="db2-kpi-block">
+        <div class="db2-kpi-block-top"><span class="db2-kpi-lbl2">월별</span><span class="db2-badge up">+2%</span></div>
+        <div class="db2-kpi-block-mid"><span class="db2-kpi-val2">653</span><span class="db2-kpi-tgt2">목표 520</span></div>
+        <div class="db2-bar-track2"><div class="db2-bar-fill" style="width:67%;background:#34c38f"></div></div>
+      </div>
+      <div class="db2-kpi-block">
+        <div class="db2-kpi-block-top"><span class="db2-kpi-lbl2">일별</span><span class="db2-badge dn">-3%</span></div>
+        <div class="db2-kpi-block-mid"><span class="db2-kpi-val2">132</span><span class="db2-kpi-tgt2">목표 230</span></div>
+        <div class="db2-bar-track2"><div class="db2-bar-fill" style="width:57%;background:#e74c3c"></div></div>
+      </div>
     </div>
 
     <!-- ② 출고 -->
@@ -2859,8 +2875,16 @@ tbody td { padding:10px 14px; vertical-align:middle; }
           </div>
         </div>
       </div>
-      <div class="db2-kpi-row"><span class="db2-kpi-lbl">월별</span><span class="db2-kpi-val">132</span><span class="db2-badge dn">-6%</span><div class="db2-bar-track"><div class="db2-bar-fill" style="width:31%;background:#e74c3c"></div></div><span class="db2-kpi-tgt">422</span></div>
-      <div class="db2-kpi-row"><span class="db2-kpi-lbl">일별</span><span class="db2-kpi-val">89</span><span class="db2-badge up">+5%</span><div class="db2-bar-track"><div class="db2-bar-fill" style="width:74%;background:#34c38f"></div></div><span class="db2-kpi-tgt">120</span></div>
+      <div class="db2-kpi-block">
+        <div class="db2-kpi-block-top"><span class="db2-kpi-lbl2">월별</span><span class="db2-badge dn">-6%</span></div>
+        <div class="db2-kpi-block-mid"><span class="db2-kpi-val2">132</span><span class="db2-kpi-tgt2">목표 422</span></div>
+        <div class="db2-bar-track2"><div class="db2-bar-fill" style="width:31%;background:#e74c3c"></div></div>
+      </div>
+      <div class="db2-kpi-block">
+        <div class="db2-kpi-block-top"><span class="db2-kpi-lbl2">일별</span><span class="db2-badge up">+5%</span></div>
+        <div class="db2-kpi-block-mid"><span class="db2-kpi-val2">89</span><span class="db2-kpi-tgt2">목표 120</span></div>
+        <div class="db2-bar-track2"><div class="db2-bar-fill" style="width:74%;background:#34c38f"></div></div>
+      </div>
     </div>
 
     <!-- ③ Made (span 2) -->
