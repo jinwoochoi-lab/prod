@@ -1166,44 +1166,44 @@ tbody td { padding:10px 14px; vertical-align:middle; }
       <div class="card-header"><h2>품의서 필드 목록</h2><span class="pill">36 fields</span><div style="margin-left:auto" class="search-box">🔍<input type="text" placeholder="검색…" oninput="filterList('tbl-contract',this.value)"></div></div>
       <div class="table-wrap">
         <table id="tbl-contract">
-          <thead><tr><th class="col-no">No.</th><th style="width:200px">컬럼명 (영문)</th><th style="width:130px">컬럼명 (한글)</th><th style="width:80px">타입</th><th style="width:200px">예시</th><th>참고사항</th></tr></thead>
+          <thead><tr><th class="col-no">No.</th><th>항목</th><th style="width:200px">예시</th><th>참고사항</th></tr></thead>
           <tbody>
-            <tr><td class="col-no">1</td><td><span class="col-code">CONTRACT_SEQ</span></td><td><span class="col-name">계약서번호</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">DTBS411637</td><td class="col-note">판매품의서 > 계약자정보의 계약서번호</td></tr>
-            <tr><td class="col-no">2</td><td><span class="col-code">STATUS</span></td><td><span class="col-name">상태</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">작성, 계약, 배정요청, 출고예정, 출고, 취소</td><td class="col-note">판매품의서 > 계약자정보의 상태</td></tr>
-            <tr><td class="col-no">3</td><td><span class="col-code">PERSON_GUBUN</span></td><td><span class="col-name">구분</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">1(개인), 2(법인), 3(개인사업자)</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">4</td><td><span class="col-code">CUSTOMER_NAME</span></td><td><span class="col-name">계약자명</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">김고객</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">5</td><td><span class="col-code">MOBILE_PHONE</span></td><td><span class="col-name">휴대전화번호</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">010-1234-5678</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">6</td><td><span class="col-code">ADDRESS_1</span></td><td><span class="col-name">주소</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">서울특별시 용산구 한강대로 66</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">7</td><td><span class="col-code">REGISTER_NAME</span></td><td><span class="col-name">등록자명</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">김고객</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">8</td><td><span class="col-code">SALE_FIXED_SHOWROOM_NAME</span></td><td><span class="col-name">출고전시장</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">수원</td><td class="col-note">매출확정 시점의 전시장</td></tr>
-            <tr><td class="col-no">9</td><td><span class="col-code">SHOWROOM_NAME</span></td><td><span class="col-name">전시장</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">수원</td><td class="col-note">현재 시점의 소속 전시장</td></tr>
-            <tr><td class="col-no">10</td><td><span class="col-code">USER_NAME</span></td><td><span class="col-name">담당영업</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">김영업 / ldm001</td><td class="col-note">사용자ID 포함</td></tr>
-            <tr><td class="col-no">11</td><td><span class="col-code">SALE_TYPE_NAME</span></td><td><span class="col-name">구입조건</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">현금, 할부, 운용리스, 금융리스, 유예리스, 렌트</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">12</td><td><span class="col-code">CAPITAL_NAME</span></td><td><span class="col-name">리스(할부)사</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">비엠더블유파이낸셜서비스코리아(주)</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">13</td><td><span class="col-code">DELIVERY_PRICE</span></td><td><span class="col-name">출고구분</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">일반가, 면세(렌터카) 등</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">14</td><td><span class="col-code">CLASS_NAME</span></td><td><span class="col-name">대표차종</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">X6</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">15</td><td><span class="col-code">MODEL_MERGE_NAME</span></td><td><span class="col-name">모델</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">(31EX) X6 xDrive40i M Sport</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">16</td><td><span class="col-code">GRP</span></td><td><span class="col-name">상세모델(그룹명)</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">X6 xDrive 40i M Spt LCI</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">17</td><td><span class="col-code">AUTO_YEAR</span></td><td><span class="col-name">년식</span></td><td><span class="badge-type bt-number">NUMBER</span></td><td class="col-example">2026</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">18</td><td><span class="col-code">AUTO_COLOR</span></td><td><span class="col-name">외장색상</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">416 (Carbon Black metallic)</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">19</td><td><span class="col-code">INTERIOR_COLOR</span></td><td><span class="col-name">내장색상</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">VAHF (Leather Merino Coffee)</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">20</td><td><span class="col-code">IS_ON_OFF</span></td><td><span class="col-name">온/오프 구분</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">온라인 계약 / 오프라인 계약</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">21</td><td><span class="col-code">ADVANTAGE</span></td><td><span class="col-name">Advantage</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">잔가(2), Trade(5)</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">22</td><td><span class="col-code">VEHICLE_PRICE</span></td><td><span class="col-name">판매가격</span></td><td><span class="badge-type bt-number">NUMBER</span></td><td class="col-example">106,000,000</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">23</td><td><span class="col-code">VIN_NO</span></td><td><span class="col-name">차대번호</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">WBAKS6106G0N61363</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">24</td><td><span class="col-code">CONTRACT_DATE</span></td><td><span class="col-name">계약일자</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-03-01</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">25</td><td><span class="col-code">DELIVERY_REQUEST_DATE</span></td><td><span class="col-name">출고요청일</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-03-01</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">26</td><td><span class="col-code">DELIVERY_EXPRECTED_DATE</span></td><td><span class="col-name">등록(예정)일</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-03-01</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">27</td><td><span class="col-code">SALE_FIXED_DATE</span></td><td><span class="col-name">매출확정일</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-03-01</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">28</td><td><span class="col-code">DELIVERY_REG_DATE</span></td><td><span class="col-name">등록일</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-03-01</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">29</td><td><span class="col-code">CANCEL_DATE</span></td><td><span class="col-name">취소일</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-03-01</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">30</td><td><span class="col-code">ASSIGN_DATE</span></td><td><span class="col-name">배정일자</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-03-01</td><td class="col-note">재고차량관리 > 조회Tab</td></tr>
-            <tr><td class="col-no">31</td><td><span class="col-code">PDI_COMPLETE_DATE</span></td><td><span class="col-name">PDI완료일</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-03-01</td><td class="col-note">재고차량관리 > 조회Tab</td></tr>
-            <tr><td class="col-no">32</td><td><span class="col-code">BPS_TRADE_IN</span></td><td><span class="col-name">BPS Trade-In</span></td><td><span class="badge-type bt-bool">BOOL</span></td><td class="col-example">Y / N</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">33</td><td><span class="col-code">FUEL_TP_NM</span></td><td><span class="col-name">Fuel Type</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">Petrol, Diesel, BEV, PHEV</td><td class="col-note">–</td></tr>
-            <tr><td class="col-no">34</td><td><span class="col-code">SUPPLY_PRICE</span></td><td><span class="col-name">공급가격</span></td><td><span class="badge-type bt-number">NUMBER</span></td><td class="col-example">55,000,000</td><td class="col-note">매출확정관리 > 계약정보</td></tr>
-            <tr><td class="col-no">35</td><td><span class="col-code">VAT</span></td><td><span class="col-name">VAT</span></td><td><span class="badge-type bt-number">NUMBER</span></td><td class="col-example">5,000,000</td><td class="col-note">매출확정관리 > 계약정보</td></tr>
-            <tr><td class="col-no">36</td><td><span class="col-code">ALLOT_MONTH</span></td><td><span class="col-name">리스 할부 기간</span></td><td><span class="badge-type bt-number">NUMBER</span></td><td class="col-example">60 (개월)</td><td class="col-note">매출확정관리 > 판매조건정보</td></tr>
+            <tr><td class="col-no">1</td><td><span class="col-name">계약서번호</span></td><td class="col-example">DTBS411637</td><td class="col-note">판매품의서 > 계약자정보의 계약서번호</td></tr>
+            <tr><td class="col-no">2</td><td><span class="col-name">상태</span></td><td class="col-example">작성, 계약, 배정요청, 출고예정, 출고, 취소</td><td class="col-note">판매품의서 > 계약자정보의 상태</td></tr>
+            <tr><td class="col-no">3</td><td><span class="col-name">구분</span></td><td class="col-example">1(개인), 2(법인), 3(개인사업자)</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">4</td><td><span class="col-name">계약자명</span></td><td class="col-example">김고객</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">5</td><td><span class="col-name">휴대전화번호</span></td><td class="col-example">010-1234-5678</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">6</td><td><span class="col-name">주소</span></td><td class="col-example">서울특별시 용산구 한강대로 66</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">7</td><td><span class="col-name">등록자명</span></td><td class="col-example">김고객</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">8</td><td><span class="col-name">출고전시장</span></td><td class="col-example">수원</td><td class="col-note">매출확정 시점의 전시장</td></tr>
+            <tr><td class="col-no">9</td><td><span class="col-name">전시장</span></td><td class="col-example">수원</td><td class="col-note">현재 시점의 소속 전시장</td></tr>
+            <tr><td class="col-no">10</td><td><span class="col-name">담당영업</span></td><td class="col-example">김영업 / ldm001</td><td class="col-note">사용자ID 포함</td></tr>
+            <tr><td class="col-no">11</td><td><span class="col-name">구입조건</span></td><td class="col-example">현금, 할부, 운용리스, 금융리스, 유예리스, 렌트</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">12</td><td><span class="col-name">리스(할부)사</span></td><td class="col-example">비엠더블유파이낸셜서비스코리아(주)</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">13</td><td><span class="col-name">출고구분</span></td><td class="col-example">일반가, 면세(렌터카) 등</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">14</td><td><span class="col-name">대표차종</span></td><td class="col-example">X6</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">15</td><td><span class="col-name">모델</span></td><td class="col-example">(31EX) X6 xDrive40i M Sport</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">16</td><td><span class="col-name">상세모델(그룹명)</span></td><td class="col-example">X6 xDrive 40i M Spt LCI</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">17</td><td><span class="col-name">년식</span></td><td class="col-example">2026</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">18</td><td><span class="col-name">외장색상</span></td><td class="col-example">416 (Carbon Black metallic)</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">19</td><td><span class="col-name">내장색상</span></td><td class="col-example">VAHF (Leather Merino Coffee)</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">20</td><td><span class="col-name">온/오프 구분</span></td><td class="col-example">온라인 계약 / 오프라인 계약</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">21</td><td><span class="col-name">Advantage</span></td><td class="col-example">잔가(2), Trade(5)</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">22</td><td><span class="col-name">판매가격</span></td><td class="col-example">106,000,000</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">23</td><td><span class="col-name">차대번호</span></td><td class="col-example">WBAKS6106G0N61363</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">24</td><td><span class="col-name">계약일자</span></td><td class="col-example">2026-03-01</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">25</td><td><span class="col-name">출고요청일</span></td><td class="col-example">2026-03-01</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">26</td><td><span class="col-name">등록(예정)일</span></td><td class="col-example">2026-03-01</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">27</td><td><span class="col-name">매출확정일</span></td><td class="col-example">2026-03-01</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">28</td><td><span class="col-name">등록일</span></td><td class="col-example">2026-03-01</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">29</td><td><span class="col-name">취소일</span></td><td class="col-example">2026-03-01</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">30</td><td><span class="col-name">배정일자</span></td><td class="col-example">2026-03-01</td><td class="col-note">재고차량관리 > 조회Tab</td></tr>
+            <tr><td class="col-no">31</td><td><span class="col-name">PDI완료일</span></td><td class="col-example">2026-03-01</td><td class="col-note">재고차량관리 > 조회Tab</td></tr>
+            <tr><td class="col-no">32</td><td><span class="col-name">BPS Trade-In</span></td><td class="col-example">Y / N</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">33</td><td><span class="col-name">Fuel Type</span></td><td class="col-example">Petrol, Diesel, BEV, PHEV</td><td class="col-note">–</td></tr>
+            <tr><td class="col-no">34</td><td><span class="col-name">공급가격</span></td><td class="col-example">55,000,000</td><td class="col-note">매출확정관리 > 계약정보</td></tr>
+            <tr><td class="col-no">35</td><td><span class="col-name">VAT</span></td><td class="col-example">5,000,000</td><td class="col-note">매출확정관리 > 계약정보</td></tr>
+            <tr><td class="col-no">36</td><td><span class="col-name">리스 할부 기간</span></td><td class="col-example">60 (개월)</td><td class="col-note">매출확정관리 > 판매조건정보</td></tr>
           </tbody>
         </table>
       </div>
@@ -1494,35 +1494,35 @@ tbody td { padding:10px 14px; vertical-align:middle; }
         <table id="tbl-inventory">
           <thead><tr><th class="col-no">No.</th><th style="width:160px">컬럼명 (영문)</th><th style="width:140px">컬럼명 (한글)</th><th style="width:80px">타입</th><th>예시</th></tr></thead>
           <tbody>
-            <tr><td class="col-no">1</td><td><span class="col-code">STOCK_SEQ</span></td><td><span class="col-name">재고SEQ</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">SS260522000001<br><small style="color:#999">재고 삭제 후 재매입 시 동일 차대번호지만 SEQ 다르게 채번됨</small></td></tr>
-            <tr><td class="col-no">2</td><td>–</td><td><span class="col-name">시리즈</span></td><td><span class="badge-type bt-number">NUMBER</span></td><td class="col-example">5</td></tr>
-            <tr><td class="col-no">3</td><td>–</td><td><span class="col-name">대표모델</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">530i xDrive Sedan</td></tr>
-            <tr><td class="col-no">4</td><td>–</td><td><span class="col-name">상세모델(KR)</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">2026 530i xDrive M Spt LCI_P1-1</td></tr>
-            <tr><td class="col-no">5</td><td>–</td><td><span class="col-name">년식</span></td><td><span class="badge-type bt-number">NUMBER</span></td><td class="col-example">2026</td></tr>
-            <tr><td class="col-no">6</td><td>–</td><td><span class="col-name">외장색상</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">416</td></tr>
-            <tr><td class="col-no">7</td><td>–</td><td><span class="col-name">내장색상</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">LZFK</td></tr>
-            <tr><td class="col-no">8</td><td>–</td><td><span class="col-name">차대번호</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">WBA31BJ08PCM94568</td></tr>
-            <tr><td class="col-no">9</td><td>–</td><td><span class="col-name">Segment</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">MKL, UKL, KKL…</td></tr>
-            <tr><td class="col-no">10</td><td>–</td><td><span class="col-name">Body Code</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">G30, F70, U06…</td></tr>
-            <tr><td class="col-no">11</td><td>–</td><td><span class="col-name">Model Type</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">21GE, 31BJ…</td></tr>
-            <tr><td class="col-no">12</td><td>–</td><td><span class="col-name">패키지그룹코드</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">Z92, Z5M…</td></tr>
-            <tr><td class="col-no">13</td><td>–</td><td><span class="col-name">Fuel Type</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">Petrol, Diesel, BEV, PHEV</td></tr>
-            <tr><td class="col-no">14</td><td>–</td><td><span class="col-name">입항일자</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-05-01</td></tr>
-            <tr><td class="col-no">15</td><td>–</td><td><span class="col-name">통관일자</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-05-01</td></tr>
-            <tr><td class="col-no">16</td><td>–</td><td><span class="col-name">매입일자</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-05-01</td></tr>
-            <tr><td class="col-no">17</td><td>–</td><td><span class="col-name">PDI완료일자</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-05-01</td></tr>
-            <tr><td class="col-no">18</td><td>–</td><td><span class="col-name">제작일자</span></td><td><span class="badge-type bt-date">DATE</span></td><td class="col-example">2026-05-01</td></tr>
-            <tr><td class="col-no">19</td><td>–</td><td><span class="col-name">소비자가(V+)</span></td><td><span class="badge-type bt-number">NUMBER</span></td><td class="col-example">80,000,000</td></tr>
-            <tr><td class="col-no">20</td><td>–</td><td><span class="col-name">면세가</span></td><td><span class="badge-type bt-number">NUMBER</span></td><td class="col-example">75,000,000</td></tr>
-            <tr><td class="col-no">21</td><td>–</td><td><span class="col-name">매입가</span></td><td><span class="badge-type bt-number">NUMBER</span></td><td class="col-example">73,000,000</td></tr>
-            <tr><td class="col-no">22</td><td>–</td><td><span class="col-name">(BSI/MSI)부담금</span></td><td><span class="badge-type bt-number">NUMBER</span></td><td class="col-example">500,000</td></tr>
-            <tr><td class="col-no">23</td><td>–</td><td><span class="col-name">재고구분</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">일반, 기타차, 온라인샵, KR EM, Reserve, 셔틀카</td></tr>
-            <tr><td class="col-no">24</td><td>–</td><td><span class="col-name">재고판매유형</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">OS, 온라인샵</td></tr>
-            <tr><td class="col-no">25</td><td>–</td><td><span class="col-name">재고위치</span></td><td><span class="badge-type bt-string">STRING</span></td><td class="col-example">PDI, 수원전시장…</td></tr>
-            <tr><td class="col-no">26</td><td>–</td><td><span class="col-name">가용여부</span></td><td><span class="badge-type bt-bool">BOOL</span></td><td class="col-example">Y, N</td></tr>
-            <tr><td class="col-no">27</td><td>–</td><td><span class="col-name">숨김여부</span></td><td><span class="badge-type bt-bool">BOOL</span></td><td class="col-example">Y, N</td></tr>
-            <tr><td class="col-no">28</td><td>–</td><td><span class="col-name">고지대상</span></td><td><span class="badge-type bt-bool">BOOL</span></td><td class="col-example">Y, N</td></tr>
-            <tr><td class="col-no">29</td><td>–</td><td><span class="col-name">재고상태</span></td><td><span class="badge-type bt-enum">ENUM</span></td><td class="col-example">미배정, 배정, 출고</td></tr>
+            <tr><td class="col-no">1</td><td><span class="col-name">재고SEQ</span></td><td class="col-example">SS260522000001<br><small style="color:#999">재고 삭제 후 재매입 시 동일 차대번호지만 SEQ 다르게 채번됨</small></td></tr>
+            <tr><td class="col-no">2</td><td>–</td><td><span class="col-name">시리즈</span></td><td class="col-example">5</td></tr>
+            <tr><td class="col-no">3</td><td>–</td><td><span class="col-name">대표모델</span></td><td class="col-example">530i xDrive Sedan</td></tr>
+            <tr><td class="col-no">4</td><td>–</td><td><span class="col-name">상세모델(KR)</span></td><td class="col-example">2026 530i xDrive M Spt LCI_P1-1</td></tr>
+            <tr><td class="col-no">5</td><td>–</td><td><span class="col-name">년식</span></td><td class="col-example">2026</td></tr>
+            <tr><td class="col-no">6</td><td>–</td><td><span class="col-name">외장색상</span></td><td class="col-example">416</td></tr>
+            <tr><td class="col-no">7</td><td>–</td><td><span class="col-name">내장색상</span></td><td class="col-example">LZFK</td></tr>
+            <tr><td class="col-no">8</td><td>–</td><td><span class="col-name">차대번호</span></td><td class="col-example">WBA31BJ08PCM94568</td></tr>
+            <tr><td class="col-no">9</td><td>–</td><td><span class="col-name">Segment</span></td><td class="col-example">MKL, UKL, KKL…</td></tr>
+            <tr><td class="col-no">10</td><td>–</td><td><span class="col-name">Body Code</span></td><td class="col-example">G30, F70, U06…</td></tr>
+            <tr><td class="col-no">11</td><td>–</td><td><span class="col-name">Model Type</span></td><td class="col-example">21GE, 31BJ…</td></tr>
+            <tr><td class="col-no">12</td><td>–</td><td><span class="col-name">패키지그룹코드</span></td><td class="col-example">Z92, Z5M…</td></tr>
+            <tr><td class="col-no">13</td><td>–</td><td><span class="col-name">Fuel Type</span></td><td class="col-example">Petrol, Diesel, BEV, PHEV</td></tr>
+            <tr><td class="col-no">14</td><td>–</td><td><span class="col-name">입항일자</span></td><td class="col-example">2026-05-01</td></tr>
+            <tr><td class="col-no">15</td><td>–</td><td><span class="col-name">통관일자</span></td><td class="col-example">2026-05-01</td></tr>
+            <tr><td class="col-no">16</td><td>–</td><td><span class="col-name">매입일자</span></td><td class="col-example">2026-05-01</td></tr>
+            <tr><td class="col-no">17</td><td>–</td><td><span class="col-name">PDI완료일자</span></td><td class="col-example">2026-05-01</td></tr>
+            <tr><td class="col-no">18</td><td>–</td><td><span class="col-name">제작일자</span></td><td class="col-example">2026-05-01</td></tr>
+            <tr><td class="col-no">19</td><td>–</td><td><span class="col-name">소비자가(V+)</span></td><td class="col-example">80,000,000</td></tr>
+            <tr><td class="col-no">20</td><td>–</td><td><span class="col-name">면세가</span></td><td class="col-example">75,000,000</td></tr>
+            <tr><td class="col-no">21</td><td>–</td><td><span class="col-name">매입가</span></td><td class="col-example">73,000,000</td></tr>
+            <tr><td class="col-no">22</td><td>–</td><td><span class="col-name">(BSI/MSI)부담금</span></td><td class="col-example">500,000</td></tr>
+            <tr><td class="col-no">23</td><td>–</td><td><span class="col-name">재고구분</span></td><td class="col-example">일반, 기타차, 온라인샵, KR EM, Reserve, 셔틀카</td></tr>
+            <tr><td class="col-no">24</td><td>–</td><td><span class="col-name">재고판매유형</span></td><td class="col-example">OS, 온라인샵</td></tr>
+            <tr><td class="col-no">25</td><td>–</td><td><span class="col-name">재고위치</span></td><td class="col-example">PDI, 수원전시장…</td></tr>
+            <tr><td class="col-no">26</td><td>–</td><td><span class="col-name">가용여부</span></td><td class="col-example">Y, N</td></tr>
+            <tr><td class="col-no">27</td><td>–</td><td><span class="col-name">숨김여부</span></td><td class="col-example">Y, N</td></tr>
+            <tr><td class="col-no">28</td><td>–</td><td><span class="col-name">고지대상</span></td><td class="col-example">Y, N</td></tr>
+            <tr><td class="col-no">29</td><td>–</td><td><span class="col-name">재고상태</span></td><td class="col-example">미배정, 배정, 출고</td></tr>
           </tbody>
         </table>
       </div>
